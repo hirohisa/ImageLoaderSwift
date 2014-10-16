@@ -1,0 +1,11 @@
+#xcode
+xcuserdata
+*xcworkspacedata
+*xcshareddata
+
+# pod
+Pods/
+Podfile.lock
+
+# build
+build/
