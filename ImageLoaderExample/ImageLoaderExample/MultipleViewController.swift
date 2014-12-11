@@ -37,7 +37,7 @@ class MultipleViewController: UITableViewController {
 
         let URL: NSURL = NSURL.imageURL(indexPath.row)
         let placeholder: UIImage = UIImage(named: "black.jpg")!
-        cell.imageView.setImage(URL, placeholder: placeholder)
+        cell.imageView?.setImage(URL, placeholder: placeholder)
 
         return cell
 

@@ -23,10 +23,10 @@ class RootViewController: UITableViewController {
         switch indexPath.row {
 
         case 0:
-            cell.textLabel.text = "Simple"
+            cell.textLabel?.text = "Simple"
 
         case 1:
-            cell.textLabel.text = "Multiple"
+            cell.textLabel?.text = "Multiple"
 
         default:
             break
