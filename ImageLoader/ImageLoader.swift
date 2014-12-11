@@ -74,7 +74,7 @@ class ImageLoader: NSObject {
 
                 if let image: UIImage = UIImage(data: data) {
 
-                    self.cache.setObject(image, forKey: URL)
+                    self.cache.setObject(data, forKey: URL)
                     success(response, image)
 
                 } else {
