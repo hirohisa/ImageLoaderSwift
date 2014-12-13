@@ -8,24 +8,34 @@
 
 import Foundation
 
-protocol ImageLoaderCacheProtocol : NSObjectProtocol {
+public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
 
-    func objectForKey(aKey: AnyObject) -> AnyObject?
-    func setObject(anObject: AnyObject, forKey aKey: AnyObject)
+    subscript (aKey: AnyObject) -> AnyObject? {
+        get
+        set
+    }
 
 }
 
 class ImageLoaderCache: NSCache, ImageLoaderCacheProtocol {
 
-    override func objectForKey(aKey: AnyObject) -> AnyObject? {
+    private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
-        return super.objectForKey(aKey)
+    subscript (aKey: AnyObject) -> AnyObject? {
 
-    }
+        get {
+            var value : AnyObject?
+            dispatch_sync(_queue) {
+                value = self.objectForKey(aKey)
+            }
 
-    override func setObject(anObject: AnyObject, forKey aKey: AnyObject) {
+            return value
+        }
 
-        super.setObject(anObject, forKey: aKey)
-
+        set {
+            dispatch_barrier_async(_queue) {
+                self.setObject(newValue!, forKey: aKey)
+            }
+        }
     }
 }

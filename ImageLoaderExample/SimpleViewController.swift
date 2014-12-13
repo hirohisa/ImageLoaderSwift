@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageLoader
 
 class SimpleViewController: UIViewController {
 
@@ -108,21 +109,9 @@ class SimpleViewController: UIViewController {
     }
 
     func testLoad(imageView: UIImageView, URL: NSURL) {
-
-        imageView.setImage(URL)
-
-        imageView.setImage(URL, placeholder: nil, success: { _ in
-            println(__FUNCTION__, "success")
-            }, failure: { _ in
-                dispatch_async(dispatch_get_main_queue(), { _ in
-                    imageView.image = nil
-                })
-                println(__FUNCTION__, "failure")
-        })
-
-        imageView.setImage(URL, placeholder: nil, completion: { _ in
+        imageView.load(URL, placeholder: nil) { (_, _, _) -> Void in
             println(__FUNCTION__, "completion")
-        })
+        }
 
     }
 

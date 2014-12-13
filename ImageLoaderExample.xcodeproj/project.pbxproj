@@ -15,10 +15,25 @@
 		65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC01A03859500CF1DB7 /* RootViewController.swift */; };
 		65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */; };
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
-		65D6FBCD1A0385BC00CF1DB7 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC91A0385BC00CF1DB7 /* ImageLoader.swift */; };
-		65D6FBCE1A0385BC00CF1DB7 /* ImageLoaderCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBCA1A0385BC00CF1DB7 /* ImageLoaderCache.swift */; };
-		65D6FBD01A0385BC00CF1DB7 /* UIImageView+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBCC1A0385BC00CF1DB7 /* UIImageView+ImageLoader.swift */; };
+		A1EE65C11A3CA57500BEA147 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1EE65BE1A3CA55300BEA147 /* ImageLoader.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A1EE65BD1A3CA55300BEA147 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65B2CF1119EF9F6600DA3605;
+			remoteInfo = ImageLoader;
+		};
+		A1EE65BF1A3CA55300BEA147 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65B2CF1C19EF9F6600DA3605;
+			remoteInfo = ImageLoaderTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		65D6FB9A1A03855700CF1DB7 /* ImageLoaderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageLoaderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,9 +48,7 @@
 		65D6FBC01A03859500CF1DB7 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
-		65D6FBC91A0385BC00CF1DB7 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		65D6FBCA1A0385BC00CF1DB7 /* ImageLoaderCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderCache.swift; sourceTree = "<group>"; };
-		65D6FBCC1A0385BC00CF1DB7 /* UIImageView+ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageLoader.swift"; sourceTree = "<group>"; };
+		A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ImageLoader.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1EE65C11A3CA57500BEA147 /* ImageLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +66,7 @@
 		65D6FB911A03855700CF1DB7 = {
 			isa = PBXGroup;
 			children = (
-				65D6FBC71A0385BC00CF1DB7 /* ImageLoader */,
+				A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */,
 				65D6FB9C1A03855700CF1DB7 /* ImageLoaderExample */,
 				65D6FBB21A03855800CF1DB7 /* ImageLoaderExampleTests */,
 				65D6FB9B1A03855700CF1DB7 /* Products */,
@@ -108,15 +122,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		65D6FBC71A0385BC00CF1DB7 /* ImageLoader */ = {
+		A1EE65B91A3CA55300BEA147 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65D6FBC91A0385BC00CF1DB7 /* ImageLoader.swift */,
-				65D6FBCA1A0385BC00CF1DB7 /* ImageLoaderCache.swift */,
-				65D6FBCC1A0385BC00CF1DB7 /* UIImageView+ImageLoader.swift */,
+				A1EE65BE1A3CA55300BEA147 /* ImageLoader.framework */,
+				A1EE65C01A3CA55300BEA147 /* ImageLoaderTests.xctest */,
 			);
-			name = ImageLoader;
-			path = ../ImageLoader;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,12 +176,35 @@
 			mainGroup = 65D6FB911A03855700CF1DB7;
 			productRefGroup = 65D6FB9B1A03855700CF1DB7 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A1EE65B91A3CA55300BEA147 /* Products */;
+					ProjectRef = A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				65D6FB991A03855700CF1DB7 /* ImageLoaderExample */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		A1EE65BE1A3CA55300BEA147 /* ImageLoader.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ImageLoader.framework;
+			remoteRef = A1EE65BD1A3CA55300BEA147 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A1EE65C01A3CA55300BEA147 /* ImageLoaderTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ImageLoaderTests.xctest;
+			remoteRef = A1EE65BF1A3CA55300BEA147 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		65D6FB981A03855700CF1DB7 /* Resources */ = {
@@ -192,9 +227,6 @@
 			files = (
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
-				65D6FBCD1A0385BC00CF1DB7 /* ImageLoader.swift in Sources */,
-				65D6FBD01A0385BC00CF1DB7 /* UIImageView+ImageLoader.swift in Sources */,
-				65D6FBCE1A0385BC00CF1DB7 /* ImageLoaderCache.swift in Sources */,
 				65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */,
 				65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */,
 			);
@@ -340,6 +372,7 @@
 				65D6FBBB1A03855800CF1DB7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

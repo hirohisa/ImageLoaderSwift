@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 FOUNDATION_EXPORT double ImageLoaderVersionNumber;
 FOUNDATION_EXPORT const unsigned char ImageLoaderVersionString[];

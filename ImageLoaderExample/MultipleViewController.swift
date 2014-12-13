@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageLoader
 
 extension NSURL {
 
@@ -37,7 +38,9 @@ class MultipleViewController: UITableViewController {
 
         let URL: NSURL = NSURL.imageURL(indexPath.row)
         let placeholder: UIImage = UIImage(named: "black.jpg")!
-        cell.imageView?.setImage(URL, placeholder: placeholder)
+        cell.imageView?.load(URL, placeholder: placeholder, completionHandler: { (_, _, _) -> Void in
+            println("completion")
+        })
 
         return cell
 

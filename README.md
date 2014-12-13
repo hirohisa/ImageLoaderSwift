@@ -37,7 +37,7 @@ Usage
 ```swift
 
 let URL: NSURL = NSURL(string: "http://image")!
-imageView.setImage(URL)
+imageView.load(URL)
 ```
 
 or
@@ -45,15 +45,7 @@ or
 ```swift
 
 let URL: NSURL = NSURL(string: "http://image")!
-imageView.setImage(URL, placeholder: nil, success: { _ in ...}, failure: { _ in ...})
-```
-
-or
-
-```swift
-
-let URL: NSURL = NSURL(string: "http://image")!
-imageView.setImage(URL, placeholder: nil, completion: { _ in ... })
+imageView.load(URL, placeholder: nil) { _ in ... }
 ```
 
 
