@@ -69,7 +69,7 @@ public class Manager {
             switch loader.status {
 
             case .Suspended:
-                loader.task.resume()
+                loader.resume()
                 return loader
 
             default:
@@ -106,7 +106,7 @@ public class Manager {
 
 }
 
-public typealias CompletionBlock = (NSURL, UIImage?, NSError?) -> (Void)
+internal typealias CompletionBlock = (NSURL, UIImage?, NSError?) -> (Void)
 
 public class Loader {
 
@@ -114,12 +114,18 @@ public class Loader {
     let task: NSURLSessionDataTask
     var closures: [CompletionBlock] = [CompletionBlock]()
 
-    // TODO: needs to creating task for class and singleton
+    private class var _resuming_queue: dispatch_queue_t {
+        struct Static {
+            static let queue = dispatch_queue_create("swift.imageloader.queues.resuming", DISPATCH_QUEUE_SERIAL);
+        }
+
+        return Static.queue
+    }
 
     init (task: NSURLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
-        self._run()
+        self.resume()
     }
 
     var status: NSURLSessionTaskState {
@@ -128,15 +134,25 @@ public class Loader {
         }
     }
 
-    internal func completionHandler( completionHandler: (NSURL, UIImage?, NSError?) -> Void ) -> Self {
+    internal func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
 
         self.closures += [completionHandler]
 
         return self
     }
 
-    private func _run() {
-        self.task.resume()
+    // MARK: task
+
+    internal func suspend() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.suspend()
+        }
+    }
+
+    internal func resume() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.resume()
+        }
     }
 
     private func complete(URL: NSURL, image: UIImage?, error: NSError?) {
