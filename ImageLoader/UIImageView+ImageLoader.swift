@@ -40,18 +40,17 @@ extension UIImageView {
     // MARK: - public
 
     public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
+        self.cancelLoading()
 
-        self.cancelLoadingImage()
         if placeholder != nil {
             self.image = placeholder
         }
 
         self.URL = URL
         self._load(URL, completionHandler: completionHandler)
-
     }
 
-    public func cancelLoadingImage() {
+    public func cancelLoading() {
         if self.URL != nil {
             Manager.sharedInstance.cancel(self.URL!, block: self.block as? Block)
         }

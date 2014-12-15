@@ -179,9 +179,15 @@ public class Loader {
     }
 
     private func remove(block: Block) {
-
         // needs to queue with sync
+        var blocks: [Block] = [Block]()
+        for b: Block in self.blocks {
+            if !b.isEqual(block) {
+                blocks.append(b)
+            }
+        }
 
+        self.blocks = blocks
     }
 
     private func complete(URL: NSURL, image: UIImage?, error: NSError?) {
