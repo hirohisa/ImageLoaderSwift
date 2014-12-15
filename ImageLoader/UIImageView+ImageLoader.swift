@@ -10,20 +10,28 @@ import Foundation
 import UIKit
 
 private var ImageLoaderURLKey: UInt = 0
+private var ImageLoaderBlockKey: UInt = 0
 
 extension UIImageView {
 
     // MARK: - properties
 
     private var URL: NSURL? {
-
         get {
             return objc_getAssociatedObject(self, &ImageLoaderURLKey) as? NSURL
         }
         set(newValue) {
             objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
         }
+    }
 
+    private var block: AnyObject? {
+        get {
+            return objc_getAssociatedObject(self, &ImageLoaderBlockKey)
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, UInt(OBJC_ASSOCIATION_ASSIGN))
+        }
     }
 }
 
@@ -45,7 +53,7 @@ extension UIImageView {
 
     public func cancelLoadingImage() {
         if self.URL != nil {
-            // TODO: cancel with completion handler
+            Manager.sharedInstance.cancel(self.URL!, block: self.block as? Block)
         }
     }
 
@@ -89,7 +97,9 @@ extension UIImageView {
 
         dispatch_async(UIImageView._requesting_queue, {
 
-            Manager.sharedInstance.load(URL).completionHandler(completionHandler)
+            let loader: Loader = Manager.sharedInstance.load(URL).completionHandler(completionHandler)
+            self.block = loader.blocks.last
+
             return
 
         })

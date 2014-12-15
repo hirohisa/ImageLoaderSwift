@@ -10,6 +10,16 @@ import Foundation
 import UIKit
 
 public let ImageLoaderDomain = "swift.imageloader"
+internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> (Void)
+
+internal class Block: NSObject {
+
+    let completionHandler: CompletionHandler
+    init(completionHandler: CompletionHandler) {
+        self.completionHandler = completionHandler
+    }
+
+}
 
 public class Manager {
 
@@ -88,6 +98,20 @@ public class Manager {
         return loader
     }
 
+    internal func cancel(URL: NSURL, block: Block?) -> Loader? {
+
+        if let loader: Loader = self.store[URL] {
+
+            if block != nil {
+                loader.remove(block!)
+            }
+
+            return loader
+        }
+
+        return nil
+    }
+
     private func taskCompletion(URL: NSURL, data: NSData?, error: NSError?) {
 
         var image: UIImage?
@@ -106,13 +130,11 @@ public class Manager {
 
 }
 
-internal typealias CompletionBlock = (NSURL, UIImage?, NSError?) -> (Void)
-
 public class Loader {
 
     let delegate: Manager
     let task: NSURLSessionDataTask
-    var closures: [CompletionBlock] = [CompletionBlock]()
+    internal var blocks: [Block] = [Block]()
 
     private class var _resuming_queue: dispatch_queue_t {
         struct Static {
@@ -136,7 +158,8 @@ public class Loader {
 
     internal func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
 
-        self.closures += [completionHandler]
+        let block: Block = Block(completionHandler: completionHandler)
+        self.blocks += [block]
 
         return self
     }
@@ -155,10 +178,16 @@ public class Loader {
         }
     }
 
+    private func remove(block: Block) {
+
+        // needs to queue with sync
+
+    }
+
     private func complete(URL: NSURL, image: UIImage?, error: NSError?) {
 
-        for closure: CompletionBlock in self.closures {
-            closure(URL, image, error)
+        for block: Block in self.blocks {
+            block.completionHandler(URL, image, error)
         }
 
     }
