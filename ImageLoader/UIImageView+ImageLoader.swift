@@ -34,7 +34,12 @@ extension UIImageView {
     public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
 
         self.cancelLoadingImage()
-        self._load(URL, placeholder: placeholder, completionHandler: completionHandler)
+        if placeholder != nil {
+            self.image = placeholder
+        }
+
+        self.URL = URL
+        self._load(URL, completionHandler: completionHandler)
 
     }
 
@@ -54,42 +59,35 @@ extension UIImageView {
         return Static.queue
     }
 
-    private func _load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
+    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
 
+        weak var wSelf = self
         let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { (URL, image, error) in
 
-            // requesting is success then set image
-            if self.URL != nil && self.URL!.isEqual(URL) {
-
-                weak var wSelf = self
-                dispatch_async(dispatch_get_main_queue(), { _ in
-                    if wSelf == nil {
-                        return
-                    }
-
-                    wSelf!.image = image
-                })
-
+            if wSelf == nil {
+                return
             }
 
-            completionHandler(URL, image, error)
+            dispatch_async(dispatch_get_main_queue(), {
+
+                // requesting is success then set image
+                if self.URL != nil && self.URL!.isEqual(URL) {
+                    wSelf!.image = image
+                }
+                completionHandler(URL, image, error)
+
+            })
         }
 
         // caching
-        if  let data: NSData = Manager.sharedInstance.cache[URL] as? NSData {
+        if let data: NSData = Manager.sharedInstance.cache[URL] {
             if let image: UIImage = UIImage(data: data) {
                 completionHandler(URL, image, nil)
                 return
             }
         }
 
-        if placeholder != nil {
-            self.image = placeholder
-        }
-
-        self.URL = URL
-
-        dispatch_async(UIImageView._requesting_queue, { _ in
+        dispatch_async(UIImageView._requesting_queue, {
 
             Manager.sharedInstance.load(URL).completionHandler(completionHandler)
             return
