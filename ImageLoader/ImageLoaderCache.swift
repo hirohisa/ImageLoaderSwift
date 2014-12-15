@@ -10,7 +10,7 @@ import Foundation
 
 public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
 
-    subscript (aKey: AnyObject) -> AnyObject? {
+    subscript (aKey: NSURL) -> NSData? {
         get
         set
     }
@@ -21,12 +21,12 @@ class ImageLoaderCache: NSCache, ImageLoaderCacheProtocol {
 
     private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
-    subscript (aKey: AnyObject) -> AnyObject? {
+    subscript (aKey: NSURL) -> NSData? {
 
         get {
-            var value : AnyObject?
+            var value : NSData?
             dispatch_sync(_queue) {
-                value = self.objectForKey(aKey)
+                value = self.objectForKey(aKey) as? NSData
             }
 
             return value
