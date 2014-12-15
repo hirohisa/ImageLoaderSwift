@@ -94,7 +94,7 @@ public class Manager {
         if data != nil {
             image = UIImage(data: data!)
             if image != nil {
-                self.cache[URL] = image
+                self.cache[URL] = data
             }
         }
 
