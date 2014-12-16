@@ -42,8 +42,6 @@
 		65D6FBA41A03855700CF1DB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65D6FBA61A03855700CF1DB7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		65D6FBA91A03855700CF1DB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		65D6FBB41A03855800CF1DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		65D6FBB51A03855800CF1DB7 /* ImageLoaderExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderExampleTests.swift; sourceTree = "<group>"; };
 		65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC01A03859500CF1DB7 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 			children = (
 				A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */,
 				65D6FB9C1A03855700CF1DB7 /* ImageLoaderExample */,
-				65D6FBB21A03855800CF1DB7 /* ImageLoaderExampleTests */,
 				65D6FB9B1A03855700CF1DB7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,23 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				65D6FB9E1A03855700CF1DB7 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		65D6FBB21A03855800CF1DB7 /* ImageLoaderExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				65D6FBB51A03855800CF1DB7 /* ImageLoaderExampleTests.swift */,
-				65D6FBB31A03855800CF1DB7 /* Supporting Files */,
-			);
-			path = ImageLoaderExampleTests;
-			sourceTree = "<group>";
-		};
-		65D6FBB31A03855800CF1DB7 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				65D6FBB41A03855800CF1DB7 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
