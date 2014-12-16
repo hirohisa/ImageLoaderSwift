@@ -134,7 +134,7 @@ public class Loader {
 
     let delegate: Manager
     let task: NSURLSessionDataTask
-    internal var blocks: [Block] = [Block]()
+    internal var blocks: [Block] = []
 
     private class var _resuming_queue: dispatch_queue_t {
         struct Static {
@@ -180,7 +180,7 @@ public class Loader {
 
     private func remove(block: Block) {
         // needs to queue with sync
-        var blocks: [Block] = [Block]()
+        var blocks: [Block] = []
         for b: Block in self.blocks {
             if !b.isEqual(block) {
                 blocks.append(b)
@@ -196,6 +196,7 @@ public class Loader {
             block.completionHandler(URL, image, error)
         }
 
+        self.blocks = []
     }
 }
 

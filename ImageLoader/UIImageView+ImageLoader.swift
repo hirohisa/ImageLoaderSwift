@@ -30,7 +30,7 @@ extension UIImageView {
             return objc_getAssociatedObject(self, &ImageLoaderBlockKey)
         }
         set(newValue) {
-            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, UInt(OBJC_ASSOCIATION_ASSIGN))
+            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
         }
     }
 }
