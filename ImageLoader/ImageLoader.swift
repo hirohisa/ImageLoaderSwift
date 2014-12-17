@@ -9,128 +9,227 @@
 import Foundation
 import UIKit
 
-let ImageLoaderDomain = "swift.imageloader"
+public let ImageLoaderDomain = "swift.imageloader"
+internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> (Void)
 
-class ImageLoader: NSObject {
+internal class Block: NSObject {
+
+    let completionHandler: CompletionHandler
+    init(completionHandler: CompletionHandler) {
+        self.completionHandler = completionHandler
+    }
+
+}
+
+extension NSURLSessionTaskState {
+
+    func toString() -> String {
+        switch self {
+        case Running:
+            return "Running"
+        case Suspended:
+            return "Suspended"
+        case Canceling:
+            return "Canceling"
+        case Completed:
+            return "Completed"
+        }
+    }
+}
+
+public class Manager {
 
     let session: NSURLSession
-    var keepRequest: Bool
     let cache: ImageLoaderCacheProtocol
 
-    var tasks: [NSURLSessionDataTask] {
-        get {
-            var _tasks: [NSURLSessionDataTask]?
-            var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
+    // MARK: singleton instance
+    public class var sharedInstance: Manager {
+        struct Singleton {
 
-            self.session.getTasksWithCompletionHandler({ (dataTasks, _, _) -> Void in
-                _tasks = dataTasks as? [NSURLSessionDataTask]
-                dispatch_semaphore_signal(semaphore)
-            })
-
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-
-            return _tasks!
+            static let instance = Manager()
         }
+
+        return Singleton.instance
     }
 
-    init( config: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageLoaderCacheProtocol = ImageLoaderCache()) {
-
-            self.keepRequest = false
-            self.session = NSURLSession(configuration: config)
+    init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
+        cache: ImageLoaderCacheProtocol = ImageLoaderCache()
+        ) {
+            self.session = NSURLSession(configuration: configuration)
             self.cache = cache
-
     }
 
-    // MARK: - public
+    // MARK: loader store class
+    class Store: NSObject {
 
-    internal func getImage( URL: NSURL,
-        success: (NSURLResponse?, UIImage) -> Void = { _ in },
-        failure: (NSURLResponse?, NSError) -> Void = { _ in }) -> NSURLSessionDataTask? {
+        private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
+        private var loaders: Dictionary<NSURL, Loader>  = [NSURL: Loader]()
 
-            return self._getImage(URL, success: success, failure: failure)
+        private subscript (URL: NSURL) -> Loader? {
 
-    }
-
-    internal func cancel( URL: NSURL ) {
-
-        for task: NSURLSessionDataTask in self.tasks {
-
-            if task.originalRequest.URL.isEqual(URL) {
-                task.cancel()
-            }
-
-        }
-
-    }
-
-    // MARK: - private
-
-    private func _getImage(URL: NSURL, success: (NSURLResponse?, UIImage) -> Void, failure: (NSURLResponse?, NSError) -> Void) -> NSURLSessionDataTask? {
-
-        let completionHandler: (NSData!, NSURLResponse!, NSError!) -> Void = { (data, response, error) in
-
-            if error == nil {
-
-                if let image: UIImage = UIImage(data: data) {
-
-                    self.cache.setObject(data, forKey: URL)
-                    success(response, image)
-
-                } else {
-
-                    let errorNotImage: NSError = NSError(domain: ImageLoaderDomain, code: 204 /* no content */, userInfo: nil)
-                    failure(response, errorNotImage)
+            get {
+                var loader : Loader?
+                dispatch_sync(_queue) {
+                    loader = self.loaders[URL]
                 }
 
-            } else {
-                failure(response?, error)
+                return loader
             }
 
+            set {
+                dispatch_barrier_async(_queue) {
+                    self.loaders[URL] = newValue!
+                }
+            }
         }
 
-        // cache check
+        private func remove(URL: NSURL) -> Loader? {
 
-        if let data: NSData = self.cache.objectForKey(URL) as? NSData {
-
-            if let image: UIImage = UIImage(data: data) {
-                success(nil, image)
+            if let loader: Loader = self[URL] {
+                self.loaders.removeValueForKey(URL)
+                return loader
             }
 
+            return nil
         }
 
-        return self._enqueueTask(URL, completionHandler: completionHandler)
+    }
+    let store: Store = Store()
+
+    // MARK: loading
+
+    internal func load(URL: NSURL) -> Loader {
+
+        if let loader: Loader = self.store[URL] {
+            loader.resume()
+            return loader
+        }
+
+        let request: NSURLRequest = NSURLRequest(URL: URL)
+        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+            self.taskCompletion(URL, data: data, error: error)
+        })
+
+        let loader: Loader = Loader(task: task, delegate: self)
+        self.store[URL] = loader
+        return loader
     }
 
-    private func _enqueueTask(URL: NSURL, completionHandler: (NSData!, NSURLResponse!, NSError!) -> Void) -> NSURLSessionDataTask? {
+    internal func cancel(URL: NSURL, block: Block?) -> Loader? {
 
-        let request: NSMutableURLRequest = NSMutableURLRequest(URL: URL)
-        request.addValue("image/*", forHTTPHeaderField:"Accept")
+        if let loader: Loader = self.store[URL] {
 
-        let task: NSURLSessionDataTask = self._createTask(request, completionHandler: completionHandler)
-        task.resume()
+            if block != nil {
+                loader.remove(block!)
+            }
+            if loader.blocks.count == 0 {
+                loader.cancel()
+            }
 
-        return task
+            return loader
+        }
+
+        return nil
     }
 
-    // MARK: - creating task
+    private func taskCompletion(URL: NSURL, data: NSData?, error: NSError?) {
 
-    private class var creation_queue: dispatch_queue_t {
+        var image: UIImage?
+        if data != nil {
+            image = UIImage(data: data!)
+            if image != nil {
+                self.cache[URL] = data
+            }
+        }
+
+        if let loader: Loader = self.store[URL] {
+            loader.complete(URL, image: image, error: error)
+            self.store.remove(URL)
+        }
+
+    }
+
+}
+
+public class Loader {
+
+    let delegate: Manager
+    let task: NSURLSessionDataTask
+    internal var blocks: [Block] = []
+
+    private class var _resuming_queue: dispatch_queue_t {
         struct Static {
-            static let queue = dispatch_queue_create("swift.imageloader.queues.creation", DISPATCH_QUEUE_SERIAL);
+            static let queue = dispatch_queue_create("swift.imageloader.queues.resuming", DISPATCH_QUEUE_SERIAL);
         }
 
         return Static.queue
     }
 
-    private func _createTask(request: NSURLRequest, completionHandler: (NSData!, NSURLResponse!, NSError!) -> Void) -> NSURLSessionDataTask {
-
-        var task: NSURLSessionDataTask?
-        dispatch_sync(ImageLoader.creation_queue, { _ in
-            task = self.session.dataTaskWithRequest(request, completionHandler: completionHandler)
-        })
-
-        return task!
+    init (task: NSURLSessionDataTask, delegate: Manager) {
+        self.task = task
+        self.delegate = delegate
+        self.resume()
     }
 
+    var status: NSURLSessionTaskState {
+        get {
+            return self.task.state
+        }
+    }
+
+    internal func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
+
+        let block: Block = Block(completionHandler: completionHandler)
+        self.blocks += [block]
+
+        return self
+    }
+
+    // MARK: task
+
+    internal func suspend() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.suspend()
+        }
+    }
+
+    internal func resume() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.resume()
+        }
+    }
+
+    internal func cancel() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.cancel()
+        }
+    }
+
+    private func remove(block: Block) {
+        // needs to queue with sync
+        var blocks: [Block] = []
+        for b: Block in self.blocks {
+            if !b.isEqual(block) {
+                blocks.append(b)
+            }
+        }
+
+        self.blocks = blocks
+    }
+
+    private func complete(URL: NSURL, image: UIImage?, error: NSError?) {
+
+        for block: Block in self.blocks {
+            block.completionHandler(URL, image, error)
+        }
+
+        self.blocks = []
+    }
+}
+
+public func load (URL: NSURL?) -> Loader? {
+    if (URL != nil) {
+        return Manager.sharedInstance.load(URL!)
+    }
+    return nil
 }

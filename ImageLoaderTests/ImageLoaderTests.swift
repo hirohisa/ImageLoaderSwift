@@ -22,31 +22,28 @@ class ImageLoaderTests: XCTestCase {
 
     func testConnetWithURL() {
 
-        let imageLoader = ImageLoader()
-
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
 
-        let task = imageLoader.getImage(URL)
+        let manager: Manager = Manager()
+        let loader: Loader = manager.load(URL)
 
-        XCTAssert(task!.state == .Running, "task is not running")
-
-        task?.suspend()
-
-        XCTAssert(task!.state == .Suspended, "task is not suspended")
+        XCTAssert(loader.status == .Running, "loader's status is not running, now is \(loader.status.toString())")
+        loader.completionHandler { (completedURL, image, error) -> (Void) in
+            XCTAssertEqual(URL, completedURL, "URL \(URL) and completedURL \(completedURL) are not same. ")
+        }
     }
 
     func testCancelWithURL() {
 
-        let imageLoader = ImageLoader()
-
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
 
-        let task = imageLoader.getImage(URL)
-        imageLoader.cancel(URL)
+        let manager: Manager = Manager()
+        let loader: Loader = manager.load(URL)
+        manager.cancel(URL, block: nil)
 
-        XCTAssert(task!.state == .Canceling, "task is not canceling")
+        XCTAssert(loader.status == .Canceling, "loader's status is not canceling, now is \(loader.status.toString())")
 
     }
 
