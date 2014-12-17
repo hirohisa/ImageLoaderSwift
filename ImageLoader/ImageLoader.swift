@@ -177,7 +177,7 @@ public class Loader {
         }
     }
 
-    internal func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
+    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
 
         let block: Block = Block(completionHandler: completionHandler)
         self.blocks += [block]

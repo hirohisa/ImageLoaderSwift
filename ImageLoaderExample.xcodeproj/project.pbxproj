@@ -16,6 +16,8 @@
 		65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */; };
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
 		A1EE65C11A3CA57500BEA147 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1EE65BE1A3CA55300BEA147 /* ImageLoader.framework */; };
+		A1EE65CA1A41F93B00BEA147 /* AsyncRenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* AsyncRenderViewController.swift */; };
+		A1EE65CC1A41F9DF00BEA147 /* NSURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
 		A1EE65B81A3CA55300BEA147 /* ImageLoader.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ImageLoader.xcodeproj; sourceTree = "<group>"; };
+		A1EE65C91A41F93B00BEA147 /* AsyncRenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncRenderViewController.swift; sourceTree = "<group>"; };
+		A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,9 +87,11 @@
 			children = (
 				65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */,
 				65D6FBA31A03855700CF1DB7 /* Main.storyboard */,
-				65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */,
 				65D6FBC01A03859500CF1DB7 /* RootViewController.swift */,
 				65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */,
+				65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */,
+				A1EE65C91A41F93B00BEA147 /* AsyncRenderViewController.swift */,
+				A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */,
 				65D6FBC51A03859E00CF1DB7 /* black.jpg */,
 				65D6FBA61A03855700CF1DB7 /* Images.xcassets */,
 				65D6FBA81A03855700CF1DB7 /* LaunchScreen.xib */,
@@ -205,6 +211,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1EE65CC1A41F9DF00BEA147 /* NSURL.swift in Sources */,
+				A1EE65CA1A41F93B00BEA147 /* AsyncRenderViewController.swift in Sources */,
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
 				65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */,
