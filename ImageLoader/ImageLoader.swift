@@ -59,8 +59,8 @@ public class Manager {
             self.cache = cache
     }
 
-    // MARK: temporary class
-    class LoaderStore: NSObject {
+    // MARK: loader store class
+    class Store: NSObject {
 
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
         private var loaders: Dictionary<NSURL, Loader>  = [NSURL: Loader]()
@@ -94,7 +94,7 @@ public class Manager {
         }
 
     }
-    let store: LoaderStore = LoaderStore()
+    let store: Store = Store()
 
     // MARK: loading
 
