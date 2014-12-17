@@ -21,6 +21,22 @@ internal class Block: NSObject {
 
 }
 
+extension NSURLSessionTaskState {
+
+    func toString() -> String {
+        switch self {
+        case Running:
+            return "Running"
+        case Suspended:
+            return "Suspended"
+        case Canceling:
+            return "Canceling"
+        case Completed:
+            return "Completed"
+        }
+    }
+}
+
 public class Manager {
 
     let session: NSURLSession
@@ -67,6 +83,16 @@ public class Manager {
             }
         }
 
+        private func remove(URL: NSURL) -> Loader? {
+
+            if let loader: Loader = self[URL] {
+                self.loaders.removeValueForKey(URL)
+                return loader
+            }
+
+            return nil
+        }
+
     }
     let store: LoaderStore = LoaderStore()
 
@@ -75,17 +101,8 @@ public class Manager {
     internal func load(URL: NSURL) -> Loader {
 
         if let loader: Loader = self.store[URL] {
-
-            switch loader.status {
-
-            case .Suspended:
-                loader.resume()
-                return loader
-
-            default:
-                return loader
-            }
-
+            loader.resume()
+            return loader
         }
 
         let request: NSURLRequest = NSURLRequest(URL: URL)
@@ -104,6 +121,9 @@ public class Manager {
 
             if block != nil {
                 loader.remove(block!)
+            }
+            if loader.blocks.count == 0 {
+                loader.cancel()
             }
 
             return loader
@@ -124,6 +144,7 @@ public class Manager {
 
         if let loader: Loader = self.store[URL] {
             loader.complete(URL, image: image, error: error)
+            self.store.remove(URL)
         }
 
     }
@@ -175,6 +196,12 @@ public class Loader {
     internal func resume() {
         dispatch_async(Loader._resuming_queue) {
             self.task.resume()
+        }
+    }
+
+    internal func cancel() {
+        dispatch_async(Loader._resuming_queue) {
+            self.task.cancel()
         }
     }
 
