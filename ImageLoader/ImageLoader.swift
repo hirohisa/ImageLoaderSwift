@@ -21,22 +21,6 @@ internal class Block: NSObject {
 
 }
 
-extension NSURLSessionTaskState {
-
-    func toString() -> String {
-        switch self {
-        case Running:
-            return "Running"
-        case Suspended:
-            return "Suspended"
-        case Canceling:
-            return "Canceling"
-        case Completed:
-            return "Completed"
-        }
-    }
-}
-
 public class Manager {
 
     let session: NSURLSession

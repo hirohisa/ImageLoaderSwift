@@ -10,6 +10,23 @@ import UIKit
 import XCTest
 import ImageLoader
 
+extension NSURLSessionTaskState {
+
+    func toString() -> String {
+        switch self {
+        case Running:
+            return "Running"
+        case Suspended:
+            return "Suspended"
+        case Canceling:
+            return "Canceling"
+        case Completed:
+            return "Completed"
+        }
+    }
+}
+
+
 class ImageLoaderTests: XCTestCase {
 
     override func setUp() {
@@ -17,6 +34,7 @@ class ImageLoaderTests: XCTestCase {
     }
 
     override func tearDown() {
+        NSRunLoop.currentRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
         super.tearDown()
     }
 
