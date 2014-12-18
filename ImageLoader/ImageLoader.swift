@@ -115,6 +115,16 @@ public class Manager {
         return loader
     }
 
+    internal func suspend(URL: NSURL) -> Loader? {
+        if let loader: Loader = self.store[URL] {
+            loader.suspend()
+            println("suspend")
+            return loader
+        }
+
+        return nil
+    }
+
     internal func cancel(URL: NSURL, block: Block?) -> Loader? {
 
         if let loader: Loader = self.store[URL] {
@@ -227,9 +237,14 @@ public class Loader {
     }
 }
 
-public func load (URL: NSURL?) -> Loader? {
-    if (URL != nil) {
-        return Manager.sharedInstance.load(URL!)
-    }
-    return nil
+public func load(URL: NSURL) -> Loader {
+    return Manager.sharedInstance.load(URL)
+}
+
+public func suspend(URL: NSURL) -> Loader? {
+    return Manager.sharedInstance.suspend(URL)
+}
+
+public func cache(URL: NSURL) -> NSData? {
+    return Manager.sharedInstance.cache[URL]
 }

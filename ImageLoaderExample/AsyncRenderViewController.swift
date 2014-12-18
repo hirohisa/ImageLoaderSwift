@@ -45,13 +45,18 @@ class AsyncRenderViewController: UITableViewController {
         let start: Int = self.URLs.count
         for i in start...start+10 {
             let URL: NSURL = NSURL.imageURL(i)
-            ImageLoader.load(URL)!.completionHandler { (completedURL, image, error) -> (Void) in
+            ImageLoader.load(URL).completionHandler { (completedURL, image, error) -> (Void) in
                 self.insertRow(completedURL)
             }
         }
     }
 
     func pauseLoading() {
+        let end: Int = self.URLs.count
+        for i in end-10...end {
+            let URL: NSURL = NSURL.imageURL(i)
+            ImageLoader.suspend(URL)
+        }
     }
 
     func insertRow(URL: NSURL) {
@@ -74,9 +79,10 @@ class AsyncRenderViewController: UITableViewController {
         let URL: NSURL = self.URLs[indexPath.row]
         let placeholder: UIImage = UIImage(named: "black.jpg")!
         cell.textLabel?.text = URL.absoluteString
-        cell.imageView?.load(URL, placeholder: placeholder, completionHandler: { (_, _, _) -> Void in
-            println("completion")
-        })
+
+        if let data = ImageLoader.cache(URL) {
+            cell.imageView?.image = UIImage(data: data)
+        }
 
         return cell
 
