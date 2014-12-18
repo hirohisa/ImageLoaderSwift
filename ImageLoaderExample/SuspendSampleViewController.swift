@@ -1,5 +1,5 @@
 //
-//  AsyncRenderViewController.swift
+//  SuspendSampleViewController.swift
 //  ImageLoaderExample
 //
 //  Created by Hirohisa Kawasaki on 2014/12/18.
@@ -9,7 +9,7 @@
 import UIKit
 import ImageLoader
 
-class AsyncRenderViewController: UITableViewController {
+class SuspendSampleViewController: UITableViewController {
 
     var URLs: [NSURL] = []
 

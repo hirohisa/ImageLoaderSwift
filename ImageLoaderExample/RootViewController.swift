@@ -29,7 +29,7 @@ class RootViewController: UITableViewController {
             cell.textLabel?.text = "Multiple"
 
         case 2:
-            cell.textLabel?.text = "AsyncRender"
+            cell.textLabel?.text = "Suspend"
         default:
             break
         }
@@ -51,7 +51,7 @@ class RootViewController: UITableViewController {
             viewController = MultipleViewController()
 
         case 2:
-            viewController = AsyncRenderViewController()
+            viewController = SuspendSampleViewController()
 
         default:
             break
