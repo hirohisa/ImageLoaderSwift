@@ -118,7 +118,6 @@ public class Manager {
     internal func suspend(URL: NSURL) -> Loader? {
         if let loader: Loader = self.store[URL] {
             loader.suspend()
-            println("suspend")
             return loader
         }
 
