@@ -28,6 +28,8 @@ class RootViewController: UITableViewController {
         case 1:
             cell.textLabel?.text = "Multiple"
 
+        case 2:
+            cell.textLabel?.text = "Suspend"
         default:
             break
         }
@@ -48,6 +50,9 @@ class RootViewController: UITableViewController {
         case 1:
             viewController = MultipleViewController()
 
+        case 2:
+            viewController = SuspendSampleViewController()
+
         default:
             break
         }
@@ -62,7 +67,7 @@ class RootViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
 
 }

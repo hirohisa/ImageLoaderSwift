@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public let ImageLoaderDomain = "swift.imageloader"
-internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> (Void)
+internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> Void
 
 internal class Block: NSObject {
 
@@ -99,14 +99,25 @@ public class Manager {
         return loader
     }
 
-    internal func cancel(URL: NSURL, block: Block?) -> Loader? {
+    internal func suspend(URL: NSURL) -> Loader? {
+        if let loader: Loader = self.store[URL] {
+            loader.suspend()
+            return loader
+        }
+
+        return nil
+    }
+
+    internal func cancel(URL: NSURL, block: Block? = nil) -> Loader? {
 
         if let loader: Loader = self.store[URL] {
 
             if block != nil {
                 loader.remove(block!)
             }
-            if loader.blocks.count == 0 {
+
+            if loader.blocks.count == 0 ||
+                block == nil {
                 loader.cancel()
             }
 
@@ -130,7 +141,6 @@ public class Manager {
             loader.complete(URL, image: image, error: error)
             self.store.remove(URL)
         }
-
     }
 
 }
@@ -143,7 +153,7 @@ public class Loader {
 
     private class var _resuming_queue: dispatch_queue_t {
         struct Static {
-            static let queue = dispatch_queue_create("swift.imageloader.queues.resuming", DISPATCH_QUEUE_SERIAL);
+            static let queue = dispatch_queue_create("swift.imageloader.queues.resuming", DISPATCH_QUEUE_SERIAL)
         }
 
         return Static.queue
@@ -161,7 +171,7 @@ public class Loader {
         }
     }
 
-    internal func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
+    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
 
         let block: Block = Block(completionHandler: completionHandler)
         self.blocks += [block]
@@ -211,9 +221,18 @@ public class Loader {
     }
 }
 
-public func load (URL: NSURL?) -> Loader? {
-    if (URL != nil) {
-        return Manager.sharedInstance.load(URL!)
-    }
-    return nil
+public func load(URL: NSURL) -> Loader {
+    return Manager.sharedInstance.load(URL)
+}
+
+public func suspend(URL: NSURL) -> Loader? {
+    return Manager.sharedInstance.suspend(URL)
+}
+
+public func cancel(URL: NSURL) -> Loader? {
+    return Manager.sharedInstance.cancel(URL)
+}
+
+public func cache(URL: NSURL) -> NSData? {
+    return Manager.sharedInstance.cache[URL]
 }

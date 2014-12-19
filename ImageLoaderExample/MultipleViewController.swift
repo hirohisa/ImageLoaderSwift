@@ -9,21 +9,6 @@
 import UIKit
 import ImageLoader
 
-extension NSURL {
-
-    class func imageURL(index: Int) -> NSURL {
-
-        var number: NSString = index.description
-        while (number.length < 3) {
-            number = "0\(number)"
-        }
-        let string: String = "https://s3.amazonaws.com/fast-image-cache/demo-images/FICDDemoImage\(number).jpg"
-
-        return NSURL(string: string)!
-    }
-
-}
-
 class MultipleViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -43,10 +28,6 @@ class MultipleViewController: UITableViewController {
         })
 
         return cell
-
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
     }
 

@@ -60,7 +60,7 @@ extension UIImageView {
 
     private class var _requesting_queue: dispatch_queue_t {
         struct Static {
-            static let queue = dispatch_queue_create("swift.imageloader.queues.requesting", DISPATCH_QUEUE_SERIAL);
+            static let queue = dispatch_queue_create("swift.imageloader.queues.requesting", DISPATCH_QUEUE_SERIAL)
         }
 
         return Static.queue
