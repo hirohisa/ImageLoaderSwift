@@ -26,6 +26,18 @@ extension NSURLSessionTaskState {
     }
 }
 
+class StringTests: XCTestCase {
+
+    func testEscape() {
+        let string: String = "http://test.com"
+        let valid: String = "http%3A%2F%2Ftest.com"
+
+        XCTAssertNotEqual(string, string.escape(),
+            "String cant escape, \(string.escape())")
+        XCTAssertEqual(valid, string.escape(),
+            "String cant escape, \(string.escape())")
+    }
+}
 
 class ImageLoaderTests: XCTestCase {
 
