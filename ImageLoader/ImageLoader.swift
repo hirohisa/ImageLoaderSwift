@@ -10,6 +10,15 @@ import Foundation
 import UIKit
 
 public let ImageLoaderDomain = "swift.imageloader"
+public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
+
+    subscript (aKey: NSURL) -> UIImage? {
+        get
+        set
+    }
+
+}
+
 internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> Void
 
 internal class Block: NSObject {
@@ -37,7 +46,7 @@ public class Manager {
     }
 
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageLoaderCacheProtocol = ImageLoaderCache()
+        cache: ImageLoaderCacheProtocol = Diskcached()
         ) {
             self.session = NSURLSession(configuration: configuration)
             self.cache = cache
@@ -133,7 +142,7 @@ public class Manager {
         if data != nil {
             image = UIImage(data: data!)
             if image != nil {
-                self.cache[URL] = data
+                self.cache[URL] = image
             }
         }
 
@@ -233,6 +242,6 @@ public func cancel(URL: NSURL) -> Loader? {
     return Manager.sharedInstance.cancel(URL)
 }
 
-public func cache(URL: NSURL) -> NSData? {
+public func cache(URL: NSURL) -> UIImage? {
     return Manager.sharedInstance.cache[URL]
 }

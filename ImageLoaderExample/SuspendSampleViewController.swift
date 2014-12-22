@@ -80,8 +80,8 @@ class SuspendSampleViewController: UITableViewController {
         let placeholder: UIImage = UIImage(named: "black.jpg")!
         cell.textLabel?.text = URL.absoluteString
 
-        if let data = ImageLoader.cache(URL) {
-            cell.imageView?.image = UIImage(data: data)
+        if let image = ImageLoader.cache(URL) {
+            cell.imageView?.image = image
         }
 
         return cell
