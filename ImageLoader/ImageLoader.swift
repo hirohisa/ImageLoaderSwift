@@ -30,6 +30,14 @@ internal class Block: NSObject {
 
 }
 
+public enum ImageLoaderState : Int {
+
+    case Ready /* The manager have no loaders  */
+    case Running /* The manager has loaders, and they are running */
+    case Suspended /* The manager has loaders, and their states are all suspended */
+
+}
+
 public class Manager {
 
     let session: NSURLSession
@@ -88,6 +96,32 @@ public class Manager {
 
     }
     let store: Store = Store()
+
+    var state: ImageLoaderState {
+        get {
+            return self._state()
+        }
+    }
+
+    private func _state() -> ImageLoaderState {
+
+        var status: ImageLoaderState = .Ready
+
+        for loader: Loader in self.store.loaders.values {
+            switch loader.state {
+            case .Running:
+                status = .Running
+            case .Suspended:
+                if status == .Ready {
+                    status = .Suspended
+                }
+            default:
+                break
+            }
+        }
+
+        return status
+    }
 
     // MARK: loading
 
@@ -174,7 +208,7 @@ public class Loader {
         self.resume()
     }
 
-    var status: NSURLSessionTaskState {
+    var state: NSURLSessionTaskState {
         get {
             return self.task.state
         }
@@ -244,4 +278,8 @@ public func cancel(URL: NSURL) -> Loader? {
 
 public func cache(URL: NSURL) -> UIImage? {
     return Manager.sharedInstance.cache[URL]
+}
+
+public var state: ImageLoaderState {
+    return Manager.sharedInstance.state
 }
