@@ -75,6 +75,10 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(loader.status == .Canceling, "loader's status is not canceling, now is \(loader.status.toString())")
 
+        let loader2: Loader? = manager.store[URL]
+        XCTAssertNil(loader2,
+                    "Store doesnt remove the loader, \(loader2)")
+
     }
 
 }

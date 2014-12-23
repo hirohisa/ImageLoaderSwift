@@ -13,7 +13,7 @@ Features
 - [ ] After image view start loading another image, previous loading task is possible to live with caching.
 - [ ] Comprehensive Unit Test Coverage
 - [ ] Optimize image with frame and scale
-- [ ] Control Loader to resume, suspend and cancel with URL.
+- [x] Control Loader to resume, suspend and cancel with URL.
 
 Requirements
 ----------

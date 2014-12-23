@@ -58,7 +58,7 @@ public class Manager {
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
         private var loaders: Dictionary<NSURL, Loader>  = [NSURL: Loader]()
 
-        private subscript (URL: NSURL) -> Loader? {
+        subscript (URL: NSURL) -> Loader? {
 
             get {
                 var loader : Loader?
@@ -125,9 +125,9 @@ public class Manager {
                 loader.remove(block!)
             }
 
-            if loader.blocks.count == 0 ||
-                block == nil {
+            if loader.blocks.count == 0 || block == nil {
                 loader.cancel()
+                self.store.remove(URL)
             }
 
             return loader
