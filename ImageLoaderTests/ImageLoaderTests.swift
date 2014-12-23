@@ -59,7 +59,7 @@ class ImageLoaderTests: XCTestCase {
         let loader: Loader = manager.load(URL)
 
         XCTAssert(loader.status == .Running, "loader's status is not running, now is \(loader.status.toString())")
-        loader.completionHandler { (completedURL, image, error) -> (Void) in
+        loader.completionHandler { completedURL, image, error in
             XCTAssertEqual(URL, completedURL, "URL \(URL) and completedURL \(completedURL) are not same. ")
         }
     }

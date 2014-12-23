@@ -99,7 +99,7 @@ public class Manager {
         }
 
         let request: NSURLRequest = NSURLRequest(URL: URL)
-        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { data, response, error in
             self.taskCompletion(URL, data: data, error: error)
         })
 

@@ -45,7 +45,7 @@ class SuspendSampleViewController: UITableViewController {
         let start: Int = self.URLs.count
         for i in start...start+10 {
             let URL: NSURL = NSURL.imageURL(i)
-            ImageLoader.load(URL).completionHandler { (completedURL, image, error) -> Void in
+            ImageLoader.load(URL).completionHandler { completedURL, image, error in
                 self.insertRow(completedURL)
             }
         }

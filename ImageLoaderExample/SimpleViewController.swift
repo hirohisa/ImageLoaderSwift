@@ -109,7 +109,7 @@ class SimpleViewController: UIViewController {
     }
 
     func testLoad(imageView: UIImageView, URL: NSURL) {
-        imageView.load(URL, placeholder: nil) { (_, _, _) -> Void in
+        imageView.load(URL, placeholder: nil) { _ in
             println(__FUNCTION__, "completion")
         }
 

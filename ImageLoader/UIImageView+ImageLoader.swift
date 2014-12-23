@@ -69,7 +69,7 @@ extension UIImageView {
     private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
 
         weak var wSelf = self
-        let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { (URL, image, error) in
+        let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { URL, image, error in
 
             if wSelf == nil {
                 return
