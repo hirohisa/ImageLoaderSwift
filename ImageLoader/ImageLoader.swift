@@ -19,7 +19,7 @@ public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
 
 }
 
-internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> Void
+internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> ()
 
 internal class Block: NSObject {
 
@@ -46,7 +46,6 @@ public class Manager {
     // MARK: singleton instance
     public class var sharedInstance: Manager {
         struct Singleton {
-
             static let instance = Manager()
         }
 
@@ -70,7 +69,7 @@ public class Manager {
 
             get {
                 var loader : Loader?
-                dispatch_sync(_queue) {
+                dispatch_sync(self._queue) {
                     loader = self.loaders[URL]
                 }
 
@@ -78,7 +77,7 @@ public class Manager {
             }
 
             set {
-                dispatch_barrier_async(_queue) {
+                dispatch_barrier_async(self._queue) {
                     self.loaders[URL] = newValue!
                 }
             }
@@ -97,10 +96,10 @@ public class Manager {
     }
     let store: Store = Store()
 
+    // MARK: state
+
     var state: ImageLoaderState {
-        get {
-            return self._state()
-        }
+        return self._state()
     }
 
     private func _state() -> ImageLoaderState {
@@ -209,12 +208,10 @@ public class Loader {
     }
 
     var state: NSURLSessionTaskState {
-        get {
-            return self.task.state
-        }
+        return self.task.state
     }
 
-    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> Void) -> Self {
+    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> ()) -> Self {
 
         let block: Block = Block(completionHandler: completionHandler)
         self.blocks += [block]

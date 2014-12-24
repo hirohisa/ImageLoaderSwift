@@ -30,32 +30,39 @@ class Diskcached: NSObject {
 
     override init() {
         super.init()
-        self.createDirectory()
     }
 
-    private func createDirectory() {
-
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
-        if fileManager.fileExistsAtPath(self.directoryPath) {
-            return
+    class Directory: NSObject {
+        override init() {
+            super.init()
+            self.createDirectory()
         }
 
-        fileManager.createDirectoryAtPath(self.directoryPath, withIntermediateDirectories: true, attributes: nil, error: nil)
-    }
+        private func createDirectory() {
+            let fileManager: NSFileManager = NSFileManager.defaultManager()
+            if fileManager.fileExistsAtPath(self.path) {
+                return
+            }
 
-    private let _queue = dispatch_queue_create("swift.imageloader.queues.diskcached", DISPATCH_QUEUE_SERIAL)
+            fileManager.createDirectoryAtPath(self.path, withIntermediateDirectories: true, attributes: nil, error: nil)
+        }
 
-    private var directoryPath: String {
-        get {
+        var path: String {
             let cachePath: String = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
             let imagePath: String = "swift.imageloader.diskcached"
+
             return cachePath.stringByAppendingPathComponent(imagePath)
         }
     }
+    let directory: Directory = Directory()
 
-    private func savePath(name: String ) -> String {
-        return self.directoryPath.stringByAppendingPathComponent(name.escape())
-    }
+    private let _queue = dispatch_queue_create("swift.imageloader.queues.diskcached", DISPATCH_QUEUE_SERIAL)
+
+}
+
+// MARK: accessor
+
+extension Diskcached {
 
     private func objectForKey(aKey: NSURL) -> UIImage? {
 
@@ -69,12 +76,15 @@ class Diskcached: NSObject {
 
         return nil
     }
+    private func savePath(name: String ) -> String {
+        return self.directory.path.stringByAppendingPathComponent(name.escape())
+    }
 
     private func setObject(anObject: UIImage, forKey aKey: NSURL) {
 
         self.images[aKey] = anObject
 
-        let block: () -> Void = {
+        let block: () -> () = {
 
             let data: NSData = UIImageJPEGRepresentation(anObject, 1)
             data.writeToFile(self.savePath(aKey.absoluteString!), atomically: false)
@@ -82,24 +92,24 @@ class Diskcached: NSObject {
             self.images[aKey] = nil
         }
 
-        dispatch_async(_queue, block)
+        dispatch_async(self._queue, block)
     }
 
 }
 
+// MARK: ImageLoaderCacheProtocol
+
 extension Diskcached: ImageLoaderCacheProtocol {
 
     private var _concurrent_queue: dispatch_queue_t {
-        get {
-            return dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        }
+        return dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
     }
 
     subscript (aKey: NSURL) -> UIImage? {
 
         get {
             var value : UIImage?
-            dispatch_sync(_concurrent_queue) {
+            dispatch_sync(self._concurrent_queue) {
                 value = self.objectForKey(aKey)
             }
 
@@ -107,7 +117,7 @@ extension Diskcached: ImageLoaderCacheProtocol {
         }
 
         set {
-            dispatch_barrier_async(_concurrent_queue) {
+            dispatch_barrier_async(self._concurrent_queue) {
                 self.setObject(newValue!, forKey: aKey)
             }
         }

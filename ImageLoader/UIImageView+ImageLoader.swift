@@ -39,7 +39,7 @@ extension UIImageView {
 
     // MARK: - public
 
-    public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
+    public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
         self.cancelLoading()
 
         if placeholder != nil {
@@ -66,10 +66,10 @@ extension UIImageView {
         return Static.queue
     }
 
-    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
+    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
 
         weak var wSelf = self
-        let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { URL, image, error in
+        let completionHandler: (NSURL, UIImage?, NSError?) -> () = { URL, image, error in
 
             if wSelf == nil {
                 return
