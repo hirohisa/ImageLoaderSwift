@@ -68,6 +68,11 @@ class SuspendSampleViewController: UITableViewController {
             self.tableView.beginUpdates()
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.endUpdates()
+
+            var state: ImageLoaderState = ImageLoader.state
+            if state == .Ready {
+                self.toggle(loading: false)
+            }
         })
 
     }
