@@ -45,7 +45,7 @@ class SuspendSampleViewController: UITableViewController {
         let start: Int = self.URLs.count
         for i in start...start+10 {
             let URL: NSURL = NSURL.imageURL(i)
-            ImageLoader.load(URL).completionHandler { (completedURL, image, error) -> Void in
+            ImageLoader.load(URL).completionHandler { completedURL, image, error in
                 self.insertRow(completedURL)
             }
         }
@@ -68,6 +68,11 @@ class SuspendSampleViewController: UITableViewController {
             self.tableView.beginUpdates()
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.endUpdates()
+
+            var state: ImageLoaderState = ImageLoader.state
+            if state == .Ready {
+                self.toggle(loading: false)
+            }
         })
 
     }
@@ -80,8 +85,8 @@ class SuspendSampleViewController: UITableViewController {
         let placeholder: UIImage = UIImage(named: "black.jpg")!
         cell.textLabel?.text = URL.absoluteString
 
-        if let data = ImageLoader.cache(URL) {
-            cell.imageView?.image = UIImage(data: data)
+        if let image = ImageLoader.cache(URL) {
+            cell.imageView?.image = image
         }
 
         return cell

@@ -8,12 +8,12 @@ Features
 
 - [x] Simple methods with UIImageView Category.
 - [x] A module for cache can be set by yourself.
-- [ ] Diskcache for default settings.
+- [x] Diskcache for default settings, the module for cache use on disk and unused on memory.
 - [x] Loading images is handled by ImageLoader, not UIImageView.
 - [ ] After image view start loading another image, previous loading task is possible to live with caching.
 - [ ] Comprehensive Unit Test Coverage
 - [ ] Optimize image with frame and scale
-- [ ] Control Loader to resume, suspend and cancel with URL.
+- [x] Control Loader to resume, suspend and cancel with URL.
 
 Requirements
 ----------

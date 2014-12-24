@@ -69,7 +69,7 @@ extension UIImageView {
     private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> Void) {
 
         weak var wSelf = self
-        let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { (URL, image, error) in
+        let completionHandler: (NSURL, UIImage?, NSError?) -> Void = { URL, image, error in
 
             if wSelf == nil {
                 return
@@ -87,11 +87,9 @@ extension UIImageView {
         }
 
         // caching
-        if let data: NSData = Manager.sharedInstance.cache[URL] {
-            if let image: UIImage = UIImage(data: data) {
-                completionHandler(URL, image, nil)
-                return
-            }
+        if let image: UIImage = Manager.sharedInstance.cache[URL] {
+            completionHandler(URL, image, nil)
+            return
         }
 
         dispatch_async(UIImageView._requesting_queue, {

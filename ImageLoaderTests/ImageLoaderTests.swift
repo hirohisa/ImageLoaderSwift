@@ -26,6 +26,33 @@ extension NSURLSessionTaskState {
     }
 }
 
+extension ImageLoaderState {
+
+    func toString() -> String {
+        switch self {
+        case .Ready:
+            return "Ready"
+        case Running:
+            return "Running"
+        case Suspended:
+            return "Suspended"
+        }
+    }
+}
+
+
+class StringTests: XCTestCase {
+
+    func testEscape() {
+        let string: String = "http://test.com"
+        let valid: String = "http%3A%2F%2Ftest.com"
+
+        XCTAssertNotEqual(string, string.escape(),
+            "String cant escape, \(string.escape())")
+        XCTAssertEqual(valid, string.escape(),
+            "String cant escape, \(string.escape())")
+    }
+}
 
 class ImageLoaderTests: XCTestCase {
 
@@ -46,9 +73,15 @@ class ImageLoaderTests: XCTestCase {
         let manager: Manager = Manager()
         let loader: Loader = manager.load(URL)
 
-        XCTAssert(loader.status == .Running, "loader's status is not running, now is \(loader.status.toString())")
-        loader.completionHandler { (completedURL, image, error) -> (Void) in
-            XCTAssertEqual(URL, completedURL, "URL \(URL) and completedURL \(completedURL) are not same. ")
+        XCTAssert(loader.state == .Running,
+            "loader's status is not running, now is \(loader.state.toString())")
+        XCTAssert(manager.state == .Running,
+            "manager's state is not running, now is \(manager.state.toString())")
+        loader.completionHandler { completedURL, image, error in
+            XCTAssertEqual(URL, completedURL,
+                "URL \(URL) and completedURL \(completedURL) are not same. ")
+            XCTAssert(manager.state == .Ready,
+                "manager's state is not ready, now is \(manager.state.toString())")
         }
     }
 
@@ -61,7 +94,14 @@ class ImageLoaderTests: XCTestCase {
         let loader: Loader = manager.load(URL)
         manager.cancel(URL, block: nil)
 
-        XCTAssert(loader.status == .Canceling, "loader's status is not canceling, now is \(loader.status.toString())")
+        XCTAssert(loader.state == .Canceling,
+            "loader's status is not canceling, now is \(loader.state.toString())")
+        XCTAssert(manager.state == .Ready,
+            "manager's state is not ready, now is \(manager.state.toString())")
+
+        let loader2: Loader? = manager.store[URL]
+        XCTAssertNil(loader2,
+            "Store doesnt remove the loader, \(loader2)")
 
     }
 

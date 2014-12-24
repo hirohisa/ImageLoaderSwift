@@ -10,6 +10,15 @@ import Foundation
 import UIKit
 
 public let ImageLoaderDomain = "swift.imageloader"
+public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
+
+    subscript (aKey: NSURL) -> UIImage? {
+        get
+        set
+    }
+
+}
+
 internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> Void
 
 internal class Block: NSObject {
@@ -18,6 +27,14 @@ internal class Block: NSObject {
     init(completionHandler: CompletionHandler) {
         self.completionHandler = completionHandler
     }
+
+}
+
+public enum ImageLoaderState : Int {
+
+    case Ready /* The manager have no loaders  */
+    case Running /* The manager has loaders, and they are running */
+    case Suspended /* The manager has loaders, and their states are all suspended */
 
 }
 
@@ -37,7 +54,7 @@ public class Manager {
     }
 
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageLoaderCacheProtocol = ImageLoaderCache()
+        cache: ImageLoaderCacheProtocol = Diskcached()
         ) {
             self.session = NSURLSession(configuration: configuration)
             self.cache = cache
@@ -49,7 +66,7 @@ public class Manager {
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
         private var loaders: Dictionary<NSURL, Loader>  = [NSURL: Loader]()
 
-        private subscript (URL: NSURL) -> Loader? {
+        subscript (URL: NSURL) -> Loader? {
 
             get {
                 var loader : Loader?
@@ -80,6 +97,32 @@ public class Manager {
     }
     let store: Store = Store()
 
+    var state: ImageLoaderState {
+        get {
+            return self._state()
+        }
+    }
+
+    private func _state() -> ImageLoaderState {
+
+        var status: ImageLoaderState = .Ready
+
+        for loader: Loader in self.store.loaders.values {
+            switch loader.state {
+            case .Running:
+                status = .Running
+            case .Suspended:
+                if status == .Ready {
+                    status = .Suspended
+                }
+            default:
+                break
+            }
+        }
+
+        return status
+    }
+
     // MARK: loading
 
     internal func load(URL: NSURL) -> Loader {
@@ -90,7 +133,7 @@ public class Manager {
         }
 
         let request: NSURLRequest = NSURLRequest(URL: URL)
-        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { data, response, error in
             self.taskCompletion(URL, data: data, error: error)
         })
 
@@ -116,9 +159,9 @@ public class Manager {
                 loader.remove(block!)
             }
 
-            if loader.blocks.count == 0 ||
-                block == nil {
+            if loader.blocks.count == 0 || block == nil {
                 loader.cancel()
+                self.store.remove(URL)
             }
 
             return loader
@@ -133,7 +176,7 @@ public class Manager {
         if data != nil {
             image = UIImage(data: data!)
             if image != nil {
-                self.cache[URL] = data
+                self.cache[URL] = image
             }
         }
 
@@ -165,7 +208,7 @@ public class Loader {
         self.resume()
     }
 
-    var status: NSURLSessionTaskState {
+    var state: NSURLSessionTaskState {
         get {
             return self.task.state
         }
@@ -233,6 +276,10 @@ public func cancel(URL: NSURL) -> Loader? {
     return Manager.sharedInstance.cancel(URL)
 }
 
-public func cache(URL: NSURL) -> NSData? {
+public func cache(URL: NSURL) -> UIImage? {
     return Manager.sharedInstance.cache[URL]
+}
+
+public var state: ImageLoaderState {
+    return Manager.sharedInstance.state
 }
