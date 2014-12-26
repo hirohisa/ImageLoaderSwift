@@ -19,10 +19,10 @@ class MultipleViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-        let URL: NSURL = NSURL.imageURL(indexPath.row)
-        let placeholder: UIImage = UIImage(named: "black.jpg")!
+        let URL = NSURL.imageURL(indexPath.row)
+        let placeholder = UIImage(named: "black.jpg")!
         cell.imageView?.load(URL, placeholder: placeholder, completionHandler: { _ in
             println("completion")
         })

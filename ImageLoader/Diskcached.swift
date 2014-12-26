@@ -26,11 +26,7 @@ extension String {
 
 class Diskcached: NSObject {
 
-    private var images: Dictionary<NSURL, UIImage>  = [NSURL: UIImage]()
-
-    override init() {
-        super.init()
-    }
+    private var images: [NSURL: UIImage]  = [NSURL: UIImage]()
 
     class Directory: NSObject {
         override init() {
@@ -39,7 +35,7 @@ class Diskcached: NSObject {
         }
 
         private func createDirectory() {
-            let fileManager: NSFileManager = NSFileManager.defaultManager()
+            let fileManager = NSFileManager.defaultManager()
             if fileManager.fileExistsAtPath(self.path) {
                 return
             }
@@ -48,8 +44,8 @@ class Diskcached: NSObject {
         }
 
         var path: String {
-            let cachePath: String = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
-            let imagePath: String = "swift.imageloader.diskcached"
+            let cachePath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+            let imagePath = "swift.imageloader.diskcached"
 
             return cachePath.stringByAppendingPathComponent(imagePath)
         }
@@ -66,11 +62,11 @@ extension Diskcached {
 
     private func objectForKey(aKey: NSURL) -> UIImage? {
 
-        if let image: UIImage = self.images[aKey] {
+        if let image = self.images[aKey] {
             return image
         }
 
-        if let data: NSData = NSData(contentsOfFile: self.savePath(aKey.absoluteString!)) {
+        if let data = NSData(contentsOfFile: self.savePath(aKey.absoluteString!)) {
             return UIImage(data: data)
         }
 
@@ -86,7 +82,7 @@ extension Diskcached {
 
         let block: () -> () = {
 
-            let data: NSData = UIImageJPEGRepresentation(anObject, 1)
+            let data = UIImageJPEGRepresentation(anObject, 1)
             data.writeToFile(self.savePath(aKey.absoluteString!), atomically: false)
 
             self.images[aKey] = nil

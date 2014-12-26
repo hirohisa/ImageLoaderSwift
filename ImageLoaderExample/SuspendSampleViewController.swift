@@ -17,7 +17,7 @@ class SuspendSampleViewController: UITableViewController {
         super.viewDidLoad()
 
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        let buttonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
+        let buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
         self.navigationItem.rightBarButtonItem = buttonItem
     }
 
@@ -32,7 +32,7 @@ class SuspendSampleViewController: UITableViewController {
     }
 
     func toggle(#loading: Bool) {
-        var buttonItem: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
+        var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
 
         if loading == true {
             buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: "pause")
@@ -42,9 +42,9 @@ class SuspendSampleViewController: UITableViewController {
 
 
     func startLoading() {
-        let start: Int = self.URLs.count
+        let start = self.URLs.count
         for i in start...start+10 {
-            let URL: NSURL = NSURL.imageURL(i)
+            let URL = NSURL.imageURL(i)
             ImageLoader.load(URL).completionHandler { completedURL, image, error in
                 self.insertRow(completedURL)
             }
@@ -52,9 +52,9 @@ class SuspendSampleViewController: UITableViewController {
     }
 
     func pauseLoading() {
-        let end: Int = self.URLs.count
+        let end = self.URLs.count
         for i in end-10...end {
-            let URL: NSURL = NSURL.imageURL(i)
+            let URL = NSURL.imageURL(i)
             ImageLoader.suspend(URL)
         }
     }
@@ -62,14 +62,14 @@ class SuspendSampleViewController: UITableViewController {
     func insertRow(URL: NSURL) {
 
         dispatch_async(dispatch_get_main_queue(), {
-            let indexPath: NSIndexPath = NSIndexPath(forRow: self.URLs.count, inSection: 0)
+            let indexPath = NSIndexPath(forRow: self.URLs.count, inSection: 0)
             self.URLs.append(URL)
 
             self.tableView.beginUpdates()
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.endUpdates()
 
-            var state: ImageLoaderState = ImageLoader.state
+            var state = ImageLoader.state
             if state == .Ready {
                 self.toggle(loading: false)
             }
@@ -79,10 +79,10 @@ class SuspendSampleViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-        let URL: NSURL = self.URLs[indexPath.row]
-        let placeholder: UIImage = UIImage(named: "black.jpg")!
+        let URL = self.URLs[indexPath.row]
+        let placeholder = UIImage(named: "black.jpg")!
         cell.textLabel?.text = URL.absoluteString
 
         if let image = ImageLoader.cache(URL) {

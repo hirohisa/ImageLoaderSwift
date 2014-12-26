@@ -42,7 +42,7 @@ extension UIImageView {
     public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
         self.cancelLoading()
 
-        if placeholder != nil {
+        if let placeholder = placeholder {
             self.image = placeholder
         }
 
@@ -51,8 +51,8 @@ extension UIImageView {
     }
 
     public func cancelLoading() {
-        if self.URL != nil {
-            Manager.sharedInstance.cancel(self.URL!, block: self.block as? Block)
+        if let URL = self.URL {
+            Manager.sharedInstance.cancel(URL, block: self.block as? Block)
         }
     }
 
@@ -87,14 +87,14 @@ extension UIImageView {
         }
 
         // caching
-        if let image: UIImage = Manager.sharedInstance.cache[URL] {
+        if let image = Manager.sharedInstance.cache[URL] {
             completionHandler(URL, image, nil)
             return
         }
 
         dispatch_async(UIImageView._requesting_queue, {
 
-            let loader: Loader = Manager.sharedInstance.load(URL).completionHandler(completionHandler)
+            let loader = Manager.sharedInstance.load(URL).completionHandler(completionHandler)
             self.block = loader.blocks.last
 
             return

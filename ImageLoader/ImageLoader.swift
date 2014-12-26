@@ -63,7 +63,7 @@ public class Manager {
     class Store: NSObject {
 
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        private var loaders: Dictionary<NSURL, Loader>  = [NSURL: Loader]()
+        private var loaders: [NSURL: Loader]  = [NSURL: Loader]()
 
         subscript (URL: NSURL) -> Loader? {
 
@@ -85,7 +85,7 @@ public class Manager {
 
         private func remove(URL: NSURL) -> Loader? {
 
-            if let loader: Loader = self[URL] {
+            if let loader = self[URL] {
                 self.loaders.removeValueForKey(URL)
                 return loader
             }
@@ -99,10 +99,6 @@ public class Manager {
     // MARK: state
 
     var state: ImageLoaderState {
-        return self._state()
-    }
-
-    private func _state() -> ImageLoaderState {
 
         var status: ImageLoaderState = .Ready
 
@@ -126,23 +122,23 @@ public class Manager {
 
     internal func load(URL: NSURL) -> Loader {
 
-        if let loader: Loader = self.store[URL] {
+        if let loader = self.store[URL] {
             loader.resume()
             return loader
         }
 
-        let request: NSURLRequest = NSURLRequest(URL: URL)
-        let task: NSURLSessionDataTask = self.session.dataTaskWithRequest(request, completionHandler: { data, response, error in
+        let request = NSURLRequest(URL: URL)
+        let task = self.session.dataTaskWithRequest(request, completionHandler: { data, response, error in
             self.taskCompletion(URL, data: data, error: error)
         })
 
-        let loader: Loader = Loader(task: task, delegate: self)
+        let loader = Loader(task: task, delegate: self)
         self.store[URL] = loader
         return loader
     }
 
     internal func suspend(URL: NSURL) -> Loader? {
-        if let loader: Loader = self.store[URL] {
+        if let loader = self.store[URL] {
             loader.suspend()
             return loader
         }
@@ -152,10 +148,10 @@ public class Manager {
 
     internal func cancel(URL: NSURL, block: Block? = nil) -> Loader? {
 
-        if let loader: Loader = self.store[URL] {
+        if let loader = self.store[URL] {
 
-            if block != nil {
-                loader.remove(block!)
+            if let block = block {
+                loader.remove(block)
             }
 
             if loader.blocks.count == 0 || block == nil {
@@ -172,8 +168,8 @@ public class Manager {
     private func taskCompletion(URL: NSURL, data: NSData?, error: NSError?) {
 
         var image: UIImage?
-        if data != nil {
-            image = UIImage(data: data!)
+        if let data = data {
+            image = UIImage(data: data)
             if image != nil {
                 self.cache[URL] = image
             }
@@ -213,8 +209,8 @@ public class Loader {
 
     public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> ()) -> Self {
 
-        let block: Block = Block(completionHandler: completionHandler)
-        self.blocks += [block]
+        let block = Block(completionHandler: completionHandler)
+        self.blocks.append(block)
 
         return self
     }
