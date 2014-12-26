@@ -70,11 +70,11 @@ class SimpleViewController: UIViewController {
         button2.setTitleColor(UIColor.redColor(), forState: .Highlighted)
 
         button1.center = CGPoint(
-            x: 80,
+            x: CGRectGetWidth(self.view.frame)/2 - 50,
             y: CGRectGetHeight(self.view.frame)/2 + 200
         )
         button2.center = CGPoint(
-            x: 240,
+            x: CGRectGetWidth(self.view.frame)/2 + 50,
             y: CGRectGetHeight(self.view.frame)/2 + 200
         )
         self.view.addSubview(button1)
