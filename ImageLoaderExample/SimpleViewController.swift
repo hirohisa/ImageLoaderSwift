@@ -16,7 +16,7 @@ class SimpleViewController: UIViewController {
     var failureURLButton: UIButton?
 
     let successURL: NSURL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg")!
-    let failureURL: NSURL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpgg")!
+    let failureURL: NSURL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg")!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,8 +109,9 @@ class SimpleViewController: UIViewController {
     }
 
     func testLoad(imageView: UIImageView, URL: NSURL) {
-        imageView.load(URL, placeholder: nil) { _ in
-            println(__FUNCTION__, "completion")
+        imageView.load(URL, placeholder: nil) { (URL, image, error) -> () in
+            println("URL \(URL)")
+            println("error \(error)")
         }
 
     }

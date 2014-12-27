@@ -23,8 +23,9 @@ class MultipleViewController: UITableViewController {
 
         let URL = NSURL.imageURL(indexPath.row)
         let placeholder = UIImage(named: "black.jpg")!
-        cell.imageView?.load(URL, placeholder: placeholder, completionHandler: { _ in
-            println("completion")
+        cell.imageView?.load(URL, placeholder: placeholder, completionHandler:  { (URL, image, error) -> () in
+            println("URL \(URL)")
+            println("error \(error)")
         })
 
         return cell
