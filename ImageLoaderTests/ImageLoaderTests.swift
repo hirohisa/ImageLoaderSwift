@@ -99,7 +99,7 @@ class ImageLoaderTests: XCTestCase {
         XCTAssert(manager.state == .Ready,
             "manager's state is not ready, now is \(manager.state.toString())")
 
-        let loader2: Loader? = manager.store[URL]
+        let loader2: Loader? = manager.delegate[URL]
         XCTAssertNil(loader2,
             "Store doesnt remove the loader, \(loader2)")
 
