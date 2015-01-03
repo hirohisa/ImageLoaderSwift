@@ -1,7 +1,7 @@
 ImageLoader [![Build Status](https://travis-ci.org/hirohisa/ImageLoaderSwift.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
 ===========
 
-ImageLoader is an instrument for asynchronous image loading.
+ImageLoader is an instrument for asynchronous image loading written in Swift. It is a lightweight and fast image loader for iOS.
 
 Features
 ----------
@@ -29,6 +29,15 @@ It is the way to use this in your project:
 - Add ImageLoader as a submodule by opening the Terminal, trying to enter the command
 ```
 git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
+```
+
+- Install with CocoaPods to write Podfile
+
+```ruby
+# use cocoapods version 0.36.x
+platform :ios, '7.0'
+
+pod 'ImageLoader', :git => 'https://github.com/hirohisa/ImageLoaderSwift.git', :branch => 'master'
 ```
 
 - Copy ImageLoader class files into your project
