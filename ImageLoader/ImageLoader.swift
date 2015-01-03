@@ -9,6 +9,87 @@
 import Foundation
 import UIKit
 
+// MARK: Optimize image
+
+extension CGBitmapInfo {
+    private var alphaInfo: CGImageAlphaInfo? {
+        let info = self & .AlphaInfoMask
+        return CGImageAlphaInfo(rawValue: info.rawValue)
+    }
+}
+
+extension UIImage {
+
+    internal func resized(#size: CGSize) -> UIImage {
+
+        let scale = UIScreen.mainScreen().scale
+
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
+
+        let frame = CGRect(x: 0, y: 0, width: Int(size.width), height: Int(size.height))
+        self.drawInRect(frame)
+
+        if let resizedImage = UIGraphicsGetImageFromCurrentImageContext() {
+            return resizedImage
+        }
+
+        return self
+    }
+
+    internal func inflated() -> UIImage {
+        let scale = UIScreen.mainScreen().scale
+        let width = CGImageGetWidth(self.CGImage)
+        let height = CGImageGetHeight(self.CGImage)
+
+        let bitsPerComponent = CGImageGetBitsPerComponent(self.CGImage)
+
+        if (bitsPerComponent > 8) {
+            return self
+        }
+
+        var bitmapInfo = CGImageGetBitmapInfo(self.CGImage)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
+
+        switch (colorSpaceModel.value) {
+        case kCGColorSpaceModelRGB.value:
+            if let alphaInfo = bitmapInfo.alphaInfo {
+                let info = alphaInfo.rawValue | bitmapInfo.rawValue
+                bitmapInfo = CGBitmapInfo(rawValue: info)
+            }
+
+            break
+        default:
+            break
+        }
+
+        let context = CGBitmapContextCreate(
+            nil,
+            width,
+            height,
+            bitsPerComponent,
+            0,
+            colorSpace,
+            bitmapInfo
+        )
+
+        let frame = CGRect(x: 0, y: 0, width: Int(width), height: Int(height))
+
+        CGContextDrawImage(context, frame, self.CGImage)
+        let inflatedImageRef = CGBitmapContextCreateImage(context)
+
+        if let inflatedImage = UIImage(CGImage: inflatedImageRef, scale: scale, orientation: self.imageOrientation) {
+            return inflatedImage
+        }
+
+        return self
+    }
+}
+
+// MARK: Cache
+
 public let ImageLoaderDomain = "swift.imageloader"
 public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
 
@@ -43,6 +124,7 @@ public class Manager {
     let session: NSURLSession
     let cache: ImageLoaderCacheProtocol
     let delegate: SessionDataDelegate
+    public var inflatesImage: Bool
 
     // MARK: singleton instance
     public class var sharedInstance: Manager {
@@ -60,6 +142,7 @@ public class Manager {
             self.session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
             self.delegate = delegate
             self.cache = cache
+            self.inflatesImage = true
     }
 
     // MARK: state
@@ -187,6 +270,7 @@ public class Loader {
     let delegate: Manager
     let task: NSURLSessionDataTask
     var data: NSMutableData = NSMutableData()
+    let inflatesImage: Bool
     internal var blocks: [Block] = []
 
     private class var _resuming_queue: dispatch_queue_t {
@@ -200,6 +284,7 @@ public class Loader {
     init (task: NSURLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
+        self.inflatesImage = self.delegate.inflatesImage
         self.resume()
     }
 
@@ -257,6 +342,9 @@ public class Loader {
         let URL = self.task.originalRequest.URL
         if error == nil {
             image = UIImage(data: self.data)
+            if self.inflatesImage {
+                image = image?.inflated()
+            }
             if let image = image {
                 self.delegate.cache[URL] = image
             }

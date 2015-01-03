@@ -79,7 +79,9 @@ extension UIImageView {
 
                 // requesting is success then set image
                 if self.URL != nil && self.URL!.isEqual(URL) {
-                    wSelf!.image = image
+                    if let image = image {
+                        wSelf!.image = image.resized(size: wSelf!.frame.size)
+                    }
                 }
                 completionHandler(URL, image, error)
 
