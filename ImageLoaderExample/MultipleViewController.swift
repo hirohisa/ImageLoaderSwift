@@ -26,6 +26,7 @@ class MultipleViewController: UITableViewController {
         cell.imageView?.load(URL, placeholder: placeholder, completionHandler:  { (URL, image, error) -> () in
             println("URL \(URL)")
             println("error \(error)")
+            println("view's size \(cell.imageView?.frame.size), image's size \(cell.imageView?.image?.size)")
         })
 
         return cell
