@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6578B7341A5BE1FE008D85D6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA81A03855700CF1DB7 /* LaunchScreen.xib */; };
-		65AB21F51A5BE2DC007E6D40 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65AB21F41A5BE2DC007E6D40 /* ImageLoader.framework */; };
-		65AB21F61A5BE2DC007E6D40 /* ImageLoader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 65AB21F41A5BE2DC007E6D40 /* ImageLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		65AB21F71A5BE3C1007E6D40 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA31A03855700CF1DB7 /* Main.storyboard */; };
 		65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */; };
 		65D6FBA71A03855700CF1DB7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA61A03855700CF1DB7 /* Images.xcassets */; };
@@ -17,26 +15,12 @@
 		65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC01A03859500CF1DB7 /* RootViewController.swift */; };
 		65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */; };
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
+		A125B14D1A5F620B00250601 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A125B14C1A5F620B00250601 /* ImageLoader.framework */; };
 		A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */; };
 		A1EE65CC1A41F9DF00BEA147 /* NSURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		6578B73B1A5BE26E008D85D6 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				65AB21F61A5BE2DC007E6D40 /* ImageLoader.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		65AB21F41A5BE2DC007E6D40 /* ImageLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = ImageLoader.framework; path = "/Users/JP11339/Library/Developer/Xcode/DerivedData/ImageLoader-dkbffyfzrlhiibffxsrqusofdvqj/Build/Products/Debug-iphoneos/ImageLoader.framework"; sourceTree = "<absolute>"; };
 		65D6FB9A1A03855700CF1DB7 /* ImageLoaderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageLoaderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D6FB9E1A03855700CF1DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +31,7 @@
 		65D6FBC01A03859500CF1DB7 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
+		A125B14C1A5F620B00250601 /* ImageLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageLoader.framework; path = "build/Release-iphoneos/ImageLoader.framework"; sourceTree = "<group>"; };
 		A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuspendSampleViewController.swift; sourceTree = "<group>"; };
 		A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65AB21F51A5BE2DC007E6D40 /* ImageLoader.framework in Frameworks */,
+				A125B14D1A5F620B00250601 /* ImageLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +51,7 @@
 		65D6FB911A03855700CF1DB7 = {
 			isa = PBXGroup;
 			children = (
-				65AB21F41A5BE2DC007E6D40 /* ImageLoader.framework */,
+				A125B14C1A5F620B00250601 /* ImageLoader.framework */,
 				65D6FB9C1A03855700CF1DB7 /* ImageLoaderExample */,
 				65D6FB9B1A03855700CF1DB7 /* Products */,
 			);
@@ -116,7 +101,6 @@
 				65D6FB961A03855700CF1DB7 /* Sources */,
 				65D6FB971A03855700CF1DB7 /* Frameworks */,
 				65D6FB981A03855700CF1DB7 /* Resources */,
-				6578B73B1A5BE26E008D85D6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -292,7 +276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ImageLoaderExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -303,7 +287,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ImageLoaderExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
