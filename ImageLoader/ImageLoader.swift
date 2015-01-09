@@ -42,6 +42,9 @@ extension UIImage {
         let scale = UIScreen.mainScreen().scale
         let width = CGImageGetWidth(self.CGImage)
         let height = CGImageGetHeight(self.CGImage)
+        if !(width > 0 && height > 0) {
+            return self
+        }
 
         let bitsPerComponent = CGImageGetBitsPerComponent(self.CGImage)
 
