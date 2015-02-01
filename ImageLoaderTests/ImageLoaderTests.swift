@@ -75,8 +75,6 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
-        XCTAssert(manager.state == .Running,
-            "manager's state is not running, now is \(manager.state.toString())")
         loader.completionHandler { completedURL, image, error in
             XCTAssertEqual(URL, completedURL,
                 "URL \(URL) and completedURL \(completedURL) are not same. ")
@@ -94,8 +92,6 @@ class ImageLoaderTests: XCTestCase {
         let loader: Loader = manager.load(URL)
         manager.cancel(URL, block: nil)
 
-        XCTAssert(loader.state == .Canceling,
-            "loader's status is not canceling, now is \(loader.state.toString())")
         XCTAssert(manager.state == .Ready,
             "manager's state is not ready, now is \(manager.state.toString())")
 
