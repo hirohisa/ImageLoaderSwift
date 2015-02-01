@@ -276,14 +276,6 @@ public class Loader {
     let inflatesImage: Bool
     internal var blocks: [Block] = []
 
-    private class var _resuming_queue: dispatch_queue_t {
-        struct Static {
-            static let queue = dispatch_queue_create("swift.imageloader.queues.resuming", DISPATCH_QUEUE_SERIAL)
-        }
-
-        return Static.queue
-    }
-
     init (task: NSURLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
@@ -306,21 +298,15 @@ public class Loader {
     // MARK: task
 
     internal func suspend() {
-        dispatch_async(Loader._resuming_queue) {
-            self.task.suspend()
-        }
+        self.task.suspend()
     }
 
     internal func resume() {
-        dispatch_async(Loader._resuming_queue) {
-            self.task.resume()
-        }
+        self.task.resume()
     }
 
     internal func cancel() {
-        dispatch_async(Loader._resuming_queue) {
-            self.task.cancel()
-        }
+        self.task.cancel()
     }
 
     private func remove(block: Block) {
