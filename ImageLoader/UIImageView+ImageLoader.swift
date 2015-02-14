@@ -38,6 +38,14 @@ extension UIImageView {
 extension UIImageView {
 
     // MARK: - public
+    public func load(URL: NSURL) {
+        self.load(URL, placeholder: nil) { _ in }
+    }
+
+    public func load(URL: NSURL, placeholder: UIImage?) {
+        self.load(URL, placeholder: placeholder) { _ in }
+    }
+
 
     public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
         self.cancelLoading()
