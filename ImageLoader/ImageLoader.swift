@@ -20,24 +20,6 @@ extension CGBitmapInfo {
 
 extension UIImage {
 
-    internal func resized(#size: CGSize) -> UIImage {
-
-        let scale = UIScreen.mainScreen().scale
-
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetInterpolationQuality(context, kCGInterpolationHigh)
-
-        let frame = CGRect(x: 0, y: 0, width: Int(size.width), height: Int(size.height))
-        self.drawInRect(frame)
-
-        if let resizedImage = UIGraphicsGetImageFromCurrentImageContext() {
-            return resizedImage
-        }
-
-        return self
-    }
-
     internal func inflated() -> UIImage {
         let scale = UIScreen.mainScreen().scale
         let width = CGImageGetWidth(self.CGImage)
