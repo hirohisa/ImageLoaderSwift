@@ -31,16 +31,16 @@ class Diskcached: NSObject {
     class Directory: NSObject {
         override init() {
             super.init()
-            self.createDirectory()
+            createDirectory()
         }
 
         private func createDirectory() {
             let fileManager = NSFileManager.defaultManager()
-            if fileManager.fileExistsAtPath(self.path) {
+            if fileManager.fileExistsAtPath(path) {
                 return
             }
 
-            fileManager.createDirectoryAtPath(self.path, withIntermediateDirectories: true, attributes: nil, error: nil)
+            fileManager.createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil, error: nil)
         }
 
         var path: String {
@@ -62,23 +62,23 @@ extension Diskcached {
 
     private func objectForKey(aKey: NSURL) -> UIImage? {
 
-        if let image = self.images[aKey] {
+        if let image = images[aKey] {
             return image
         }
 
-        if let data = NSData(contentsOfFile: self.savePath(aKey.absoluteString!)) {
+        if let data = NSData(contentsOfFile: savePath(aKey.absoluteString!)) {
             return UIImage(data: data)
         }
 
         return nil
     }
     private func savePath(name: String ) -> String {
-        return self.directory.path.stringByAppendingPathComponent(name.escape())
+        return directory.path.stringByAppendingPathComponent(name.escape())
     }
 
     private func setObject(anObject: UIImage, forKey aKey: NSURL) {
 
-        self.images[aKey] = anObject
+        images[aKey] = anObject
 
         let block: () -> () = {
 
@@ -89,7 +89,7 @@ extension Diskcached {
             self.images[aKey] = nil
         }
 
-        dispatch_async(self._queue, block)
+        dispatch_async(_queue, block)
     }
 
 }
@@ -106,7 +106,7 @@ extension Diskcached: ImageLoaderCacheProtocol {
 
         get {
             var value : UIImage?
-            dispatch_sync(self._concurrent_queue) {
+            dispatch_sync(_concurrent_queue) {
                 value = self.objectForKey(aKey)
             }
 
@@ -114,7 +114,7 @@ extension Diskcached: ImageLoaderCacheProtocol {
         }
 
         set {
-            dispatch_barrier_async(self._concurrent_queue) {
+            dispatch_barrier_async(_concurrent_queue) {
                 self.setObject(newValue!, forKey: aKey)
             }
         }
