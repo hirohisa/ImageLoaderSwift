@@ -39,28 +39,28 @@ extension UIImageView {
 
     // MARK: - public
     public func load(URL: NSURL) {
-        self.load(URL, placeholder: nil) { _ in }
+        load(URL, placeholder: nil) { _ in }
     }
 
     public func load(URL: NSURL, placeholder: UIImage?) {
-        self.load(URL, placeholder: placeholder) { _ in }
+        load(URL, placeholder: placeholder) { _ in }
     }
 
 
     public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
-        self.cancelLoading()
+        cancelLoading()
 
         if let placeholder = placeholder {
-            self.image = placeholder
+            image = placeholder
         }
 
         self.URL = URL
-        self._load(URL, completionHandler: completionHandler)
+        _load(URL, completionHandler: completionHandler)
     }
 
     public func cancelLoading() {
-        if let URL = self.URL {
-            Manager.sharedInstance.cancel(URL, block: self.block as? Block)
+        if let URL = URL {
+            Manager.sharedInstance.cancel(URL, block: block as? Block)
         }
     }
 

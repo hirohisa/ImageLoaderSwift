@@ -22,19 +22,19 @@ extension UIImage {
 
     internal func inflated() -> UIImage {
         let scale = UIScreen.mainScreen().scale
-        let width = CGImageGetWidth(self.CGImage)
-        let height = CGImageGetHeight(self.CGImage)
+        let width = CGImageGetWidth(CGImage)
+        let height = CGImageGetHeight(CGImage)
         if !(width > 0 && height > 0) {
             return self
         }
 
-        let bitsPerComponent = CGImageGetBitsPerComponent(self.CGImage)
+        let bitsPerComponent = CGImageGetBitsPerComponent(CGImage)
 
         if (bitsPerComponent > 8) {
             return self
         }
 
-        var bitmapInfo = CGImageGetBitmapInfo(self.CGImage)
+        var bitmapInfo = CGImageGetBitmapInfo(CGImage)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
 
@@ -62,10 +62,10 @@ extension UIImage {
 
         let frame = CGRect(x: 0, y: 0, width: Int(width), height: Int(height))
 
-        CGContextDrawImage(context, frame, self.CGImage)
+        CGContextDrawImage(context, frame, CGImage)
         let inflatedImageRef = CGBitmapContextCreateImage(context)
 
-        if let inflatedImage = UIImage(CGImage: inflatedImageRef, scale: scale, orientation: self.imageOrientation) {
+        if let inflatedImage = UIImage(CGImage: inflatedImageRef, scale: scale, orientation: imageOrientation) {
             return inflatedImage
         }
 
@@ -108,8 +108,8 @@ public class Manager {
 
     let session: NSURLSession
     let cache: ImageLoaderCacheProtocol
-    let delegate: SessionDataDelegate
-    public var inflatesImage: Bool
+    let delegate: SessionDataDelegate = SessionDataDelegate()
+    public var inflatesImage: Bool = true
 
     // MARK: singleton instance
     public class var sharedInstance: Manager {
@@ -123,11 +123,8 @@ public class Manager {
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
         cache: ImageLoaderCacheProtocol = Diskcached()
         ) {
-            let delegate = SessionDataDelegate()
             session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
-            self.delegate = delegate
             self.cache = cache
-            self.inflatesImage = true
     }
 
     // MARK: state
@@ -310,7 +307,7 @@ public class Loader {
     private func complete(error: NSError?) {
 
         var image: UIImage?
-        let URL = self.task.originalRequest.URL
+        let URL = task.originalRequest.URL
         if error == nil {
             image = UIImage(data: receivedData)
             if inflatesImage {
@@ -321,7 +318,7 @@ public class Loader {
             }
         }
 
-        for block: Block in self.blocks {
+        for block: Block in blocks {
             block.completionHandler(URL, image, error)
         }
         blocks = []

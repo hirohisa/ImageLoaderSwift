@@ -13,7 +13,7 @@ class RootViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -58,7 +58,7 @@ class RootViewController: UITableViewController {
         }
 
         if viewController != nil {
-            self.navigationController?.pushViewController(viewController!, animated: true)
+            navigationController?.pushViewController(viewController!, animated: true)
         }
     }
 

@@ -15,20 +15,19 @@ class SuspendSampleViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         let buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
-        self.navigationItem.rightBarButtonItem = buttonItem
+        navigationItem.rightBarButtonItem = buttonItem
     }
 
     func play() {
-        self.toggle(loading: true)
-        self.startLoading()
+        toggle(loading: true)
+        startLoading()
     }
 
     func pause() {
-        self.toggle(loading: false)
-        self.pauseLoading()
+        toggle(loading: false)
+        pauseLoading()
     }
 
     func toggle(#loading: Bool) {
@@ -37,12 +36,12 @@ class SuspendSampleViewController: UITableViewController {
         if loading == true {
             buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: "pause")
         }
-        self.navigationItem.rightBarButtonItem = buttonItem
+        navigationItem.rightBarButtonItem = buttonItem
     }
 
 
     func startLoading() {
-        let start = self.URLs.count
+        let start = URLs.count
         for i in start...start+10 {
             let URL = NSURL.imageURL(i)
             ImageLoader.load(URL).completionHandler { completedURL, image, error in
@@ -52,7 +51,7 @@ class SuspendSampleViewController: UITableViewController {
     }
 
     func pauseLoading() {
-        let end = self.URLs.count
+        let end = URLs.count
         for i in end-10...end {
             let URL = NSURL.imageURL(i)
             ImageLoader.suspend(URL)
@@ -98,7 +97,7 @@ class SuspendSampleViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.URLs.count
+        return URLs.count
     }
 
 }

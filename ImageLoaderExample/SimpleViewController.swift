@@ -9,102 +9,76 @@
 import UIKit
 import ImageLoader
 
+extension UIButton {
+    convenience init(title: NSString, highlightedColor: UIColor) {
+        self.init()
+        frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        setTitle(title, forState: .Normal)
+        setTitleColor(UIColor.blackColor(), forState: .Normal)
+        setTitleColor(highlightedColor, forState: .Highlighted)
+    }
+}
+
 class SimpleViewController: UIViewController {
 
-    var imageView: UIImageView?
-    var successURLButton: UIButton?
-    var failureURLButton: UIButton?
+    let imageView: UIImageView = {
+        let imageView: UIImageView = UIImageView()
+        imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 300)
 
-    let successURL: NSURL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg")!
-    let failureURL: NSURL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg")!
+        return imageView
+    }()
+
+    let successURLButton = UIButton(title: "success", highlightedColor: UIColor.greenColor())
+    let failureURLButton = UIButton(title: "failure", highlightedColor: UIColor.redColor())
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.whiteColor()
 
-        self.configureButtons()
-        self.configureImageView()
+        imageView.center = CGPoint(
+            x: CGRectGetWidth(view.frame)/2,
+            y: CGRectGetHeight(view.frame)/2
+        )
+        view.addSubview(imageView)
 
-        self.tryLoadSuccessURL()
+        configureButtons()
+
+        tryLoadSuccessURL()
     }
 
     // MARK: - view
 
-    func configureImageView() {
-
-        let imageView: UIImageView = UIImageView()
-        imageView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: 200,
-            height: 300
-        )
-        imageView.center = CGPoint(
-            x: CGRectGetWidth(self.view.frame)/2,
-            y: CGRectGetHeight(self.view.frame)/2
-        )
-
-        self.view.addSubview(imageView)
-
-        self.imageView = imageView
-
-    }
-
     func configureButtons() {
-
-        let frame: CGRect = CGRect(
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 50
+        successURLButton.center = CGPoint(
+            x: CGRectGetWidth(view.frame)/2 - 50,
+            y: CGRectGetHeight(view.frame)/2 + 200
         )
-
-        let button1: UIButton = UIButton(frame: frame)
-        let button2: UIButton = UIButton(frame: frame)
-
-        button1.setTitle("success", forState: .Normal)
-        button1.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        button1.setTitleColor(UIColor.greenColor(), forState: .Highlighted)
-        button2.setTitle("failure", forState: .Normal)
-        button2.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        button2.setTitleColor(UIColor.redColor(), forState: .Highlighted)
-
-        button1.center = CGPoint(
-            x: CGRectGetWidth(self.view.frame)/2 - 50,
-            y: CGRectGetHeight(self.view.frame)/2 + 200
+        failureURLButton.center = CGPoint(
+            x: CGRectGetWidth(view.frame)/2 + 50,
+            y: CGRectGetHeight(view.frame)/2 + 200
         )
-        button2.center = CGPoint(
-            x: CGRectGetWidth(self.view.frame)/2 + 50,
-            y: CGRectGetHeight(self.view.frame)/2 + 200
-        )
-        self.view.addSubview(button1)
-        self.view.addSubview(button2)
+        view.addSubview(successURLButton)
+        view.addSubview(failureURLButton)
 
-        button1.addTarget(self, action: Selector("tryLoadSuccessURL"), forControlEvents: .TouchUpInside)
-        button2.addTarget(self, action: Selector("tryLoadFailureURL"), forControlEvents: .TouchUpInside)
-
-        self.successURLButton = button1
-        self.failureURLButton = button2
-
+        successURLButton.addTarget(self, action: Selector("tryLoadSuccessURL"), forControlEvents: .TouchUpInside)
+        failureURLButton.addTarget(self, action: Selector("tryLoadFailureURL"), forControlEvents: .TouchUpInside)
     }
 
     // MARK: - try
 
     func tryLoadSuccessURL() {
-        self.tryLoad(self.successURL)
+        let URL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg")!
+        tryLoad(URL)
     }
 
     func tryLoadFailureURL() {
-        self.tryLoad(self.failureURL)
+        let URL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg")!
+        tryLoad(URL)
     }
 
     func tryLoad(URL: NSURL) {
 
-        if self.imageView == nil {
-            return
-        }
-
-        self.testLoad(self.imageView!, URL: URL)
+        testLoad(imageView, URL: URL)
 
     }
 
