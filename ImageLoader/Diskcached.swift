@@ -96,7 +96,7 @@ extension Diskcached {
 
 // MARK: ImageLoaderCacheProtocol
 
-extension Diskcached: ImageLoaderCacheProtocol {
+extension Diskcached: ImageCache {
 
     private var _concurrent_queue: dispatch_queue_t {
         return dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)

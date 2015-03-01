@@ -76,7 +76,7 @@ extension UIImage {
 // MARK: Cache
 
 public let ImageLoaderDomain = "swift.imageloader"
-public protocol ImageLoaderCacheProtocol : NSObjectProtocol {
+public protocol ImageCache: NSObjectProtocol {
 
     subscript (aKey: NSURL) -> UIImage? {
         get
@@ -107,7 +107,7 @@ public enum ImageLoaderState : Int {
 public class Manager {
 
     let session: NSURLSession
-    let cache: ImageLoaderCacheProtocol
+    let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var inflatesImage: Bool = true
 
@@ -121,7 +121,7 @@ public class Manager {
     }
 
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageLoaderCacheProtocol = Diskcached()
+        cache: ImageCache = Diskcached()
         ) {
             session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
             self.cache = cache
