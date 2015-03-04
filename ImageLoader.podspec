@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
 
   s.source_files = "ImageLoader/*.swift"
   s.requires_arc = true
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
 
 end

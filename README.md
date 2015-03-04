@@ -35,9 +35,6 @@ git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
 - Install with CocoaPods to write Podfile
 
 ```ruby
-# use cocoapods version 0.36.x
-platform :ios, '7.0'
-
 pod 'ImageLoader', :git => 'https://github.com/hirohisa/ImageLoaderSwift.git', :branch => 'master'
 ```
 
