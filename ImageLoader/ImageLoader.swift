@@ -20,7 +20,7 @@ extension CGBitmapInfo {
 
 extension UIImage {
 
-    internal func inflated() -> UIImage {
+    private func inflated() -> UIImage {
         let scale = UIScreen.mainScreen().scale
         let width = CGImageGetWidth(CGImage)
         let height = CGImageGetHeight(CGImage)
@@ -276,15 +276,15 @@ public class Loader {
 
     // MARK: task
 
-    internal func suspend() {
+    public func suspend() {
         task.suspend()
     }
 
-    internal func resume() {
+    public func resume() {
         task.resume()
     }
 
-    internal func cancel() {
+    public func cancel() {
         task.cancel()
     }
 
