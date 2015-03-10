@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Hirohisa Kawasaki. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 FOUNDATION_EXPORT double ImageLoaderVersionNumber;

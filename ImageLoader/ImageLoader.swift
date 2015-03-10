@@ -20,7 +20,7 @@ extension CGBitmapInfo {
 
 extension UIImage {
 
-    internal func inflated() -> UIImage {
+    private func inflated() -> UIImage {
         let scale = UIScreen.mainScreen().scale
         let width = CGImageGetWidth(CGImage)
         let height = CGImageGetHeight(CGImage)
@@ -75,7 +75,10 @@ extension UIImage {
 
 // MARK: Cache
 
-public let ImageLoaderDomain = "swift.imageloader"
+/**
+    Cache for `ImageLoader` have to implement methods.
+    fetch image by cache before sending a request and set image into cache after receiving image data.
+*/
 public protocol ImageCache: NSObjectProtocol {
 
     subscript (aKey: NSURL) -> UIImage? {
@@ -96,14 +99,21 @@ internal class Block: NSObject {
 
 }
 
+/**
+    Use to check state of loaders that manager has.
+    Ready:      The manager have no loaders
+    Running:    The manager has loaders, and they are running
+    Suspended:  The manager has loaders, and their states are all suspended
+*/
 public enum ImageLoaderState : Int {
-
-    case Ready /* The manager have no loaders  */
-    case Running /* The manager has loaders, and they are running */
-    case Suspended /* The manager has loaders, and their states are all suspended */
-
+    case Ready
+    case Running
+    case Suspended
 }
 
+/**
+    Responsible for creating and managing `Loader` objects and controlling of `NSURLSession` and `ImageCache`
+*/
 public class Manager {
 
     let session: NSURLSession
@@ -247,6 +257,9 @@ public class Manager {
     }
 }
 
+/**
+    Responsible for sending a request and receiving the response and calling blocks for the request.
+*/
 public class Loader {
 
     let delegate: Manager
@@ -276,15 +289,15 @@ public class Loader {
 
     // MARK: task
 
-    internal func suspend() {
+    public func suspend() {
         task.suspend()
     }
 
-    internal func resume() {
+    public func resume() {
         task.resume()
     }
 
-    internal func cancel() {
+    public func cancel() {
         task.cancel()
     }
 
@@ -325,18 +338,30 @@ public class Loader {
     }
 }
 
+/**
+    Creates `Loader` object using the shared manager instance for the specified URL.
+*/
 public func load(URL: NSURL) -> Loader {
     return Manager.sharedInstance.load(URL)
 }
 
+/**
+    Suspends `Loader` object using the shared manager instance for the specified URL.
+*/
 public func suspend(URL: NSURL) -> Loader? {
     return Manager.sharedInstance.suspend(URL)
 }
 
+/**
+    Cancels `Loader` object using the shared manager instance for the specified URL.
+*/
 public func cancel(URL: NSURL) -> Loader? {
     return Manager.sharedInstance.cancel(URL)
 }
 
+/**
+    Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
+*/
 public func cache(URL: NSURL) -> UIImage? {
     return Manager.sharedInstance.cache[URL]
 }
