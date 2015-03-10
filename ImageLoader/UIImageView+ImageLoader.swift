@@ -12,6 +12,9 @@ import UIKit
 private var ImageLoaderURLKey: UInt = 0
 private var ImageLoaderBlockKey: UInt = 0
 
+/**
+    Extension using ImageLoader sends a request, receives image and displays.
+*/
 extension UIImageView {
 
     // MARK: - properties
@@ -33,9 +36,6 @@ extension UIImageView {
             objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
         }
     }
-}
-
-extension UIImageView {
 
     // MARK: - public
     public func load(URL: NSURL) {
