@@ -19,7 +19,7 @@ extension String {
             nil,
             "!*'\"();:@&=+$,/?%#[]% ",
             CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding))
-        return str
+        return str as String
 
     }
 }
@@ -44,7 +44,7 @@ class Diskcached: NSObject {
         }
 
         var path: String {
-            let cachePath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+            let cachePath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as! String
             let imagePath = "swift.imageloader.diskcached"
 
             return cachePath.stringByAppendingPathComponent(imagePath)
