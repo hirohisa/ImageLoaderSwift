@@ -10,7 +10,7 @@ import UIKit
 import ImageLoader
 
 extension UIButton {
-    convenience init(title: NSString, highlightedColor: UIColor) {
+    convenience init(title: String, highlightedColor: UIColor) {
         self.init()
         frame = CGRect(x: 0, y: 0, width: 100, height: 50)
         setTitle(title, forState: .Normal)
