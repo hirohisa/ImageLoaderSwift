@@ -20,7 +20,12 @@ Requirements
 ----------
 
 - iOS 7.0+
-- Xcode 6.1
+- Xcode 6.1+ Swift 1.1+
+
+ImageLoader | Xcode | Swift | travis-ci
+----------- | ----- | ----- | ---------
+0.2.x | 6.1, 6.2 | 1.1 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/0.2.1.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
+0.3.x | 6.3 | 1.2 | unsupport
 
 Installation
 ----------
@@ -35,7 +40,7 @@ git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
 - Install with CocoaPods to write Podfile
 
 ```ruby
-pod 'ImageLoader', :git => 'https://github.com/hirohisa/ImageLoaderSwift.git', :branch => 'master'
+pod 'ImageLoader', '~> 0.2.0'
 ```
 
 - Copy ImageLoader class files into your project
