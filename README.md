@@ -22,6 +22,8 @@ Requirements
 - iOS 7.0+
 - Xcode 6.1
 
+If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
+
 Installation
 ----------
 
