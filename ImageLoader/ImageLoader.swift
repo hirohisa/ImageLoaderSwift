@@ -9,6 +9,22 @@
 import Foundation
 import UIKit
 
+public protocol URLLiteralConvertible {
+    var URL: NSURL { get }
+}
+
+extension NSURL: URLLiteralConvertible {
+    public var URL: NSURL {
+        return self
+    }
+}
+
+extension String: URLLiteralConvertible {
+    public var URL: NSURL {
+        return NSURL(string: self)!
+    }
+}
+
 // MARK: Optimize image
 
 extension CGBitmapInfo {
@@ -160,7 +176,8 @@ public class Manager {
 
     // MARK: loading
 
-    internal func load(URL: NSURL) -> Loader {
+    internal func load(URL: URLLiteralConvertible) -> Loader {
+        let URL = URL.URL
         if let loader = delegate[URL] {
             loader.resume()
             return loader
@@ -175,7 +192,9 @@ public class Manager {
         return loader
     }
 
-    internal func suspend(URL: NSURL) -> Loader? {
+    internal func suspend(URL: URLLiteralConvertible) -> Loader? {
+        let URL = URL.URL
+
         if let loader = delegate[URL] {
             loader.suspend()
             return loader
@@ -184,7 +203,8 @@ public class Manager {
         return nil
     }
 
-    internal func cancel(URL: NSURL, block: Block? = nil) -> Loader? {
+    internal func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
+        let URL = URL.URL
 
         if let loader = delegate[URL] {
 
@@ -341,28 +361,30 @@ public class Loader {
 /**
     Creates `Loader` object using the shared manager instance for the specified URL.
 */
-public func load(URL: NSURL) -> Loader {
+public func load(URL: URLLiteralConvertible) -> Loader {
     return Manager.sharedInstance.load(URL)
 }
 
 /**
     Suspends `Loader` object using the shared manager instance for the specified URL.
 */
-public func suspend(URL: NSURL) -> Loader? {
+public func suspend(URL: URLLiteralConvertible) -> Loader? {
     return Manager.sharedInstance.suspend(URL)
 }
 
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
-public func cancel(URL: NSURL) -> Loader? {
+public func cancel(URL: URLLiteralConvertible) -> Loader? {
     return Manager.sharedInstance.cancel(URL)
 }
 
 /**
     Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
 */
-public func cache(URL: NSURL) -> UIImage? {
+public func cache(URL: URLLiteralConvertible) -> UIImage? {
+    let URL = URL.URL
+
     return Manager.sharedInstance.cache[URL]
 }
 

@@ -38,21 +38,23 @@ extension UIImageView {
     }
 
     // MARK: - public
-    public func load(URL: NSURL) {
+    public func load(URL: URLLiteralConvertible) {
         load(URL, placeholder: nil) { _ in }
     }
 
-    public func load(URL: NSURL, placeholder: UIImage?) {
+    public func load(URL: URLLiteralConvertible, placeholder: UIImage?) {
         load(URL, placeholder: placeholder) { _ in }
     }
 
 
-    public func load(URL: NSURL, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
+    public func load(URL: URLLiteralConvertible, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
         cancelLoading()
 
         if let placeholder = placeholder {
             image = placeholder
         }
+
+        let URL = URL.URL
 
         self.URL = URL
         _load(URL, completionHandler: completionHandler)
