@@ -1,5 +1,5 @@
 //
-//  NSURL.swift
+//  Utils.swift
 //  ImageLoaderExample
 //
 //  Created by Hirohisa Kawasaki on 12/18/14.
