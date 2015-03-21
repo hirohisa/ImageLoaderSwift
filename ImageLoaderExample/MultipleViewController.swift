@@ -20,7 +20,7 @@ class MultipleViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-        let URL = NSURL.imageURL(indexPath.row)
+        let URL = String.imageURL(indexPath.row)
         let placeholder = UIImage(named: "black.jpg")!
         cell.imageView?.load(URL, placeholder: placeholder, completionHandler:  { (URL, image, error) -> () in
             println("URL \(URL)")
