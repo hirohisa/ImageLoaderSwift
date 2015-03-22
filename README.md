@@ -14,7 +14,7 @@ Features
 - [ ] Comprehensive Unit Test Coverage
 - [x] Optimize image with frame and scale
 - [x] Control Loader to resume, suspend and cancel with URL.
-- [ ] Enable to set `NSURL` and `String` on `.load(URL)`
+- [x] Enable to set `NSURL` and `String` on `.load(URL)`
 
 Requirements
 ----------
