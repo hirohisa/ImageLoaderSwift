@@ -20,17 +20,15 @@ extension String {
             "!*'\"();:@&=+$,/?%#[]% ",
             CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding))
         return str
-
     }
 }
 
 class Diskcached: NSObject {
 
-    private var images: [NSURL: UIImage]  = [NSURL: UIImage]()
+    private var images = [NSURL: UIImage]()
 
-    class Directory: NSObject {
-        override init() {
-            super.init()
+    class Directory {
+        init() {
             createDirectory()
         }
 
@@ -44,16 +42,15 @@ class Diskcached: NSObject {
         }
 
         var path: String {
-            let cachePath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
-            let imagePath = "swift.imageloader.diskcached"
+            let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
+            let directoryName = "swift.imageloader.diskcached"
 
-            return cachePath.stringByAppendingPathComponent(imagePath)
+            return cacheDirectory.stringByAppendingPathComponent(directoryName)
         }
     }
-    let directory: Directory = Directory()
+    let directory = Directory()
 
     private let _queue = dispatch_queue_create("swift.imageloader.queues.diskcached", DISPATCH_QUEUE_SERIAL)
-
 }
 
 // MARK: accessor
@@ -72,6 +69,7 @@ extension Diskcached {
 
         return nil
     }
+
     private func savePath(name: String ) -> String {
         return directory.path.stringByAppendingPathComponent(name.escape())
     }
@@ -91,7 +89,6 @@ extension Diskcached {
 
         dispatch_async(_queue, block)
     }
-
 }
 
 // MARK: ImageLoaderCacheProtocol
@@ -119,5 +116,4 @@ extension Diskcached: ImageCache {
             }
         }
     }
-
 }
