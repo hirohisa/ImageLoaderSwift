@@ -130,7 +130,7 @@ public enum ImageLoaderState : Int {
 /**
     Responsible for creating and managing `Loader` objects and controlling of `NSURLSession` and `ImageCache`
 */
-public class Manager {
+public class ImageLoaderManager {
 
     let session: NSURLSession
     let cache: ImageCache
@@ -138,9 +138,9 @@ public class Manager {
     public var inflatesImage: Bool = true
 
     // MARK: singleton instance
-    public class var sharedInstance: Manager {
+    public class var sharedInstance: ImageLoaderManager {
         struct Singleton {
-            static let instance = Manager()
+            static let instance = ImageLoaderManager()
         }
 
         return Singleton.instance
@@ -159,7 +159,7 @@ public class Manager {
 
         var status: ImageLoaderState = .Ready
 
-        for loader: Loader in delegate.loaders.values {
+        for loader: ImageLoader in delegate.loaders.values {
             switch loader.state {
             case .Running:
                 status = .Running
@@ -176,7 +176,7 @@ public class Manager {
 
     // MARK: loading
 
-    internal func load(URL: URLLiteralConvertible) -> Loader {
+    internal func load(URL: URLLiteralConvertible) -> ImageLoader {
         let URL = URL.URL
         if let loader = delegate[URL] {
             loader.resume()
@@ -187,12 +187,12 @@ public class Manager {
         request.setValue("image/*", forHTTPHeaderField: "Accept")
         let task = session.dataTaskWithRequest(request)
 
-        let loader = Loader(task: task, delegate: self)
+        let loader = ImageLoader(task: task, delegate: self)
         delegate[URL] = loader
         return loader
     }
 
-    internal func suspend(URL: URLLiteralConvertible) -> Loader? {
+    internal func suspend(URL: URLLiteralConvertible) -> ImageLoader? {
         let URL = URL.URL
 
         if let loader = delegate[URL] {
@@ -203,7 +203,7 @@ public class Manager {
         return nil
     }
 
-    internal func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
+    internal func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> ImageLoader? {
         let URL = URL.URL
 
         if let loader = delegate[URL] {
@@ -226,12 +226,12 @@ public class Manager {
     class SessionDataDelegate: NSObject, NSURLSessionDataDelegate {
 
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        private var loaders: [NSURL: Loader]  = [NSURL: Loader]()
+        private var loaders: [NSURL: ImageLoader]  = [NSURL: ImageLoader]()
 
-        subscript (URL: NSURL) -> Loader? {
+        subscript (URL: NSURL) -> ImageLoader? {
 
             get {
-                var loader : Loader?
+                var loader : ImageLoader?
                 dispatch_sync(_queue) {
                     loader = self.loaders[URL]
                 }
@@ -246,7 +246,7 @@ public class Manager {
             }
         }
 
-        private func remove(URL: NSURL) -> Loader? {
+        private func remove(URL: NSURL) -> ImageLoader? {
 
             if let loader = self[URL] {
                 loaders.removeValueForKey(URL)
@@ -280,15 +280,15 @@ public class Manager {
 /**
     Responsible for sending a request and receiving the response and calling blocks for the request.
 */
-public class Loader {
+public class ImageLoader {
 
-    let delegate: Manager
+    let delegate: ImageLoaderManager
     let task: NSURLSessionDataTask
     var receivedData: NSMutableData = NSMutableData()
     let inflatesImage: Bool
     internal var blocks: [Block] = []
 
-    init (task: NSURLSessionDataTask, delegate: Manager) {
+    init (task: NSURLSessionDataTask, delegate: ImageLoaderManager) {
         self.task = task
         self.delegate = delegate
         self.inflatesImage = delegate.inflatesImage
@@ -368,22 +368,22 @@ public class Loader {
 /**
     Creates `Loader` object using the shared manager instance for the specified URL.
 */
-public func load(URL: URLLiteralConvertible) -> Loader {
-    return Manager.sharedInstance.load(URL)
+public func load(URL: URLLiteralConvertible) -> ImageLoader {
+    return ImageLoaderManager.sharedInstance.load(URL)
 }
 
 /**
     Suspends `Loader` object using the shared manager instance for the specified URL.
 */
-public func suspend(URL: URLLiteralConvertible) -> Loader? {
-    return Manager.sharedInstance.suspend(URL)
+public func suspend(URL: URLLiteralConvertible) -> ImageLoader? {
+    return ImageLoaderManager.sharedInstance.suspend(URL)
 }
 
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
-public func cancel(URL: URLLiteralConvertible) -> Loader? {
-    return Manager.sharedInstance.cancel(URL)
+public func cancel(URL: URLLiteralConvertible) -> ImageLoader? {
+    return ImageLoaderManager.sharedInstance.cancel(URL)
 }
 
 /**
@@ -392,9 +392,9 @@ public func cancel(URL: URLLiteralConvertible) -> Loader? {
 public func cache(URL: URLLiteralConvertible) -> UIImage? {
     let URL = URL.URL
 
-    return Manager.sharedInstance.cache[URL]
+    return ImageLoaderManager.sharedInstance.cache[URL]
 }
 
 public var state: ImageLoaderState {
-    return Manager.sharedInstance.state
+    return ImageLoaderManager.sharedInstance.state
 }
