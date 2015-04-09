@@ -17,7 +17,7 @@
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
 		A125B14D1A5F620B00250601 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A125B14C1A5F620B00250601 /* ImageLoader.framework */; };
 		A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */; };
-		A1EE65CC1A41F9DF00BEA147 /* NSURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */; };
+		A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
 		A125B14C1A5F620B00250601 /* ImageLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageLoader.framework; path = "build/Release-iphoneos/ImageLoader.framework"; sourceTree = "<group>"; };
 		A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuspendSampleViewController.swift; sourceTree = "<group>"; };
-		A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURL.swift; sourceTree = "<group>"; };
+		A1EE65CB1A41F9DF00BEA147 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +74,7 @@
 				65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */,
 				65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */,
 				A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */,
-				A1EE65CB1A41F9DF00BEA147 /* NSURL.swift */,
+				A1EE65CB1A41F9DF00BEA147 /* Utils.swift */,
 				65D6FBC51A03859E00CF1DB7 /* black.jpg */,
 				65D6FBA61A03855700CF1DB7 /* Images.xcassets */,
 				65D6FBA81A03855700CF1DB7 /* LaunchScreen.xib */,
@@ -162,7 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1EE65CC1A41F9DF00BEA147 /* NSURL.swift in Sources */,
+				A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */,
 				A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */,
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
