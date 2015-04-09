@@ -1,10 +1,10 @@
-language: objective-c 
+language: objective-c
 
 before_install:
   - sudo pip install cpp-coveralls
 
 script:
-  - make clean test
+  #- make clean test
 
 after_success:
   #- make send-coverage

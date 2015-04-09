@@ -257,8 +257,8 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-            let URL = dataTask.originalRequest.URL // TODO: status code 3xx
-            if let loader = self[URL] {
+            // TODO: status code 3xx
+            if let URL = dataTask.originalRequest.URL, let loader = self[URL] {
                 loader.receive(data)
             }
         }
@@ -268,9 +268,9 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-            let URL = task.originalRequest.URL // TODO: status code 3xx
+            // TODO: status code 3xx
             // loader completion, and store remove loader
-            if let loader = self[URL] {
+            if let URL = task.originalRequest.URL, let loader = self[URL] {
                 loader.complete(error)
             }
         }
@@ -340,22 +340,29 @@ public class Loader {
     private func complete(error: NSError?) {
 
         var image: UIImage?
-        let URL = task.originalRequest.URL
-        if error == nil {
-            image = UIImage(data: receivedData)
-            if inflatesImage {
-                image = image?.inflated()
-            }
-            if let image = image {
-                delegate.cache[URL] = image
-            }
-        }
+        if let URL = task.originalRequest.URL {
 
-        for block: Block in blocks {
-            block.completionHandler(URL, image, error)
+            if error == nil {
+                _toCache(URL, data: receivedData)
+            }
+
+            for block: Block in blocks {
+                block.completionHandler(URL, image, error)
+            }
+            blocks = []
         }
-        blocks = []
     }
+
+    private func _toCache(URL: NSURL, data: NSData) {
+        var image = UIImage(data: data)
+        if inflatesImage {
+            image = image?.inflated()
+        }
+        if let image = image {
+            delegate.cache[URL] = image
+        }
+    }
+
 }
 
 /**
