@@ -64,8 +64,8 @@ class RootViewController: UITableViewController {
             break
         }
 
-        if viewController != nil {
-            navigationController?.pushViewController(viewController!, animated: true)
+        if let viewController = viewController {
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
