@@ -121,7 +121,7 @@ internal class Block: NSObject {
     Running:    The manager has loaders, and they are running
     Suspended:  The manager has loaders, and their states are all suspended
 */
-public enum ImageLoaderState : Int {
+public enum State {
     case Ready
     case Running
     case Suspended
@@ -155,9 +155,9 @@ public class Manager {
 
     // MARK: state
 
-    var state: ImageLoaderState {
+    var state: State {
 
-        var status: ImageLoaderState = .Ready
+        var status: State = .Ready
 
         for loader: Loader in delegate.loaders.values {
             switch loader.state {
@@ -395,6 +395,6 @@ public func cache(URL: URLLiteralConvertible) -> UIImage? {
     return Manager.sharedInstance.cache[URL]
 }
 
-public var state: ImageLoaderState {
+public var state: State {
     return Manager.sharedInstance.state
 }

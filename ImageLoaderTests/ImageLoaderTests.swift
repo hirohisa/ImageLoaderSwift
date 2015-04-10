@@ -26,7 +26,7 @@ extension NSURLSessionTaskState {
     }
 }
 
-extension ImageLoaderState {
+extension State {
 
     func toString() -> String {
         switch self {
