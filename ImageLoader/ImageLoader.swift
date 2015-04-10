@@ -343,7 +343,8 @@ public class Loader {
         if let URL = task.originalRequest.URL {
 
             if error == nil {
-                _toCache(URL, data: receivedData)
+                image = UIImage(data: receivedData)
+                _toCache(URL, image: image)
             }
 
             for block: Block in blocks {
@@ -353,8 +354,8 @@ public class Loader {
         }
     }
 
-    private func _toCache(URL: NSURL, data: NSData) {
-        var image = UIImage(data: data)
+    private func _toCache(URL: NSURL, image _image: UIImage?) {
+        var image = _image
         if inflatesImage {
             image = image?.inflated()
         }
