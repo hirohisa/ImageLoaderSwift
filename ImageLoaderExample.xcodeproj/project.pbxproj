@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6578B7341A5BE1FE008D85D6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA81A03855700CF1DB7 /* LaunchScreen.xib */; };
+		659D34AB1AD7A2B800FEFABC /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659D34AA1AD7A2B800FEFABC /* CollectionViewController.swift */; };
 		65AB21F71A5BE3C1007E6D40 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA31A03855700CF1DB7 /* Main.storyboard */; };
 		65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */; };
 		65D6FBA71A03855700CF1DB7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA61A03855700CF1DB7 /* Images.xcassets */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		659D34AA1AD7A2B800FEFABC /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		65D6FB9A1A03855700CF1DB7 /* ImageLoaderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageLoaderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65D6FB9E1A03855700CF1DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */,
 				65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */,
 				A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */,
+				659D34AA1AD7A2B800FEFABC /* CollectionViewController.swift */,
 				A1EE65CB1A41F9DF00BEA147 /* Utils.swift */,
 				65D6FBC51A03859E00CF1DB7 /* black.jpg */,
 				65D6FBA61A03855700CF1DB7 /* Images.xcassets */,
@@ -166,6 +169,7 @@
 				A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */,
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
+				659D34AB1AD7A2B800FEFABC /* CollectionViewController.swift in Sources */,
 				65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */,
 				65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */,
 			);

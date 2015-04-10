@@ -30,6 +30,10 @@ class RootViewController: UITableViewController {
 
         case 2:
             cell.textLabel?.text = "Suspend"
+
+        case 3:
+            cell.textLabel?.text = "CollectionView"
+
         default:
             break
         }
@@ -53,12 +57,18 @@ class RootViewController: UITableViewController {
         case 2:
             viewController = SuspendSampleViewController()
 
+        case 3:
+            let collectionViewLayout = UICollectionViewFlowLayout()
+            collectionViewLayout.itemSize = CGSize(width: view.frame.width/2 - 1, height: 200)
+            collectionViewLayout.minimumInteritemSpacing = 1
+            viewController = CollectionViewController(collectionViewLayout: collectionViewLayout)
+
         default:
             break
         }
 
-        if viewController != nil {
-            navigationController?.pushViewController(viewController!, animated: true)
+        if let viewController = viewController {
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
@@ -67,7 +77,7 @@ class RootViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
 }
