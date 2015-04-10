@@ -58,7 +58,10 @@ class RootViewController: UITableViewController {
             viewController = SuspendSampleViewController()
 
         case 3:
-            viewController = CollectionViewController()
+            let collectionViewLayout = UICollectionViewFlowLayout()
+            collectionViewLayout.itemSize = CGSize(width: view.frame.width/2 - 1, height: 200)
+            collectionViewLayout.minimumInteritemSpacing = 1
+            viewController = CollectionViewController(collectionViewLayout: collectionViewLayout)
 
         default:
             break
