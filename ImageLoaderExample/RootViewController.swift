@@ -30,6 +30,10 @@ class RootViewController: UITableViewController {
 
         case 2:
             cell.textLabel?.text = "Suspend"
+
+        case 3:
+            cell.textLabel?.text = "CollectionView"
+
         default:
             break
         }
@@ -53,6 +57,9 @@ class RootViewController: UITableViewController {
         case 2:
             viewController = SuspendSampleViewController()
 
+        case 3:
+            viewController = CollectionViewController()
+
         default:
             break
         }
@@ -67,7 +74,7 @@ class RootViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
 }
