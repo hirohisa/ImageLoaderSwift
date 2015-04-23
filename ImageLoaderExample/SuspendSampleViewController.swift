@@ -11,7 +11,7 @@ import ImageLoader
 
 class SuspendSampleViewController: UITableViewController {
 
-    var URLs: [NSURL] = []
+    var URLs = [NSURL]()
 
     override func viewDidLoad() {
         super.viewDidLoad()

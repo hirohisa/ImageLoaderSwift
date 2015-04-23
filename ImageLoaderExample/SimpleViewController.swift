@@ -83,7 +83,7 @@ class SimpleViewController: UIViewController {
     }
 
     func testLoad(imageView: UIImageView, URL: NSURL) {
-        imageView.load(URL, placeholder: nil) { (URL, image, error) -> () in
+        imageView.load(URL, placeholder: nil) { URL, image, error in
             println("URL \(URL)")
             println("error \(error)")
         }
