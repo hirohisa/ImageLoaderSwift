@@ -55,15 +55,13 @@ Usage
 **load**
 ```swift
 
-let URL: NSURL = NSURL(string: "http://image")!
-ImageLoader.load(URL).completionHandler { _ in }
+ImageLoader.load("http://image").completionHandler { _ in }
 ```
 
 **suspend**
 ```swift
 
-let URL: NSURL = NSURL(string: "http://image")!
-ImageLoader.suspend(URL)
+ImageLoader.suspend("http://image")
 ```
 
 
@@ -71,16 +69,14 @@ ImageLoader.suspend(URL)
 
 ```swift
 
-let URL: NSURL = NSURL(string: "http://image")!
-imageView.load(URL)
+imageView.load("http://image")
 ```
 
 or
 
 ```swift
 
-let URL: NSURL = NSURL(string: "http://image")!
-imageView.load(URL, placeholder: nil) { _ in ... }
+imageView.load("http://image", placeholder: nil) { _ in ... }
 ```
 
 
