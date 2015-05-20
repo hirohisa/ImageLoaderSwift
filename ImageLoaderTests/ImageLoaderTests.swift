@@ -83,6 +83,15 @@ class ImageLoaderTests: XCTestCase {
         }
     }
 
+    func testUseOHHTTPStubs() {
+        OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
+            return true
+        }, withStubResponse: { request -> OHHTTPStubsResponse! in
+
+            return OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
+        })
+    }
+
     func testCancelWithURL() {
 
         var URL: NSURL!
