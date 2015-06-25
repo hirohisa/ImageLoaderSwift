@@ -40,20 +40,6 @@ extension State {
     }
 }
 
-
-class StringTests: XCTestCase {
-
-    func testEscape() {
-        let string: String = "http://test.com"
-        let valid: String = "http%3A%2F%2Ftest.com"
-
-        XCTAssertNotEqual(string, string.escape(),
-            "String cant escape, \(string.escape())")
-        XCTAssertEqual(valid, string.escape(),
-            "String cant escape, \(string.escape())")
-    }
-}
-
 class ImageLoaderTests: XCTestCase {
 
     override func setUp() {
@@ -110,4 +96,46 @@ class ImageLoaderTests: XCTestCase {
 
     }
 
+}
+
+class StringTests: XCTestCase {
+
+    func testEscape() {
+        let string: String = "http://test.com"
+        let valid: String = "http%3A%2F%2Ftest.com"
+
+        XCTAssertNotEqual(string, string.escape(),
+            "String cant escape, \(string.escape())")
+        XCTAssertEqual(valid, string.escape(),
+            "String cant escape, \(string.escape())")
+    }
+}
+
+class URLLiteralConvertibleTests: XCTestCase {
+
+    override func setUp() {
+        super.setUp()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+    }
+
+    func testEscapes() {
+        var URL: NSURL!
+        var valid: NSURL!
+
+        URL = "http://twitter.com/?status=Hello World".URL
+        valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
+
+        XCTAssertEqual(URL, valid, "result that \(URL) is escaped is failed.")
+    }
+
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measureBlock() {
+            // Put the code you want to measure the time of here.
+        }
+    }
+    
 }
