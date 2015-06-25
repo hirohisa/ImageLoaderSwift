@@ -21,6 +21,9 @@ extension NSURL: URLLiteralConvertible {
 
 extension String: URLLiteralConvertible {
     public var URL: NSURL {
+        if let string = stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+            return NSURL(string: string)!
+        }
         return NSURL(string: self)!
     }
 }

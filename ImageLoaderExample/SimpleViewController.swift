@@ -67,22 +67,22 @@ class SimpleViewController: UIViewController {
     // MARK: - try
 
     func tryLoadSuccessURL() {
-        let URL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg")!
-        tryLoad(URL)
+        let string = "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg"
+        tryLoad(string)
     }
 
     func tryLoadFailureURL() {
-        let URL = NSURL(string: "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg")!
-        tryLoad(URL)
+        let string = "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg"
+        tryLoad(string)
     }
 
-    func tryLoad(URL: NSURL) {
+    func tryLoad(URL: URLLiteralConvertible) {
 
         testLoad(imageView, URL: URL)
 
     }
 
-    func testLoad(imageView: UIImageView, URL: NSURL) {
+    func testLoad(imageView: UIImageView, URL: URLLiteralConvertible) {
         imageView.load(URL, placeholder: nil) { URL, image, error in
             println("URL \(URL)")
             println("error \(error)")

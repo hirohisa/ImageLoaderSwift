@@ -13,7 +13,7 @@ extension String {
 
     func escape() -> String {
 
-        var str = CFURLCreateStringByAddingPercentEscapes(
+        let str = CFURLCreateStringByAddingPercentEscapes(
             kCFAllocatorDefault,
             self,
             nil,
