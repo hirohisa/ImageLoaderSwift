@@ -113,14 +113,6 @@ class StringTests: XCTestCase {
 
 class URLLiteralConvertibleTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func testEscapes() {
         var URL: NSURL!
         var valid: NSURL!
@@ -129,13 +121,6 @@ class URLLiteralConvertibleTests: XCTestCase {
         valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
 
         XCTAssertEqual(URL, valid, "result that \(URL) is escaped is failed.")
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
     }
     
 }
