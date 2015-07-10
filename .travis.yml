@@ -1,10 +1,11 @@
 language: objective-c
+osx_image: xcode6.4
 
 before_install:
-  - sudo pip install cpp-coveralls
+  #- gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 
 script:
-  #- make clean test
+  - make clean test
 
 after_success:
   #- make send-coverage
