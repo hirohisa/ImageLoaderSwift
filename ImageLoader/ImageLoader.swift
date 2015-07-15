@@ -293,7 +293,7 @@ public class Manager {
 */
 public class Loader {
 
-    let delegate: Manager
+    unowned let delegate: Manager
     let task: NSURLSessionDataTask
     var receivedData: NSMutableData = NSMutableData()
     let inflatesImage: Bool
