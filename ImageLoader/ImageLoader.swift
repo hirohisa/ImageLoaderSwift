@@ -146,6 +146,8 @@ public class Manager {
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var inflatesImage: Bool = true
 
+    private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
+
     // MARK: singleton instance
     public class var sharedInstance: Manager {
         struct Singleton {
@@ -348,19 +350,34 @@ public class Loader {
 
     private func complete(error: NSError?) {
 
-        var image: UIImage?
         if let URL = task.originalRequest.URL {
 
-            if error == nil {
-                image = UIImage(data: receivedData)
-                _toCache(URL, image: image)
+            if let error = error {
+                failure(URL, error: error)
+                return
             }
 
-            for block: Block in blocks {
-                block.completionHandler(URL, image, error)
+            dispatch_async(delegate.decompressingQueue) {
+                self.success(URL, data: self.receivedData)
             }
-            blocks = []
         }
+    }
+
+    private func success(URL: NSURL, data: NSData) {
+        let image = UIImage(data: data)
+        _toCache(URL, image: image)
+
+        for block: Block in blocks {
+            block.completionHandler(URL, image, nil)
+        }
+        blocks = []
+    }
+
+    private func failure(URL: NSURL, error: NSError) {
+        for block: Block in blocks {
+            block.completionHandler(URL, nil, error)
+        }
+        blocks = []
     }
 
     private func _toCache(URL: NSURL, image _image: UIImage?) {
