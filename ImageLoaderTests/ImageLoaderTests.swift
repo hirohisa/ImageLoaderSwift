@@ -44,10 +44,35 @@ class ImageLoaderTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        setUpOHHTTPStubs()
     }
 
     override func tearDown() {
+        removeOHHTTPStubs()
         super.tearDown()
+    }
+
+    func setUpOHHTTPStubs() {
+        OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
+            return true
+            }, withStubResponse: { request -> OHHTTPStubsResponse! in
+
+                var response = OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
+
+                if let path = request.URL?.path as String? {
+                    if let i = path.toInt() where 400 <= i && i < 600 {
+                        response.statusCode = Int32(i)
+                    }
+                }
+
+                response.responseTime = 0.2
+
+                return response
+        })
+    }
+
+    func removeOHHTTPStubs() {
+        OHHTTPStubs.removeAllStubs()
     }
 
     func testLoadWithURL() {
@@ -74,15 +99,6 @@ class ImageLoaderTests: XCTestCase {
         waitForExpectationsWithTimeout(5) { error in
             XCTAssertNil(error, "loader did not finish")
         }
-    }
-
-    func testUseOHHTTPStubs() {
-        OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
-            return true
-        }, withStubResponse: { request -> OHHTTPStubsResponse! in
-
-            return OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
-        })
     }
 
     func testCancelWithURL() {
