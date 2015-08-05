@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 import ImageLoader
+import OHHTTPStubs
 
 extension NSURLSessionTaskState {
 
