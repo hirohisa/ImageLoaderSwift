@@ -47,7 +47,6 @@ class ImageLoaderTests: XCTestCase {
     }
 
     override func tearDown() {
-        NSRunLoop.currentRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
         super.tearDown()
     }
 
