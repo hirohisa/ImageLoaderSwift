@@ -75,7 +75,7 @@ class ImageLoaderTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    func testLoadWithURL() {
+    func testLoaderRunWithURL() {
 
         let expectation = expectationWithDescription("wait until loader complete")
 
@@ -101,7 +101,73 @@ class ImageLoaderTests: XCTestCase {
         }
     }
 
-    func testCancelWithURL() {
+    func testLoadersRunWithURL() {
+
+        var URL: NSURL!
+        URL = NSURL(string: "http://test/path")
+
+        let manager: Manager = Manager()
+        let loader1: Loader = manager.load(URL)
+
+        URL = NSURL(string: "http://test/path2")
+        let loader2: Loader = manager.load(URL)
+
+        XCTAssert(loader1.state == .Running,
+            "loader's status is not running, now is \(loader1.state.toString())")
+        XCTAssert(loader2.state == .Running,
+            "loader's status is not running, now is \(loader2.state.toString())")
+        XCTAssert(loader1 !== loader2,
+            "loaders are same")
+
+    }
+
+
+    func testLoaderRunWithSameURL() {
+
+        var URL: NSURL!
+        URL = NSURL(string: "http://test/path")
+
+        let manager: Manager = Manager()
+        let loader1: Loader = manager.load(URL)
+
+        URL = NSURL(string: "http://test/path")
+        let loader2: Loader = manager.load(URL)
+
+        XCTAssert(loader1.state == .Running,
+            "loader's status is not running, now is \(loader1.state.toString())")
+        XCTAssert(loader2.state == .Running,
+            "loader's status is not running, now is \(loader2.state.toString())")
+        XCTAssert(loader1 === loader2,
+            "loaders are not same")
+
+    }
+
+    func testLoaderRunWith404() {
+
+        let expectation = expectationWithDescription("wait until loader complete")
+
+        var URL: NSURL!
+        URL = NSURL(string: "http://test/404")
+
+        let manager: Manager = Manager()
+        let loader: Loader = manager.load(URL)
+
+        XCTAssert(loader.state == .Running,
+            "loader's status is not running, now is \(loader.state.toString())")
+        loader.completionHandler { completedURL, image, error in
+
+            XCTAssertNil(image,
+                "image exist in completion block when status code is 404")
+
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(5) { error in
+            XCTAssertNil(error, "loader did not finish")
+        }
+    }
+
+    func testLoaderCancelWithURL() {
 
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
