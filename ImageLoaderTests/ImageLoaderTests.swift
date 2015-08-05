@@ -51,7 +51,9 @@ class ImageLoaderTests: XCTestCase {
         super.tearDown()
     }
 
-    func testConnetWithURL() {
+    func testLoadWithURL() {
+
+        let expectation = expectationWithDescription("wait until loader complete")
 
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
@@ -66,6 +68,12 @@ class ImageLoaderTests: XCTestCase {
                 "URL \(URL) and completedURL \(completedURL) are not same. ")
             XCTAssert(manager.state == .Ready,
                 "manager's state is not ready, now is \(manager.state.toString())")
+
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(5) { error in
+            XCTAssertNil(error, "loader did not finish")
         }
     }
 
