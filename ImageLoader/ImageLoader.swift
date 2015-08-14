@@ -85,7 +85,7 @@ extension UIImage {
             bitmapInfo
         )
 
-        let frame = CGRect(x: 0, y: 0, width: Int(width), height: Int(height))
+        let frame = CGRect(x: 0, y: 0, width: width, height: height)
 
         CGContextDrawImage(context, frame, CGImage)
         let inflatedImageRef = CGBitmapContextCreateImage(context)
@@ -113,9 +113,9 @@ public protocol ImageCache: NSObjectProtocol {
 
 }
 
-internal typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> ()
+typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> ()
 
-internal class Block: NSObject {
+class Block: NSObject {
 
     let completionHandler: CompletionHandler
     init(completionHandler: CompletionHandler) {
@@ -149,13 +149,7 @@ public class Manager {
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
     // MARK: singleton instance
-    public class var sharedInstance: Manager {
-        struct Singleton {
-            static let instance = Manager()
-        }
-
-        return Singleton.instance
-    }
+    public static let sharedInstance = Manager()
 
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
         cache: ImageCache = Diskcached()
@@ -168,9 +162,9 @@ public class Manager {
 
     var state: State {
 
-        var status: State = .Ready
+        var status = State.Ready
 
-        for loader: Loader in delegate.loaders.values {
+        for loader in delegate.loaders.values {
             switch loader.state {
             case .Running:
                 status = .Running
@@ -187,7 +181,7 @@ public class Manager {
 
     // MARK: loading
 
-    internal func load(URL: URLLiteralConvertible) -> Loader {
+    func load(URL: URLLiteralConvertible) -> Loader {
         let URL = URL.URL
         if let loader = delegate[URL] {
             loader.resume()
@@ -203,10 +197,8 @@ public class Manager {
         return loader
     }
 
-    internal func suspend(URL: URLLiteralConvertible) -> Loader? {
-        let URL = URL.URL
-
-        if let loader = delegate[URL] {
+    func suspend(URL: URLLiteralConvertible) -> Loader? {
+        if let loader = delegate[URL.URL] {
             loader.suspend()
             return loader
         }
@@ -214,10 +206,8 @@ public class Manager {
         return nil
     }
 
-    internal func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
-        let URL = URL.URL
-
-        if let loader = delegate[URL] {
+    func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
+        if let loader = delegate[URL.URL] {
 
             if let block = block {
                 loader.remove(block)
@@ -225,7 +215,7 @@ public class Manager {
 
             if loader.blocks.count == 0 || block == nil {
                 loader.cancel()
-                delegate.remove(URL)
+                delegate.remove(URL.URL)
             }
 
             return loader
@@ -237,7 +227,7 @@ public class Manager {
     class SessionDataDelegate: NSObject, NSURLSessionDataDelegate {
 
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        private var loaders: [NSURL: Loader]  = [NSURL: Loader]()
+        private var loaders = [NSURL: Loader]()
 
         subscript (URL: NSURL) -> Loader? {
 
@@ -251,8 +241,10 @@ public class Manager {
             }
 
             set {
-                dispatch_barrier_async(_queue) {
-                    self.loaders[URL] = newValue!
+                if let newValue = newValue {
+                    dispatch_barrier_async(_queue) {
+                        self.loaders[URL] = newValue
+                    }
                 }
             }
         }
@@ -334,14 +326,7 @@ public class Loader {
 
     private func remove(block: Block) {
         // needs to queue with sync
-        var newBlocks: [Block] = []
-        for b: Block in blocks {
-            if !b.isEqual(block) {
-                newBlocks.append(b)
-            }
-        }
-
-        blocks = newBlocks
+        blocks = blocks.filter{ !$0.isEqual(block) }
     }
 
     private func receive(data: NSData) {
@@ -380,8 +365,8 @@ public class Loader {
         blocks = []
     }
 
-    private func _toCache(URL: NSURL, image _image: UIImage?) {
-        var image = _image
+    private func _toCache(URL: NSURL, image: UIImage?) {
+        var image = image
         if inflatesImage {
             image = image?.inflated()
         }
