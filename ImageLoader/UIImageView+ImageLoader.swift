@@ -71,23 +71,14 @@ extension UIImageView {
 
     private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
 
-        weak var wSelf = self
         let completionHandler: (NSURL, UIImage?, NSError?) -> () = { URL, image, error in
 
-            if wSelf == nil {
-                return
-            }
-
-            dispatch_async(dispatch_get_main_queue(), {
-
+            dispatch_async(dispatch_get_main_queue(), { [weak self] in
                 // requesting is success then set image
-                if self.URL != nil && self.URL!.isEqual(URL) {
-                    if let image = image {
-                        wSelf!.image = image
-                    }
+                if let _self = self, let URL = _self.URL, let image = image where URL.isEqual(URL) {
+                    _self.image = image
                 }
                 completionHandler(URL, image, error)
-
             })
         }
 
