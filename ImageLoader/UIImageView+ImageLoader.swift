@@ -75,7 +75,7 @@ extension UIImageView {
 
             dispatch_async(dispatch_get_main_queue(), { [weak self] in
                 // requesting is success then set image
-                if let _self = self, let URL = _self.URL, let image = image where URL.isEqual(URL) {
+                if let _self = self, let _URL = _self.URL, let image = image where _URL.isEqual(URL) {
                     _self.image = image
                 }
                 completionHandler(URL, image, error)
