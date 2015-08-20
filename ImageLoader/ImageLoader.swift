@@ -163,7 +163,6 @@ public class Manager {
     var state: State {
 
         var status = State.Ready
-
         for loader in delegate.loaders.values {
             switch loader.state {
             case .Running:
@@ -208,7 +207,6 @@ public class Manager {
 
     func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
         if let loader = delegate[URL.URL] {
-
             if let block = block {
                 loader.remove(block)
             }
@@ -217,7 +215,6 @@ public class Manager {
                 loader.cancel()
                 delegate.remove(URL.URL)
             }
-
             return loader
         }
 
@@ -230,16 +227,13 @@ public class Manager {
         private var loaders = [NSURL: Loader]()
 
         subscript (URL: NSURL) -> Loader? {
-
             get {
                 var loader : Loader?
                 dispatch_sync(_queue) {
                     loader = self.loaders[URL]
                 }
-
                 return loader
             }
-
             set {
                 if let newValue = newValue {
                     dispatch_barrier_async(_queue) {
@@ -250,12 +244,10 @@ public class Manager {
         }
 
         private func remove(URL: NSURL) -> Loader? {
-
             if let loader = self[URL] {
                 loaders.removeValueForKey(URL)
                 return loader
             }
-
             return nil
         }
 
@@ -336,12 +328,10 @@ public class Loader {
     private func complete(error: NSError?) {
 
         if let URL = task.originalRequest.URL {
-
             if let error = error {
                 failure(URL, error: error)
                 return
             }
-
             dispatch_async(delegate.decompressingQueue) {
                 self.success(URL, data: self.receivedData)
             }
