@@ -88,7 +88,7 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
-        loader.completionHandler { completedURL, image, error in
+        loader.completionHandler { completedURL, image, error, cacheType in
             XCTAssertEqual(URL, completedURL,
                 "URL \(URL) and completedURL \(completedURL) are not same. ")
             XCTAssert(manager.state == .Ready,
@@ -155,7 +155,7 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
-        loader.completionHandler { completedURL, image, error in
+        loader.completionHandler { completedURL, image, error, cacheType in
 
             XCTAssertNil(image,
                 "image exist in completion block when status code is 404")

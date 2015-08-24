@@ -22,10 +22,18 @@ class MultipleViewController: UITableViewController {
 
         let URL = String.imageURL(indexPath.row)
         let placeholder = UIImage(named: "black.jpg")!
-        cell.imageView?.load(URL, placeholder: placeholder) { URL, image, error in
+        cell.imageView?.load(URL, placeholder: placeholder) { URL, image, error, cacheType in
             println("URL \(URL)")
             println("error \(error)")
             println("view's size \(cell.imageView?.frame.size), image's size \(cell.imageView?.image?.size)")
+            println("cacheType \(cacheType.hashValue)")
+            if cacheType == CacheType.None {
+                let transition = CATransition()
+                transition.duration = 0.5
+                transition.type = kCATransitionFade
+                cell.imageView?.layer.addAnimation(transition, forKey: nil)
+                cell.imageView?.image = image
+            }
         }
 
         return cell

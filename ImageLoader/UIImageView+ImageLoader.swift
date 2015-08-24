@@ -47,7 +47,7 @@ extension UIImageView {
     }
 
 
-    public func load(URL: URLLiteralConvertible, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
+    public func load(URL: URLLiteralConvertible, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?, CacheType) -> ()) {
         cancelLoading()
 
         if let placeholder = placeholder {
@@ -69,22 +69,22 @@ extension UIImageView {
     // MARK: - private
     private static let _requesting_queue = dispatch_queue_create("swift.imageloader.queues.requesting", DISPATCH_QUEUE_SERIAL)
 
-    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?) -> ()) {
+    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?, CacheType) -> ()) {
 
-        let completionHandler: (NSURL, UIImage?, NSError?) -> () = { URL, image, error in
+        let completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> () = { URL, image, error, cacheType in
 
             dispatch_async(dispatch_get_main_queue(), { [weak self] in
                 // requesting is success then set image
                 if let _self = self, let _URL = _self.URL, let image = image where _URL.isEqual(URL) {
                     _self.image = image
                 }
-                completionHandler(URL, image, error)
+                completionHandler(URL, image, error, cacheType)
             })
         }
 
         // caching
         if let image = Manager.sharedInstance.cache[URL] {
-            completionHandler(URL, image, nil)
+            completionHandler(URL, image, nil, .Disk)
             return
         }
 
