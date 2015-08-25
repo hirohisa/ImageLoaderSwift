@@ -136,9 +136,14 @@ public enum State {
     case Suspended
 }
 
+/**
+    Use to check where image is loaded from.
+    None:   fetching from network
+    Cache:  getting from `ImageCache`
+*/
 public enum CacheType {
     case None
-    case Disk
+    case Cache
 }
 
 /**

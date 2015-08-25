@@ -84,7 +84,7 @@ extension UIImageView {
 
         // caching
         if let image = Manager.sharedInstance.cache[URL] {
-            completionHandler(URL, image, nil, .Disk)
+            completionHandler(URL, image, nil, .Cache)
             return
         }
 
