@@ -113,7 +113,7 @@ public protocol ImageCache: NSObjectProtocol {
 
 }
 
-typealias CompletionHandler = (NSURL, UIImage?, NSError?) -> ()
+typealias CompletionHandler = (NSURL, UIImage?, NSError?, CacheType) -> ()
 
 class Block: NSObject {
 
@@ -134,6 +134,11 @@ public enum State {
     case Ready
     case Running
     case Suspended
+}
+
+public enum CacheType {
+    case None
+    case Disk
 }
 
 /**
@@ -294,7 +299,7 @@ public class Loader {
         return task.state
     }
 
-    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?) -> ()) -> Self {
+    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> ()) -> Self {
 
         let block = Block(completionHandler: completionHandler)
         blocks.append(block)
@@ -343,14 +348,14 @@ public class Loader {
         _toCache(URL, image: image)
 
         for block: Block in blocks {
-            block.completionHandler(URL, image, nil)
+            block.completionHandler(URL, image, nil, .None)
         }
         blocks = []
     }
 
     private func failure(URL: NSURL, error: NSError) {
         for block: Block in blocks {
-            block.completionHandler(URL, nil, error)
+            block.completionHandler(URL, nil, error, .None)
         }
         blocks = []
     }
