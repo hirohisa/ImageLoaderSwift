@@ -7,5 +7,5 @@ task :clean do
 end
 
 task :test do
-  sh "xcodebuild -workspace #{WORKSPACE} -scheme #{NAME} test -destination #{DESTINATION}"
+  sh "xcodebuild -workspace #{WORKSPACE} -scheme #{NAME} clean test -destination #{DESTINATION}"
 end
