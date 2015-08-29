@@ -83,8 +83,8 @@ class ImageLoaderTests: XCTestCase {
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
 
-        let manager: Manager = Manager()
-        let loader: Loader = manager.load(URL)
+        let manager = Manager()
+        let loader = manager.load(URL)
 
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
@@ -107,11 +107,11 @@ class ImageLoaderTests: XCTestCase {
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
 
-        let manager: Manager = Manager()
-        let loader1: Loader = manager.load(URL)
+        let manager = Manager()
+        let loader1 = manager.load(URL)
 
         URL = NSURL(string: "http://test/path2")
-        let loader2: Loader = manager.load(URL)
+        let loader2 = manager.load(URL)
 
         XCTAssert(loader1.state == .Running,
             "loader's status is not running, now is \(loader1.state.toString())")
@@ -123,16 +123,16 @@ class ImageLoaderTests: XCTestCase {
     }
 
 
-    func testLoaderRunWithSameURL() {
+    func testLoadersRunWithSameURL() {
 
         var URL: NSURL!
         URL = NSURL(string: "http://test/path")
 
-        let manager: Manager = Manager()
-        let loader1: Loader = manager.load(URL)
+        let manager = Manager()
+        let loader1 = manager.load(URL)
 
         URL = NSURL(string: "http://test/path")
-        let loader2: Loader = manager.load(URL)
+        let loader2 = manager.load(URL)
 
         XCTAssert(loader1.state == .Running,
             "loader's status is not running, now is \(loader1.state.toString())")
@@ -150,8 +150,8 @@ class ImageLoaderTests: XCTestCase {
         var URL: NSURL!
         URL = NSURL(string: "http://test/404")
 
-        let manager: Manager = Manager()
-        let loader: Loader = manager.load(URL)
+        let manager = Manager()
+        let loader = manager.load(URL)
 
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
@@ -191,8 +191,8 @@ class ImageLoaderTests: XCTestCase {
 class StringTests: XCTestCase {
 
     func testEscape() {
-        let string: String = "http://test.com"
-        let valid: String = "http%3A%2F%2Ftest.com"
+        let string = "http://test.com"
+        let valid = "http%3A%2F%2Ftest.com"
 
         XCTAssertNotEqual(string, string.escape(),
             "String cant escape, \(string.escape())")
@@ -204,11 +204,8 @@ class StringTests: XCTestCase {
 class URLLiteralConvertibleTests: XCTestCase {
 
     func testEscapes() {
-        var URL: NSURL!
-        var valid: NSURL!
-
-        URL = "http://twitter.com/?status=Hello World".URL
-        valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
+        let URL = "http://twitter.com/?status=Hello World".URL
+        let valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
 
         XCTAssertEqual(URL, valid, "result that \(URL) is escaped is failed.")
     }
