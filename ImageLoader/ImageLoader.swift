@@ -262,7 +262,6 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-            // TODO: status code 3xx
             if let URL = dataTask.originalRequest.URL, let loader = self[URL] {
                 loader.receive(data)
             }
@@ -273,8 +272,6 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-            // TODO: status code 3xx
-            // loader completion, and store remove loader
             if let URL = task.originalRequest.URL, let loader = self[URL] {
                 loader.complete(error)
             }
