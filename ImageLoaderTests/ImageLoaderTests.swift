@@ -58,10 +58,10 @@ class ImageLoaderTests: XCTestCase {
             return true
             }, withStubResponse: { request -> OHHTTPStubsResponse! in
 
-                var response = OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
+                let response = OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
 
                 if let path = request.URL?.path as String? {
-                    if let i = path.toInt() where 400 <= i && i < 600 {
+                    if let i = Int(path) where 400 <= i && i < 600 {
                         response.statusCode = Int32(i)
                     }
                 }

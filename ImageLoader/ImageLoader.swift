@@ -32,7 +32,7 @@ extension String: URLLiteralConvertible {
 
 extension CGBitmapInfo {
     private var alphaInfo: CGImageAlphaInfo? {
-        let info = self & .AlphaInfoMask
+        let info = self.intersect(.AlphaInfoMask)
         return CGImageAlphaInfo(rawValue: info.rawValue)
     }
 }
@@ -58,8 +58,8 @@ extension UIImage {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
 
-        switch (colorSpaceModel.value) {
-        case kCGColorSpaceModelRGB.value:
+        switch (colorSpaceModel.rawValue) {
+        case CGColorSpaceModel.RGB.rawValue:
 
             // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
             var info = CGImageAlphaInfo.PremultipliedFirst
@@ -70,7 +70,7 @@ extension UIImage {
                 break
             }
             bitmapInfo &= ~CGBitmapInfo.AlphaInfoMask
-            bitmapInfo |= CGBitmapInfo(info.rawValue)
+            bitmapInfo |= CGBitmapInfo(rawValue: info.rawValue)
         default:
             break
         }
