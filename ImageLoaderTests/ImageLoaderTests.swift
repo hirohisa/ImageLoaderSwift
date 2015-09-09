@@ -174,7 +174,6 @@ class ImageLoaderTests: XCTestCase {
         URL = NSURL(string: "http://test/path")
 
         let manager: Manager = Manager()
-        let loader: Loader = manager.load(URL)
         manager.cancel(URL, block: nil)
 
         XCTAssert(manager.state == .Ready,

@@ -49,7 +49,7 @@ class Diskcached: NSObject {
             let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
             let directoryName = "swift.imageloader.diskcached"
 
-            return cacheDirectory.stringByAppendingPathComponent(directoryName)
+            return cacheDirectory + "/" + directoryName
         }
     }
     let directory = Directory()
@@ -76,7 +76,7 @@ extension Diskcached {
     }
 
     private func savePath(name: String ) -> String {
-        return directory.path.stringByAppendingPathComponent(name.escape())
+        return directory.path + name.escape()
     }
 
     private func setObject(anObject: UIImage, forKey aKey: NSURL) {
