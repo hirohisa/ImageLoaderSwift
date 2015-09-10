@@ -56,9 +56,9 @@ class ImageLoaderTests: XCTestCase {
     func setUpOHHTTPStubs() {
         OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
             return true
-            }, withStubResponse: { request -> OHHTTPStubsResponse! in
-
-                let response = OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
+            }, withStubResponse: { request in
+                let data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
+                let response = OHHTTPStubsResponse(data: data, statusCode: 200, headers: nil)
 
                 if let path = request.URL?.path as String? {
                     if let i = Int(path) where 400 <= i && i < 600 {
