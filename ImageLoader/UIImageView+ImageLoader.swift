@@ -24,7 +24,7 @@ extension UIImageView {
             return objc_getAssociatedObject(self, &ImageLoaderURLKey) as? NSURL
         }
         set(newValue) {
-            objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -33,7 +33,7 @@ extension UIImageView {
             return objc_getAssociatedObject(self, &ImageLoaderBlockKey)
         }
         set(newValue) {
-            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 

@@ -18,15 +18,15 @@ class MultipleViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
         let URL = String.imageURL(indexPath.row)
         let placeholder = UIImage(named: "black.jpg")!
         cell.imageView?.load(URL, placeholder: placeholder) { URL, image, error, cacheType in
-            println("URL \(URL)")
-            println("error \(error)")
-            println("view's size \(cell.imageView?.frame.size), image's size \(cell.imageView?.image?.size)")
-            println("cacheType \(cacheType.hashValue)")
+            print("URL \(URL)")
+            print("error \(error)")
+            print("view's size \(cell.imageView?.frame.size), image's size \(cell.imageView?.image?.size)")
+            print("cacheType \(cacheType.hashValue)")
             if cacheType == CacheType.None {
                 let transition = CATransition()
                 transition.duration = 0.5

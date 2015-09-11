@@ -56,12 +56,12 @@ class ImageLoaderTests: XCTestCase {
     func setUpOHHTTPStubs() {
         OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
             return true
-            }, withStubResponse: { request -> OHHTTPStubsResponse! in
-
-                var response = OHHTTPStubsResponse(data: nil, statusCode: 200, headers: nil)
+            }, withStubResponse: { request in
+                let data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
+                let response = OHHTTPStubsResponse(data: data, statusCode: 200, headers: nil)
 
                 if let path = request.URL?.path as String? {
-                    if let i = path.toInt() where 400 <= i && i < 600 {
+                    if let i = Int(path) where 400 <= i && i < 600 {
                         response.statusCode = Int32(i)
                     }
                 }
@@ -174,7 +174,6 @@ class ImageLoaderTests: XCTestCase {
         URL = NSURL(string: "http://test/path")
 
         let manager: Manager = Manager()
-        let loader: Loader = manager.load(URL)
         manager.cancel(URL, block: nil)
 
         XCTAssert(manager.state == .Ready,

@@ -21,7 +21,7 @@ extension NSURL: URLLiteralConvertible {
 
 extension String: URLLiteralConvertible {
     public var URL: NSURL {
-        if let string = stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+        if let string = stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) {
             return NSURL(string: string)!
         }
         return NSURL(string: self)!
@@ -32,7 +32,7 @@ extension String: URLLiteralConvertible {
 
 extension CGBitmapInfo {
     private var alphaInfo: CGImageAlphaInfo? {
-        let info = self & .AlphaInfoMask
+        let info = self.intersect(.AlphaInfoMask)
         return CGImageAlphaInfo(rawValue: info.rawValue)
     }
 }
@@ -53,13 +53,13 @@ extension UIImage {
             return self
         }
 
-        var bitmapInfo = CGImageGetBitmapInfo(CGImage)
-        var alphaInfo = CGImageGetAlphaInfo(CGImage)
+        var bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
+        let alphaInfo = CGImageGetAlphaInfo(CGImage)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
 
-        switch (colorSpaceModel.value) {
-        case kCGColorSpaceModelRGB.value:
+        switch (colorSpaceModel.rawValue) {
+        case CGColorSpaceModel.RGB.rawValue:
 
             // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
             var info = CGImageAlphaInfo.PremultipliedFirst
@@ -69,8 +69,8 @@ extension UIImage {
             default:
                 break
             }
-            bitmapInfo &= ~CGBitmapInfo.AlphaInfoMask
-            bitmapInfo |= CGBitmapInfo(info.rawValue)
+            bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
+            bitmapInfoValue |= info.rawValue
         default:
             break
         }
@@ -82,16 +82,15 @@ extension UIImage {
             bitsPerComponent,
             0,
             colorSpace,
-            bitmapInfo
+            bitmapInfoValue
         )
 
         let frame = CGRect(x: 0, y: 0, width: width, height: height)
 
         CGContextDrawImage(context, frame, CGImage)
-        let inflatedImageRef = CGBitmapContextCreateImage(context)
 
-        if let inflatedImage = UIImage(CGImage: inflatedImageRef, scale: scale, orientation: imageOrientation) {
-            return inflatedImage
+        if let cgImage = CGBitmapContextCreateImage(context) {
+            return UIImage(CGImage: cgImage, scale: scale, orientation: imageOrientation)
         }
 
         return self
@@ -262,7 +261,7 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-            if let URL = dataTask.originalRequest.URL, let loader = self[URL] {
+            if let URL = dataTask.originalRequest?.URL, let loader = self[URL] {
                 loader.receive(data)
             }
         }
@@ -272,7 +271,7 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-            if let URL = task.originalRequest.URL, let loader = self[URL] {
+            if let URL = task.originalRequest?.URL, let loader = self[URL] {
                 loader.complete(error)
             }
         }
@@ -334,7 +333,7 @@ public class Loader {
 
     private func complete(error: NSError?) {
 
-        if let URL = task.originalRequest.URL {
+        if let URL = task.originalRequest?.URL {
             if let error = error {
                 failure(URL, error: error)
                 return

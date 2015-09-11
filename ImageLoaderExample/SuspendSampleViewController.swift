@@ -30,7 +30,7 @@ class SuspendSampleViewController: UITableViewController {
         pauseLoading()
     }
 
-    func toggle(#loading: Bool) {
+    func toggle(loading loading: Bool) {
         var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
 
         if loading == true {
@@ -68,7 +68,7 @@ class SuspendSampleViewController: UITableViewController {
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             self.tableView.endUpdates()
 
-            var state = ImageLoader.state
+            let state = ImageLoader.state
             if state == .Ready {
                 self.toggle(loading: false)
             }
@@ -78,10 +78,9 @@ class SuspendSampleViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
         let URL = self.URLs[indexPath.row]
-        let placeholder = UIImage(named: "black.jpg")!
         cell.textLabel?.text = URL.absoluteString
 
         if let image = ImageLoader.cache(URL) {

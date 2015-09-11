@@ -23,6 +23,7 @@ class SimpleViewController: UIViewController {
 
     let imageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
+        imageView.contentMode = .ScaleAspectFit
         imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 300)
 
         return imageView
@@ -67,7 +68,7 @@ class SimpleViewController: UIViewController {
     // MARK: - try
 
     func tryLoadSuccessURL() {
-        let string = "http://upload.wikimedia.org/wikipedia/commons/1/1a/Bachalpseeflowers.jpg"
+        let string = "https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         tryLoad(string)
     }
 
@@ -84,9 +85,9 @@ class SimpleViewController: UIViewController {
 
     func testLoad(imageView: UIImageView, URL: URLLiteralConvertible) {
         imageView.load(URL, placeholder: nil) { URL, image, error, cacheType in
-            println("URL \(URL)")
-            println("error \(error)")
-            println("cacheType \(cacheType.hashValue)")
+            print("URL \(URL)")
+            print("error \(error)")
+            print("cacheType \(cacheType.hashValue)")
         }
 
     }
