@@ -19,13 +19,13 @@ Features
 Requirements
 ----------
 
-- iOS 7.0+
-- Xcode 6.1+ Swift 1.1+
+- iOS 8.0+
+- Xcode 7.0+ Swift 2.0
 
 ImageLoader | Xcode | Swift | travis-ci
 ----------- | ----- | ----- | ---------
-0.2.x | 6.1, 6.2 | 1.1 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/0.2.1.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
-0.3.x | 6.3, 6.4 | 1.2 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
+0.3.x | 6.4 | 1.2 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/0.3.7.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
+0.4.x | 7.0+ | 2.0 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
 
 If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
