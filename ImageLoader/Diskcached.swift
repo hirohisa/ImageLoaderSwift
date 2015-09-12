@@ -24,7 +24,7 @@ extension String {
     }
 }
 
-class Diskcached: NSObject {
+class Diskcached {
 
     private var images = [NSURL: UIImage]()
 

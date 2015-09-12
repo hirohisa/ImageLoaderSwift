@@ -103,7 +103,7 @@ extension UIImage {
     Cache for `ImageLoader` have to implement methods.
     fetch image by cache before sending a request and set image into cache after receiving image data.
 */
-public protocol ImageCache: NSObjectProtocol {
+public protocol ImageCache: class {
 
     subscript (aKey: NSURL) -> UIImage? {
         get
