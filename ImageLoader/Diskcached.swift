@@ -83,7 +83,7 @@ extension Diskcached {
 
         images[aKey] = anObject
 
-        let block: () -> () = {
+        let block: () -> Void = {
 
             if let data = UIImageJPEGRepresentation(anObject, 1) {
                 data.writeToFile(self.savePath(aKey.absoluteString), atomically: false)

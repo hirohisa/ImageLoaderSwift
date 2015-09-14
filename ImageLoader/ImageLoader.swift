@@ -32,7 +32,7 @@ extension String: URLLiteralConvertible {
 
 extension CGBitmapInfo {
     private var alphaInfo: CGImageAlphaInfo? {
-        let info = self.intersect(.AlphaInfoMask)
+        let info = intersect(.AlphaInfoMask)
         return CGImageAlphaInfo(rawValue: info.rawValue)
     }
 }
@@ -112,7 +112,7 @@ public protocol ImageCache: class {
 
 }
 
-typealias CompletionHandler = (NSURL, UIImage?, NSError?, CacheType) -> ()
+public typealias CompletionHandler = (NSURL, UIImage?, NSError?, CacheType) -> Void
 
 class Block: NSObject {
 
@@ -153,7 +153,7 @@ public class Manager {
     let session: NSURLSession
     let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
-    public var inflatesImage: Bool = true
+    public var inflatesImage = true
 
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
@@ -285,7 +285,7 @@ public class Loader {
 
     unowned let delegate: Manager
     let task: NSURLSessionDataTask
-    var receivedData: NSMutableData = NSMutableData()
+    var receivedData = NSMutableData()
     let inflatesImage: Bool
     internal var blocks: [Block] = []
 
@@ -293,14 +293,14 @@ public class Loader {
         self.task = task
         self.delegate = delegate
         self.inflatesImage = delegate.inflatesImage
-        self.resume()
+        resume()
     }
 
     var state: NSURLSessionTaskState {
         return task.state
     }
 
-    public func completionHandler(completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> ()) -> Self {
+    public func completionHandler(completionHandler: CompletionHandler) -> Self {
 
         let block = Block(completionHandler: completionHandler)
         blocks.append(block)

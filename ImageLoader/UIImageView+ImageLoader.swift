@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-private var ImageLoaderURLKey: UInt = 0
-private var ImageLoaderBlockKey: UInt = 0
+private var ImageLoaderURLKey = 0
+private var ImageLoaderBlockKey = 0
 
 /**
     Extension using ImageLoader sends a request, receives image and displays.
@@ -38,16 +38,7 @@ extension UIImageView {
     }
 
     // MARK: - public
-    public func load(URL: URLLiteralConvertible) {
-        load(URL, placeholder: nil) { _ in }
-    }
-
-    public func load(URL: URLLiteralConvertible, placeholder: UIImage?) {
-        load(URL, placeholder: placeholder) { _ in }
-    }
-
-
-    public func load(URL: URLLiteralConvertible, placeholder: UIImage?, completionHandler:(NSURL, UIImage?, NSError?, CacheType) -> ()) {
+    public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
         cancelLoading()
 
         if let placeholder = placeholder {
@@ -69,16 +60,16 @@ extension UIImageView {
     // MARK: - private
     private static let _requesting_queue = dispatch_queue_create("swift.imageloader.queues.requesting", DISPATCH_QUEUE_SERIAL)
 
-    private func _load(URL: NSURL, completionHandler:(NSURL, UIImage?, NSError?, CacheType) -> ()) {
+    private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
 
-        let completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> () = { URL, image, error, cacheType in
+        let completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> Void = { URL, image, error, cacheType in
 
             dispatch_async(dispatch_get_main_queue(), { [weak self] in
                 // requesting is success then set image
-                if let _self = self, let _URL = _self.URL, let image = image where _URL.isEqual(URL) {
-                    _self.image = image
+                if let thisURL = self?.URL, let image = image where thisURL.isEqual(URL) {
+                    self?.image = image
                 }
-                completionHandler(URL, image, error, cacheType)
+                completionHandler?(URL, image, error, cacheType)
             })
         }
 
