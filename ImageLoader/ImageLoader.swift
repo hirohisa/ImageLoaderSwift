@@ -154,6 +154,10 @@ public class Manager {
     let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var inflatesImage = true
+    /**
+        Use to kill or keep a fetching image loader when it's blocks is to empty by imageview or anyone.
+    */
+    public var shouldKeepLoader = false
 
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
