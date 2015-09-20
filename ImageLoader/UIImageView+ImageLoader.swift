@@ -45,10 +45,8 @@ extension UIImageView {
             image = placeholder
         }
 
-        let URL = URL.URL
-
-        self.URL = URL
-        _load(URL, completionHandler: completionHandler)
+        self.URL = URL.URL
+        _load(URL.URL, completionHandler: completionHandler)
     }
 
     public func cancelLoading() {
