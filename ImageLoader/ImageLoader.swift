@@ -223,7 +223,7 @@ public class Manager {
                 loader.remove(block)
             }
 
-            if loader.blocks.count == 0 || block == nil {
+            if !shouldKeepLoader && loader.blocks.count == 0 {
                 loader.cancel()
                 delegate.remove(URL.URL)
             }
