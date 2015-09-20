@@ -147,8 +147,7 @@ class ImageLoaderTests: XCTestCase {
 
         let expectation = expectationWithDescription("wait until loader complete")
 
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/404")
+        let URL = NSURL(string: "http://test/404")!
 
         let manager = Manager()
         let loader = manager.load(URL)
@@ -170,8 +169,7 @@ class ImageLoaderTests: XCTestCase {
 
     func testLoaderCancelWithURL() {
 
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/path")
+        let URL = NSURL(string: "http://test/path")!
 
         let manager: Manager = Manager()
 
@@ -181,9 +179,9 @@ class ImageLoaderTests: XCTestCase {
         manager.load(URL)
         manager.cancel(URL, block: nil)
 
-        let loader2: Loader? = manager.delegate[URL]
-        XCTAssertNil(loader2,
-            "Store doesnt remove the loader, \(loader2)")
+        let loader: Loader? = manager.delegate[URL]
+        XCTAssertNil(loader,
+            "Store doesnt remove the loader, \(loader)")
 
     }
 
