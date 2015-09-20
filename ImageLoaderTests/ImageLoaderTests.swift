@@ -174,10 +174,12 @@ class ImageLoaderTests: XCTestCase {
         URL = NSURL(string: "http://test/path")
 
         let manager: Manager = Manager()
-        manager.cancel(URL, block: nil)
 
         XCTAssert(manager.state == .Ready,
             "manager's state is not ready, now is \(manager.state.toString())")
+
+        manager.load(URL)
+        manager.cancel(URL, block: nil)
 
         let loader2: Loader? = manager.delegate[URL]
         XCTAssertNil(loader2,
