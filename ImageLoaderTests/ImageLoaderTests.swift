@@ -66,7 +66,7 @@ class ImageLoaderTests: XCTestCase {
                     }
                 }
 
-                response.responseTime = 0.2
+                response.responseTime = 1
 
                 return response
         })
@@ -185,6 +185,27 @@ class ImageLoaderTests: XCTestCase {
 
     }
 
+    func testLoaderShouldKeepLoader() {
+        let URL = NSURL(string: "http://test/path")!
+
+        let keepingManager = Manager()
+        keepingManager.shouldKeepLoader = true
+        let notkeepingManager = Manager()
+        notkeepingManager.shouldKeepLoader = false
+
+        keepingManager.load(URL)
+        notkeepingManager.load(URL)
+
+        keepingManager.cancel(URL)
+        notkeepingManager.cancel(URL)
+
+        let keepingLoader: Loader? = keepingManager.delegate[URL]
+        let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
+        XCTAssertNotNil(keepingLoader,
+            "property `shouldKeepLoader is true` doesnt work normally, \(keepingLoader)")
+        XCTAssertNil(notkeepingLoader,
+            "property `shouldKeepLoader is false` doesnt work normally, \(notkeepingLoader)")
+    }
 }
 
 class StringTests: XCTestCase {
