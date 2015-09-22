@@ -1,6 +1,9 @@
 language: objective-c
 osx_image: xcode7
 
+env:
+  secure: "IHqePcV1D1/M1Ma+p63cHLEPRXeOnEcR6Y/qIDMYNCrfMVqmERi9eqcTPK2j+Z3CoKYNe7M3duRA50uYOnr+Dh04rYOMkwCToUV3VcV2X1Y9f81JSzAPl9qmqpnifG/634CbZAYNmrjcv6SetU+9awXsN8CONUH+343jbfMY478="
+
 before_install:
   - gem install cocoapods xcpretty
   - brew update
