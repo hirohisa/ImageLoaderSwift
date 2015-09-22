@@ -66,7 +66,7 @@ class ImageLoaderTests: XCTestCase {
                     }
                 }
 
-                response.responseTime = 0.2
+                response.responseTime = 1
 
                 return response
         })
@@ -147,8 +147,7 @@ class ImageLoaderTests: XCTestCase {
 
         let expectation = expectationWithDescription("wait until loader complete")
 
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/404")
+        let URL = NSURL(string: "http://test/404")!
 
         let manager = Manager()
         let loader = manager.load(URL)
@@ -170,21 +169,43 @@ class ImageLoaderTests: XCTestCase {
 
     func testLoaderCancelWithURL() {
 
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/path")
+        let URL = NSURL(string: "http://test/path")!
 
         let manager: Manager = Manager()
-        manager.cancel(URL, block: nil)
 
         XCTAssert(manager.state == .Ready,
             "manager's state is not ready, now is \(manager.state.toString())")
 
-        let loader2: Loader? = manager.delegate[URL]
-        XCTAssertNil(loader2,
-            "Store doesnt remove the loader, \(loader2)")
+        manager.load(URL)
+        manager.cancel(URL, block: nil)
+
+        let loader: Loader? = manager.delegate[URL]
+        XCTAssertNil(loader,
+            "Store doesnt remove the loader, \(loader)")
 
     }
 
+    func testLoaderShouldKeepLoader() {
+        let URL = NSURL(string: "http://test/path")!
+
+        let keepingManager = Manager()
+        keepingManager.shouldKeepLoader = true
+        let notkeepingManager = Manager()
+        notkeepingManager.shouldKeepLoader = false
+
+        keepingManager.load(URL)
+        notkeepingManager.load(URL)
+
+        keepingManager.cancel(URL)
+        notkeepingManager.cancel(URL)
+
+        let keepingLoader: Loader? = keepingManager.delegate[URL]
+        let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
+        XCTAssertNotNil(keepingLoader,
+            "property `shouldKeepLoader is true` doesnt work normally, \(keepingLoader)")
+        XCTAssertNil(notkeepingLoader,
+            "property `shouldKeepLoader is false` doesnt work normally, \(notkeepingLoader)")
+    }
 }
 
 class StringTests: XCTestCase {

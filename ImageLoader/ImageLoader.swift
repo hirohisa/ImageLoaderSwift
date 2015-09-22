@@ -154,6 +154,10 @@ public class Manager {
     let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var inflatesImage = true
+    /**
+        Use to kill or keep a fetching image loader when it's blocks is to empty by imageview or anyone.
+    */
+    public var shouldKeepLoader = false
 
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
@@ -190,18 +194,17 @@ public class Manager {
     // MARK: loading
 
     func load(URL: URLLiteralConvertible) -> Loader {
-        let URL = URL.URL
-        if let loader = delegate[URL] {
+        if let loader = delegate[URL.URL] {
             loader.resume()
             return loader
         }
 
-        let request = NSMutableURLRequest(URL: URL)
+        let request = NSMutableURLRequest(URL: URL.URL)
         request.setValue("image/*", forHTTPHeaderField: "Accept")
         let task = session.dataTaskWithRequest(request)
 
         let loader = Loader(task: task, delegate: self)
-        delegate[URL] = loader
+        delegate[URL.URL] = loader
         return loader
     }
 
@@ -220,7 +223,7 @@ public class Manager {
                 loader.remove(block)
             }
 
-            if loader.blocks.count == 0 || block == nil {
+            if !shouldKeepLoader && loader.blocks.count == 0 {
                 loader.cancel()
                 delegate.remove(URL.URL)
             }
@@ -398,9 +401,7 @@ public func cancel(URL: URLLiteralConvertible) -> Loader? {
     Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
 */
 public func cache(URL: URLLiteralConvertible) -> UIImage? {
-    let URL = URL.URL
-
-    return Manager.sharedInstance.cache[URL]
+    return Manager.sharedInstance.cache[URL.URL]
 }
 
 public var state: State {
