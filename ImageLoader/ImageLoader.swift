@@ -10,17 +10,23 @@ import Foundation
 import UIKit
 
 public protocol URLLiteralConvertible {
-    var URL: NSURL { get }
+    var imageLoaderURL: NSURL { get }
 }
 
 extension NSURL: URLLiteralConvertible {
-    public var URL: NSURL {
+    public var imageLoaderURL: NSURL {
         return self
     }
 }
 
+extension NSURLComponents: URLLiteralConvertible {
+    public var imageLoaderURL: NSURL {
+        return URL!
+    }
+}
+
 extension String: URLLiteralConvertible {
-    public var URL: NSURL {
+    public var imageLoaderURL: NSURL {
         if let string = stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) {
             return NSURL(string: string)!
         }
@@ -194,22 +200,22 @@ public class Manager {
     // MARK: loading
 
     func load(URL: URLLiteralConvertible) -> Loader {
-        if let loader = delegate[URL.URL] {
+        if let loader = delegate[URL.imageLoaderURL] {
             loader.resume()
             return loader
         }
 
-        let request = NSMutableURLRequest(URL: URL.URL)
+        let request = NSMutableURLRequest(URL: URL.imageLoaderURL)
         request.setValue("image/*", forHTTPHeaderField: "Accept")
         let task = session.dataTaskWithRequest(request)
 
         let loader = Loader(task: task, delegate: self)
-        delegate[URL.URL] = loader
+        delegate[URL.imageLoaderURL] = loader
         return loader
     }
 
     func suspend(URL: URLLiteralConvertible) -> Loader? {
-        if let loader = delegate[URL.URL] {
+        if let loader = delegate[URL.imageLoaderURL] {
             loader.suspend()
             return loader
         }
@@ -218,14 +224,14 @@ public class Manager {
     }
 
     func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
-        if let loader = delegate[URL.URL] {
+        if let loader = delegate[URL.imageLoaderURL] {
             if let block = block {
                 loader.remove(block)
             }
 
             if !shouldKeepLoader && loader.blocks.count == 0 {
                 loader.cancel()
-                delegate.remove(URL.URL)
+                delegate.remove(URL.imageLoaderURL)
             }
             return loader
         }
@@ -401,7 +407,7 @@ public func cancel(URL: URLLiteralConvertible) -> Loader? {
     Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
 */
 public func cache(URL: URLLiteralConvertible) -> UIImage? {
-    return Manager.sharedInstance.cache[URL.URL]
+    return Manager.sharedInstance.cache[URL.imageLoaderURL]
 }
 
 public var state: State {
