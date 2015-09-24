@@ -224,7 +224,7 @@ class StringTests: XCTestCase {
 class URLLiteralConvertibleTests: XCTestCase {
 
     func testEscapes() {
-        let URL = "http://twitter.com/?status=Hello World".URL
+        let URL = "http://twitter.com/?status=Hello World".imageLoaderURL
         let valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
 
         XCTAssertEqual(URL, valid, "result that \(URL) is escaped is failed.")
