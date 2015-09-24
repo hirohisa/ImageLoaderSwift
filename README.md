@@ -14,7 +14,7 @@ Features
 - [ ] Comprehensive Unit Test Coverage
 - [x] Optimize image with frame and scale
 - [x] Control Loader to resume, suspend and cancel with URL.
-- [x] Enable to set `NSURL` and `String` on `.load(URL)`
+- [x] Enable to set `NSURL`, `String`, `NSURLComponents` on `.load(URL)`
 
 Requirements
 ----------
@@ -25,7 +25,7 @@ Requirements
 ImageLoader | Xcode | Swift | travis-ci
 ----------- | ----- | ----- | ---------
 0.3.x | 6.4 | 1.2 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/0.3.7.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
-0.4.x | 7.0+ | 2.0 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
+0.4+ | 7.0+ | 2.0 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
 
 If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
