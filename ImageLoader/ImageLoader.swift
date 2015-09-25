@@ -263,7 +263,7 @@ public class Manager {
 
         private func remove(URL: NSURL) -> Loader? {
             if let loader = self[URL] {
-                loaders.removeValueForKey(URL)
+                loaders[URL] = nil
                 return loader
             }
             return nil
@@ -282,6 +282,7 @@ public class Manager {
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
             if let URL = task.originalRequest?.URL, let loader = self[URL] {
                 loader.complete(error)
+                remove(URL)
             }
         }
     }

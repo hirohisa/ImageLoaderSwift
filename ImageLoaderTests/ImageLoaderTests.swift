@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import ImageLoader
+@testable import ImageLoader
 import OHHTTPStubs
 
 extension NSURLSessionTaskState {
@@ -51,6 +51,7 @@ class ImageLoaderTests: XCTestCase {
     override func tearDown() {
         removeOHHTTPStubs()
         super.tearDown()
+
     }
 
     func setUpOHHTTPStubs() {
@@ -89,11 +90,34 @@ class ImageLoaderTests: XCTestCase {
         XCTAssert(loader.state == .Running,
             "loader's status is not running, now is \(loader.state.toString())")
         loader.completionHandler { completedURL, image, error, cacheType in
+
             XCTAssertEqual(URL, completedURL,
                 "URL \(URL) and completedURL \(completedURL) are not same. ")
             XCTAssert(manager.state == .Ready,
                 "manager's state is not ready, now is \(manager.state.toString())")
+            expectation.fulfill()
+        }
 
+        waitForExpectationsWithTimeout(5) { error in
+            XCTAssertNil(error, "loader did not finish")
+        }
+    }
+
+    func testLoaderRemoveAfterRunning() {
+
+        let expectation = expectationWithDescription("wait until loader complete")
+
+        var URL: NSURL!
+        URL = NSURL(string: "http://test/remove")
+
+        let manager = Manager()
+        let loader = manager.load(URL)
+
+        XCTAssert(loader.state == .Running,
+            "loader's status is not running, now is \(loader.state.toString())")
+        loader.completionHandler { completedURL, image, error, cacheType in
+
+            XCTAssertNil(manager.delegate[URL], "loader did not remove from delegate")
             expectation.fulfill()
         }
 
