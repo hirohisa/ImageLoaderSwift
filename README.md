@@ -1,4 +1,4 @@
-ImageLoader [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift) [![GitHub-version](https://img.shields.io/github/tag/hirohisa/ImageLoaderSwift.svg)](https://github.com/hirohisa/ImageLoaderSwift/tags) []([![Test-Coverage](https://img.shields.io/coveralls/hirohisa/ImageLoaderSwift/master.svg)](https://coveralls.io/r/hirohisa/ImageLoaderSwift)) [![license](https://img.shields.io/badge/license-MIT-000000.svg)](https://github.com/hirohisa/ImageLoaderSwift/blob/master/LICENSE)
+ImageLoader [![Build-Status](https://api.travis-ci.org/hirohisa/ImageLoaderSwift.svg?branch=master)](https://travis-ci.org/hirohisa/ImageLoaderSwift) [![GitHub-version](https://img.shields.io/github/tag/hirohisa/ImageLoaderSwift.svg)](https://github.com/hirohisa/ImageLoaderSwift/tags) []([![Test-Coverage](https://img.shields.io/coveralls/hirohisa/ImageLoaderSwift/master.svg)](https://coveralls.io/r/hirohisa/ImageLoaderSwift)) [![license](https://img.shields.io/badge/license-MIT-000000.svg)](https://github.com/hirohisa/ImageLoaderSwift/blob/master/LICENSE)
 =======
 
 ImageLoader is an instrument for asynchronous image loading written in Swift. It is a lightweight and fast image loader for iOS.
@@ -22,10 +22,10 @@ Requirements
 - iOS 8.0+
 - Xcode 7.0+ Swift 2.0
 
-ImageLoader | Xcode | Swift | travis-ci
------------ | ----- | ----- | ---------
-0.3.x | 6.4 | 1.2 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/0.3.7.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
-0.4+ | 7.0+ | 2.0 | [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoaderSwift/master.svg)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
+ImageLoader | Xcode | Swift
+----------- | ----- | -----
+0.3.x | 6.4 | 1.2
+0.4+ | 7.0+ | 2.0
 
 If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
