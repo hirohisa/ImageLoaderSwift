@@ -78,8 +78,9 @@ extension UIImageView {
         }
 
         dispatch_async(UIImageView._requesting_queue, {
-            let loader = Manager.sharedInstance.load(URL).completionHandler(completionHandler)
-            self.block = loader.blocks.last
+            let block = Block(completionHandler: completionHandler)
+            Manager.sharedInstance.load(URL).appendBlock(block)
+            self.block = block
         })
 
     }

@@ -311,10 +311,12 @@ public class Loader {
     }
 
     public func completionHandler(completionHandler: CompletionHandler) -> Self {
-
         let block = Block(completionHandler: completionHandler)
-        blocks.append(block)
+        return appendBlock(block)
+    }
 
+    func appendBlock(block: Block) -> Self {
+        blocks.append(block)
         return self
     }
 
