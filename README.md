@@ -37,20 +37,56 @@ If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https:
 Installation
 ----------
 
-It is the way to use this in your project:
+### CocoaPods
 
-- Add ImageLoader as a submodule by opening the Terminal, trying to enter the command
-```
-git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
-```
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
 
-- Install with CocoaPods to write Podfile
+To integrate ImageLoader into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
 pod 'ImageLoader'
 ```
 
-- Copy ImageLoader class files into your project
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
+
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+To integrate ImageLoader into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```
+github "hirohisa/ImageLoaderSwift" ~> 0.6.0
+```
+
+### Manually
+
+If you prefer not to use either of the aforementioned dependency managers, you can integrate ImageLoader into your project manually.
+
+#### Embedded Framework
+
+- Open up Terminal, `cd` into your top-level project directory, and run the following command "if" your project is not initialized as a git repository:
+
+- Add ImageLoader as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
+
+```bash
+$ git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
+```
 
 Usage
 ----------
