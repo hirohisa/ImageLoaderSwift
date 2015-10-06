@@ -357,9 +357,12 @@ public class Loader {
     }
 
     private func success(URL: NSURL, data: NSData) {
-        let image = UIImage(data: data)
+        var image = UIImage(data: data)
         _toCache(URL, image: image)
 
+        if inflatesImage {
+            image = image?.inflated()
+        }
         for block: Block in blocks {
             block.completionHandler(URL, image, nil, .None)
         }
@@ -374,10 +377,6 @@ public class Loader {
     }
 
     private func _toCache(URL: NSURL, image: UIImage?) {
-        var image = image
-        if inflatesImage {
-            image = image?.inflated()
-        }
         if let image = image {
             delegate.cache[URL] = image
         }
