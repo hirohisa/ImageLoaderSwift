@@ -60,28 +60,28 @@ extension UIImageView {
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
 
-        let completionHandler: (NSURL, UIImage?, NSError?, CacheType) -> Void = { URL, image, error, cacheType in
+        let _completionHandler: CompletionHandler = { URL, image, error, cacheType in
 
-            dispatch_async(dispatch_get_main_queue(), { [weak self] in
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 // requesting is success then set image
                 if let thisURL = self?.URL, let image = image where thisURL.isEqual(URL) {
                     self?.image = image
                 }
                 completionHandler?(URL, image, error, cacheType)
-            })
+            }
         }
 
         // caching
         if let image = Manager.sharedInstance.cache[URL] {
-            completionHandler(URL, image, nil, .Cache)
+            _completionHandler(URL, image, nil, .Cache)
             return
         }
 
-        dispatch_async(UIImageView._requesting_queue, {
-            let block = Block(completionHandler: completionHandler)
+        dispatch_async(UIImageView._requesting_queue) {
+            let block = Block(completionHandler: _completionHandler)
             Manager.sharedInstance.load(URL).appendBlock(block)
             self.block = block
-        })
+        }
 
     }
 
