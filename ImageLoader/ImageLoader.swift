@@ -99,6 +99,8 @@ public class Manager {
     let session: NSURLSession
     let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
+    public var automaticallyAdjustsSize = true
+
     /**
         Use to kill or keep a fetching image loader when it's blocks is to empty by imageview or anyone.
     */
