@@ -106,9 +106,6 @@ public class Manager {
 
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
-    // MARK: singleton instance
-    public static let sharedInstance = Manager()
-
     init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
         cache: ImageCache = Diskcached()
         ) {
@@ -318,34 +315,37 @@ public class Loader {
 
 }
 
+// MARK: singleton instance
+public let sharedInstance = Manager()
+
 /**
     Creates `Loader` object using the shared manager instance for the specified URL.
 */
 public func load(URL: URLLiteralConvertible) -> Loader {
-    return Manager.sharedInstance.load(URL)
+    return sharedInstance.load(URL)
 }
 
 /**
     Suspends `Loader` object using the shared manager instance for the specified URL.
 */
 public func suspend(URL: URLLiteralConvertible) -> Loader? {
-    return Manager.sharedInstance.suspend(URL)
+    return sharedInstance.suspend(URL)
 }
 
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
 public func cancel(URL: URLLiteralConvertible) -> Loader? {
-    return Manager.sharedInstance.cancel(URL)
+    return sharedInstance.cancel(URL)
 }
 
 /**
     Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
 */
 public func cache(URL: URLLiteralConvertible) -> UIImage? {
-    return Manager.sharedInstance.cache[URL.imageLoaderURL]
+    return sharedInstance.cache[URL.imageLoaderURL]
 }
 
 public var state: State {
-    return Manager.sharedInstance.state
+    return sharedInstance.state
 }

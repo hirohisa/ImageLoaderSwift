@@ -51,7 +51,7 @@ extension UIImageView {
 
     public func cancelLoading() {
         if let URL = URL {
-            Manager.sharedInstance.cancel(URL, block: block as? Block)
+            sharedInstance.cancel(URL, block: block as? Block)
         }
     }
 
@@ -72,14 +72,14 @@ extension UIImageView {
         }
 
         // caching
-        if let image = Manager.sharedInstance.cache[URL] {
+        if let image = sharedInstance.cache[URL] {
             _completionHandler(URL, image, nil, .Cache)
             return
         }
 
         dispatch_async(UIImageView._requesting_queue) {
             let block = Block(completionHandler: _completionHandler)
-            Manager.sharedInstance.load(URL).appendBlock(block)
+            sharedInstance.load(URL).appendBlock(block)
             self.block = block
         }
 
