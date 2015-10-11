@@ -43,66 +43,6 @@ extension CGBitmapInfo {
     }
 }
 
-extension UIImage {
-
-    private func inflated() -> UIImage {
-        let scale = UIScreen.mainScreen().scale
-        let width = CGImageGetWidth(CGImage)
-        let height = CGImageGetHeight(CGImage)
-        if !(width > 0 && height > 0) {
-            return self
-        }
-
-        let bitsPerComponent = CGImageGetBitsPerComponent(CGImage)
-
-        if (bitsPerComponent > 8) {
-            return self
-        }
-
-        var bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
-        let alphaInfo = CGImageGetAlphaInfo(CGImage)
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
-
-        switch (colorSpaceModel.rawValue) {
-        case CGColorSpaceModel.RGB.rawValue:
-
-            // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
-            var info = CGImageAlphaInfo.PremultipliedFirst
-            switch alphaInfo {
-            case .None:
-                info = CGImageAlphaInfo.NoneSkipFirst
-            default:
-                break
-            }
-            bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
-            bitmapInfoValue |= info.rawValue
-        default:
-            break
-        }
-
-        let context = CGBitmapContextCreate(
-            nil,
-            width,
-            height,
-            bitsPerComponent,
-            0,
-            colorSpace,
-            bitmapInfoValue
-        )
-
-        let frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-        CGContextDrawImage(context, frame, CGImage)
-
-        if let cgImage = CGBitmapContextCreateImage(context) {
-            return UIImage(CGImage: cgImage, scale: scale, orientation: imageOrientation)
-        }
-
-        return self
-    }
-}
-
 // MARK: Cache
 
 /**
@@ -159,7 +99,6 @@ public class Manager {
     let session: NSURLSession
     let cache: ImageCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
-    public var inflatesImage = true
     /**
         Use to kill or keep a fetching image loader when it's blocks is to empty by imageview or anyone.
     */
@@ -296,13 +235,11 @@ public class Loader {
     unowned let delegate: Manager
     let task: NSURLSessionDataTask
     var receivedData = NSMutableData()
-    let inflatesImage: Bool
     internal var blocks: [Block] = []
 
     init (task: NSURLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
-        self.inflatesImage = delegate.inflatesImage
         resume()
     }
 
@@ -357,12 +294,9 @@ public class Loader {
     }
 
     private func success(URL: NSURL, data: NSData) {
-        var image = UIImage(data: data)
+        let image = UIImage(data: data)
         _toCache(URL, image: image)
 
-        if inflatesImage {
-            image = image?.inflated()
-        }
         for block: Block in blocks {
             block.completionHandler(URL, image, nil, .None)
         }
