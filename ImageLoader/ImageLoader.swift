@@ -34,14 +34,18 @@ extension String: URLLiteralConvertible {
     }
 }
 
-// MARK: Optimize image
+extension UIImage {
 
-extension CGBitmapInfo {
-    private var alphaInfo: CGImageAlphaInfo? {
-        let info = intersect(.AlphaInfoMask)
-        return CGImageAlphaInfo(rawValue: info.rawValue)
+    func adjusts(size: CGSize, scale: CGFloat) -> UIImage {
+        let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
+        UIGraphicsBeginImageContext(scaledSize)
+        drawInRect(CGRect(x: 0, y: 0, width: scaledSize.width, height: scaledSize.height))
+
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
+
+
 
 // MARK: Cache
 

@@ -19,6 +19,7 @@
 		65C68E6219F502B20053E66D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C68E6019F502B20053E66D /* ImageLoader.swift */; };
 		A17327831A45D793000D10E0 /* Diskcached.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Diskcached.swift */; };
 		A1B7FEBF1A480F1800819BD1 /* Diskcached.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Diskcached.swift */; };
+		A1E989321BCEC9BB00948F82 /* ImageLoaderExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E989311BCEC9BB00948F82 /* ImageLoaderExtensionTests.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		65C68E5D19F501CF0053E66D /* UIImageView+ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageLoader.swift"; sourceTree = "<group>"; };
 		65C68E6019F502B20053E66D /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		A17327821A45D793000D10E0 /* Diskcached.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diskcached.swift; sourceTree = "<group>"; };
+		A1E989311BCEC9BB00948F82 /* ImageLoaderExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderExtensionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				65B2CF2319EF9F6600DA3605 /* ImageLoaderTests.swift */,
+				A1E989311BCEC9BB00948F82 /* ImageLoaderExtensionTests.swift */,
 				65B2CF2119EF9F6600DA3605 /* Supporting Files */,
 			);
 			path = ImageLoaderTests;
@@ -259,6 +262,7 @@
 				65B2CF2419EF9F6600DA3605 /* ImageLoaderTests.swift in Sources */,
 				65C68E5F19F501CF0053E66D /* UIImageView+ImageLoader.swift in Sources */,
 				65C68E6219F502B20053E66D /* ImageLoader.swift in Sources */,
+				A1E989321BCEC9BB00948F82 /* ImageLoaderExtensionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
