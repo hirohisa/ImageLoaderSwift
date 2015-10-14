@@ -45,8 +45,6 @@ extension UIImage {
     }
 }
 
-
-
 // MARK: Cache
 
 /**
