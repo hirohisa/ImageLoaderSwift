@@ -64,8 +64,12 @@ extension UIImageView {
 
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 // requesting is success then set image
-                if let thisURL = self?.URL, let image = image where thisURL.isEqual(URL) {
-                    self?.image = image
+                if let wSelf = self, let thisURL = wSelf.URL, let image = image where thisURL.isEqual(URL) {
+                    if sharedInstance.automaticallyAdjustsSize {
+                        wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale)
+                    } else {
+                        wSelf.image = image
+                    }
                 }
                 completionHandler?(URL, image, error, cacheType)
             }
