@@ -68,15 +68,15 @@ extension Diskcached {
             return image
         }
 
-        if let data = NSData(contentsOfFile: savePath(aKey.absoluteString)) {
+        if let data = NSData(contentsOfFile: _path(aKey.absoluteString)) {
             return UIImage(data: data)
         }
 
         return nil
     }
 
-    private func savePath(name: String ) -> String {
-        return directory.path + name.escape()
+    private func _path(name: String) -> String {
+        return directory.path + "/" + name.escape()
     }
 
     private func setObject(anObject: UIImage, forKey aKey: NSURL) {
@@ -86,7 +86,7 @@ extension Diskcached {
         let block: () -> Void = {
 
             if let data = UIImageJPEGRepresentation(anObject, 1) {
-                data.writeToFile(self.savePath(aKey.absoluteString), atomically: false)
+                data.writeToFile(self._path(aKey.absoluteString), atomically: false)
             }
 
             self.images[aKey] = nil
