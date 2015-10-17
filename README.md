@@ -12,14 +12,13 @@ Features
 ----------
 
 - [x] Simple methods with UIImageView Category.
-- [x] A module for cache can be set by yourself.
-- [x] Diskcache for default settings, the module for cache use on disk and unused on memory.
+- [x] Control Loader to resume, suspend and cancel with URL.
+- [x] A module for cache can be set by yourself and default cache (Diskcache) uses disk spaces and un-uses memory.
 - [x] Loading images is handled by ImageLoader, not UIImageView.
 - [x] After image view start loading another image, previous loading task is possible to live with caching.
+- [x] Support `NSURL`, `String` and `NSURLComponents` by `URLLiteralConvertible`
+- [ ] Optimize to use memory when image is set.
 - [ ] Comprehensive Unit Test Coverage
-- [x] Optimize image with frame and scale
-- [x] Control Loader to resume, suspend and cancel with URL.
-- [x] Enable to set `NSURL`, `String`, `NSURLComponents` on `.load(URL)`
 
 Requirements
 ----------
