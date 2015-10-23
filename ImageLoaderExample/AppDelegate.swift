@@ -20,5 +20,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 
+    func reportMemory() {
+        var info = task_basic_info()
+        var count = mach_msg_type_number_t(sizeofValue(info))/4
+
+        let kerr: kern_return_t = withUnsafeMutablePointer(&info) {
+
+            task_info(mach_task_self_,
+                task_flavor_t(TASK_BASIC_INFO),
+                task_info_t($0),
+                &count)
+
+        }
+
+        if kerr == KERN_SUCCESS {
+            print("Memory in use (in bytes): \(info.resident_size)")
+        }
+        else {
+            print("Error with task_info(): " +
+                (String.fromCString(mach_error_string(kerr)) ?? "unknown error"))
+        }
+    }
+
 }
 

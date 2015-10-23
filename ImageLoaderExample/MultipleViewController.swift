@@ -11,9 +11,28 @@ import ImageLoader
 
 class MultipleViewController: UITableViewController {
 
+    var timer: NSTimer?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+
+    }
+
+    func reportMemory() {
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        delegate.reportMemory()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "reportMemory", userInfo: nil, repeats: true)
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        timer?.invalidate()
+        timer = nil
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
