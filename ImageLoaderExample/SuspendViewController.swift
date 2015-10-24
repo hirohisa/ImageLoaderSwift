@@ -1,5 +1,5 @@
 //
-//  SuspendSampleViewController.swift
+//  SuspendViewController.swift
 //  ImageLoaderExample
 //
 //  Created by Hirohisa Kawasaki on 12/18/14.
@@ -9,15 +9,13 @@
 import UIKit
 import ImageLoader
 
-class SuspendSampleViewController: UITableViewController {
+class SuspendViewController: UITableViewController {
 
     var URLs = [NSURL]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        let buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
-        navigationItem.rightBarButtonItem = buttonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
     }
 
     func play() {
@@ -33,7 +31,7 @@ class SuspendSampleViewController: UITableViewController {
     func toggle(loading loading: Bool) {
         var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
 
-        if loading == true {
+        if loading {
             buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: "pause")
         }
         navigationItem.rightBarButtonItem = buttonItem
@@ -78,14 +76,10 @@ class SuspendSampleViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell", forIndexPath: indexPath) as! TableViewCell
 
         let URL = self.URLs[indexPath.row]
-        cell.textLabel?.text = URL.absoluteString
-
-        if let image = ImageLoader.cache(URL) {
-            cell.imageView?.image = image
-        }
+        cell.thumbnailView.image = ImageLoader.cache(URL)
 
         return cell
 

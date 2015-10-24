@@ -13,11 +13,13 @@
 		65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */; };
 		65D6FBA71A03855700CF1DB7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBA61A03855700CF1DB7 /* Images.xcassets */; };
 		65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */; };
-		65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC01A03859500CF1DB7 /* RootViewController.swift */; };
 		65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */; };
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
 		A125B14D1A5F620B00250601 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A125B14C1A5F620B00250601 /* ImageLoader.framework */; };
-		A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */; };
+		A168B1091BDBDF9900646115 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B1081BDBDF9900646115 /* TableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A168B10B1BDBE68200646115 /* ResizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B10A1BDBE68200646115 /* ResizeViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A168B10F1BDBE6F600646115 /* PerfomanceTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A1EE65CA1A41F93B00BEA147 /* SuspendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* SuspendViewController.swift */; };
 		A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,11 +32,13 @@
 		65D6FBA61A03855700CF1DB7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		65D6FBA91A03855700CF1DB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleViewController.swift; sourceTree = "<group>"; };
-		65D6FBC01A03859500CF1DB7 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
 		A125B14C1A5F620B00250601 /* ImageLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageLoader.framework; path = "build/Release-iphoneos/ImageLoader.framework"; sourceTree = "<group>"; };
-		A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuspendSampleViewController.swift; sourceTree = "<group>"; };
+		A168B1081BDBDF9900646115 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		A168B10A1BDBE68200646115 /* ResizeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeViewController.swift; sourceTree = "<group>"; };
+		A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfomanceTestViewController.swift; sourceTree = "<group>"; };
+		A1EE65C91A41F93B00BEA147 /* SuspendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuspendViewController.swift; sourceTree = "<group>"; };
 		A1EE65CB1A41F9DF00BEA147 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,11 +76,10 @@
 			children = (
 				65D6FB9F1A03855700CF1DB7 /* AppDelegate.swift */,
 				65D6FBA31A03855700CF1DB7 /* Main.storyboard */,
-				65D6FBC01A03859500CF1DB7 /* RootViewController.swift */,
-				65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */,
+				A168B10C1BDBE6BD00646115 /* LoadingSample */,
 				65D6FBBF1A03859400CF1DB7 /* MultipleViewController.swift */,
-				A1EE65C91A41F93B00BEA147 /* SuspendSampleViewController.swift */,
-				659D34AA1AD7A2B800FEFABC /* CollectionViewController.swift */,
+				A168B10D1BDBE6D000646115 /* Performance */,
+				A168B1101BDBE9C100646115 /* PerfomanceTest */,
 				A1EE65CB1A41F9DF00BEA147 /* Utils.swift */,
 				65D6FBC51A03859E00CF1DB7 /* black.jpg */,
 				65D6FBA61A03855700CF1DB7 /* Images.xcassets */,
@@ -92,6 +95,33 @@
 				65D6FB9E1A03855700CF1DB7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A168B10C1BDBE6BD00646115 /* LoadingSample */ = {
+			isa = PBXGroup;
+			children = (
+				65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */,
+				A168B1081BDBDF9900646115 /* TableViewController.swift */,
+				659D34AA1AD7A2B800FEFABC /* CollectionViewController.swift */,
+			);
+			name = LoadingSample;
+			sourceTree = "<group>";
+		};
+		A168B10D1BDBE6D000646115 /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				A1EE65C91A41F93B00BEA147 /* SuspendViewController.swift */,
+				A168B10A1BDBE68200646115 /* ResizeViewController.swift */,
+			);
+			name = Performance;
+			sourceTree = "<group>";
+		};
+		A168B1101BDBE9C100646115 /* PerfomanceTest */ = {
+			isa = PBXGroup;
+			children = (
+				A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */,
+			);
+			name = PerfomanceTest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,12 +197,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */,
-				A1EE65CA1A41F93B00BEA147 /* SuspendSampleViewController.swift in Sources */,
+				A168B1091BDBDF9900646115 /* TableViewController.swift in Sources */,
+				A168B10F1BDBE6F600646115 /* PerfomanceTestViewController.swift in Sources */,
+				A1EE65CA1A41F93B00BEA147 /* SuspendViewController.swift in Sources */,
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
 				659D34AB1AD7A2B800FEFABC /* CollectionViewController.swift in Sources */,
+				A168B10B1BDBE68200646115 /* ResizeViewController.swift in Sources */,
 				65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */,
-				65D6FBC31A03859500CF1DB7 /* RootViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
