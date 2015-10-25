@@ -12,15 +12,16 @@ import ImageLoader
 class ResizeViewController: CollectionViewController {
 
     var timer: NSTimer?
-    func reportMemory() {
+    func report() {
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        delegate.reportMemory()
+        delegate.report()
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         ImageLoader.sharedInstance.automaticallyAdjustsSize = true
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "reportMemory", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "report", userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
 
     override func viewDidDisappear(animated: Bool) {

@@ -27,6 +27,7 @@ class MultipleViewController: UITableViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "reportMemory", userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
 
     override func viewDidDisappear(animated: Bool) {
