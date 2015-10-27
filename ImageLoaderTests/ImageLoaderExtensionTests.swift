@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import ImageLoader
+@testable import ImageLoader
 
 extension UIImage {
     public convenience init?(color: UIColor) {
