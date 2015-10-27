@@ -8,29 +8,13 @@
 
 import UIKit
 
-class CollectionViewController: UICollectionViewController {
-
-    class Cell: UICollectionViewCell {
-        let imageView = UIImageView(frame: CGRectZero)
-
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            imageView.frame = contentView.bounds
-            contentView.addSubview(imageView)
-        }
-    }
+class CollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var imageView: UIImageView!
 }
 
-extension CollectionViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        collectionView?.registerClass(Cell.self, forCellWithReuseIdentifier: "cell")
-        collectionView?.backgroundColor = UIColor.whiteColor()
-    }
-
+class CollectionViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! Cell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
 
         let imageURL = String.imageURL(indexPath.row)
         cell.imageView.load(imageURL)

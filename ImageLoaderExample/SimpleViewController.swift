@@ -9,70 +9,26 @@
 import UIKit
 import ImageLoader
 
-extension UIButton {
-    convenience init(title: String, highlightedColor: UIColor) {
-        self.init()
-        frame = CGRect(x: 0, y: 0, width: 100, height: 50)
-        setTitle(title, forState: .Normal)
-        setTitleColor(UIColor.blackColor(), forState: .Normal)
-        setTitleColor(highlightedColor, forState: .Highlighted)
-    }
-}
-
 class SimpleViewController: UIViewController {
 
-    let imageView: UIImageView = {
-        let imageView: UIImageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFit
-        imageView.frame = CGRect(x: 0, y: 0, width: 200, height: 300)
+    @IBOutlet weak var imageView: UIImageView!
 
-        return imageView
-    }()
-
-    let successURLButton = UIButton(title: "success", highlightedColor: UIColor.greenColor())
-    let failureURLButton = UIButton(title: "failure", highlightedColor: UIColor.redColor())
+    @IBOutlet weak var successURLButton: UIButton!
+    @IBOutlet weak var failureURLButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.whiteColor()
-
-        imageView.center = CGPoint(
-            x: CGRectGetWidth(view.frame)/2,
-            y: CGRectGetHeight(view.frame)/2
-        )
-        view.addSubview(imageView)
-
-        configureButtons()
-
-        tryLoadSuccessURL()
-    }
-
-    // MARK: - view
-
-    func configureButtons() {
-        successURLButton.center = CGPoint(
-            x: CGRectGetWidth(view.frame)/2 - 50,
-            y: CGRectGetHeight(view.frame)/2 + 200
-        )
-        failureURLButton.center = CGPoint(
-            x: CGRectGetWidth(view.frame)/2 + 50,
-            y: CGRectGetHeight(view.frame)/2 + 200
-        )
-        view.addSubview(successURLButton)
-        view.addSubview(failureURLButton)
-
-        successURLButton.addTarget(self, action: Selector("tryLoadSuccessURL"), forControlEvents: .TouchUpInside)
-        failureURLButton.addTarget(self, action: Selector("tryLoadFailureURL"), forControlEvents: .TouchUpInside)
+        title = "Simple"
     }
 
     // MARK: - try
 
-    func tryLoadSuccessURL() {
+    @IBAction func tryLoadSuccessURL() {
         let string = "https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         tryLoad(string)
     }
 
-    func tryLoadFailureURL() {
+    @IBAction func tryLoadFailureURL() {
         let string = "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg"
         tryLoad(string)
     }
