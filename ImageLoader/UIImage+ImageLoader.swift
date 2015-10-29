@@ -28,7 +28,13 @@ extension UIImage {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 
-    func inflated() -> UIImage {
+    static func decode(data: NSData) -> UIImage? {
+        let image = UIImage(data: data)
+
+        return image?.decoded()
+    }
+
+    func decoded() -> UIImage {
         let width = CGImageGetWidth(CGImage)
         let height = CGImageGetHeight(CGImage)
         if !(width > 0 && height > 0) {

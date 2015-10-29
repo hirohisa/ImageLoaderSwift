@@ -284,7 +284,7 @@ public class Loader {
     }
 
     private func success(URL: NSURL, data: NSData) {
-        let image = UIImage(data: data)
+        let image = UIImage.decode(data)
         _toCache(URL, image: image)
 
         for block: Block in blocks {
