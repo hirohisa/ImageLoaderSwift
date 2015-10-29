@@ -214,6 +214,10 @@ public class Manager {
                 remove(URL)
             }
         }
+
+        func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, willCacheResponse proposedResponse: NSCachedURLResponse, completionHandler: (NSCachedURLResponse?) -> Void) {
+            completionHandler(nil)
+        }
     }
 }
 
