@@ -84,7 +84,7 @@ extension UIImage {
         CGContextDrawImage(context, frame, CGImage)
 
         if let cgImage = CGBitmapContextCreateImage(context) {
-            return UIImage(CGImage: cgImage, scale: scale, orientation: imageOrientation)
+            return UIImage(CGImage: cgImage)
         }
         
         return self
