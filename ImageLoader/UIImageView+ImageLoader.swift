@@ -65,7 +65,7 @@ extension UIImageView {
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
 
-        let _completionHandler: CompletionHandler = { URL, image, error, cacheType in
+        let closure: CompletionHandler = { URL, image, error, cacheType in
 
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 // requesting is success then set image
@@ -82,7 +82,7 @@ extension UIImageView {
 
         // caching
         if let image = imageLoader.cache[URL] {
-            _completionHandler(URL, image, nil, .Cache)
+            closure(URL, image, nil, .Cache)
             return
         }
 
@@ -91,7 +91,7 @@ extension UIImageView {
                 return
             }
 
-            let block = Block(completionHandler: _completionHandler)
+            let block = Block(completionHandler: closure)
             wSelf.imageLoader.load(URL).appendBlock(block)
             wSelf.block = block
         }
