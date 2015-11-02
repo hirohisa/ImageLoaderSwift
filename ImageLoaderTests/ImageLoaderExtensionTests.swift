@@ -34,17 +34,66 @@ extension UIImage {
 
 class ImageLoaderExtensionTests: XCTestCase {
 
-    func testImageAdjusts() {
-        let size = CGSize(width: 50, height: 50)
-        let image = UIImage(color: UIColor.blackColor(), size: size)
+    func testImageAdjustsScale() {
+        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
 
-        var adjustedImage = image!.adjusts(size, scale: 1)
+        let size = CGSize(width: 50, height: 50)
         var adjustedSize = CGSize(width: 50, height: 50)
+        var adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
 
-        adjustedImage = image!.adjusts(size, scale: 2)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
         adjustedSize = CGSize(width: 100, height: 100)
         XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
-
     }
+
+    func testImageAdjustsRectangleAspectFit() {
+        var image: UIImage!
+        var size: CGSize!
+        var adjustedSize: CGSize!
+        var adjustedImage: UIImage!
+
+        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 60))
+
+        size = CGSize(width: 25, height: 25)
+        adjustedSize = CGSize(width: 50, height: 30)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+
+        size = CGSize(width: 25, height: 30)
+        adjustedSize = CGSize(width: 50, height: 30)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+
+        size = CGSize(width: 30, height: 15)
+        adjustedSize = CGSize(width: 50, height: 30)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+    }
+
+    func testImageAdjustsRectangleAspectFill() {
+        var image: UIImage!
+        var size: CGSize!
+        var adjustedSize: CGSize!
+        var adjustedImage: UIImage!
+
+        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 60))
+
+        size = CGSize(width: 30, height: 30)
+        adjustedSize = CGSize(width: 100, height: 60)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+
+        size = CGSize(width: 25, height: 30)
+        adjustedSize = CGSize(width: 100, height: 60)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+
+        size = CGSize(width: 50, height: 15)
+        adjustedSize = CGSize(width: 100, height: 60)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+    }
+
+
 }
