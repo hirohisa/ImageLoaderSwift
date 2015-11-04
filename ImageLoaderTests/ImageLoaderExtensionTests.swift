@@ -58,7 +58,7 @@ class ImageLoaderExtensionTests: XCTestCase {
         XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
     }
 
-    func testImageAdjustsRectangleAspectFitScale1() {
+    func testImageAdjustsRectangleScaleAspectFit1() {
         var image: UIImage!
         var size: CGSize!
         var adjustedSize: CGSize!
@@ -82,7 +82,7 @@ class ImageLoaderExtensionTests: XCTestCase {
         XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
     }
 
-    func testImageAdjustsRectangleAspectFitScale2() {
+    func testImageAdjustsRectangleScaleAspectFit2() {
         var image: UIImage!
         var size: CGSize!
         var adjustedSize: CGSize!
