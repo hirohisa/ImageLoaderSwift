@@ -71,7 +71,7 @@ extension UIImageView {
                 // requesting is success then set image
                 if let wSelf = self, let thisURL = wSelf.URL, var image = image where thisURL.isEqual(URL) {
                     if wSelf.imageLoader.automaticallyAdjustsSize {
-                        image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale)
+                        image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
                     }
 
                     wSelf.image = image

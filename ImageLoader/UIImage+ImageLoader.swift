@@ -20,10 +20,27 @@ extension CGBitmapInfo {
 
 extension UIImage {
 
-    func adjusts(size: CGSize, scale: CGFloat) -> UIImage {
-        let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-        UIGraphicsBeginImageContext(scaledSize)
-        drawInRect(CGRect(x: 0, y: 0, width: scaledSize.width, height: scaledSize.height))
+    func adjusts(size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
+        switch contentMode {
+        case .ScaleAspectFit:
+            if size.width * scale > self.size.width || size.height * scale > self.size.height {
+                return self
+            }
+
+            let decodedSize = CGSize(width: self.size.width / scale, height: self.size.height / scale)
+            print(decodedSize)
+            let ratio = size.width/decodedSize.width < size.height/decodedSize.height ? size.width/decodedSize.width : size.height/decodedSize.height
+
+            let fitSize = CGSize(width: decodedSize.width * ratio * scale, height: decodedSize.height * ratio * scale)
+            return render(fitSize)
+        default:
+            return self
+        }
+    }
+
+    private func render(size: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(size)
+        drawInRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
         return UIGraphicsGetImageFromCurrentImageContext()
     }
