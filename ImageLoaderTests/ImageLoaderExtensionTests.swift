@@ -45,17 +45,17 @@ class ImageLoaderExtensionTests: XCTestCase {
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 50)
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 50)
         adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
         adjustedSize = CGSize(width: 100, height: 100)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 200, height: 200)
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
         adjustedSize = CGSize(width: 100, height: 100)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
     func testImageAdjustsRectangleScaleAspectFit1() {
@@ -69,17 +69,17 @@ class ImageLoaderExtensionTests: XCTestCase {
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 60)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 60, height: 30)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
     func testImageAdjustsRectangleScaleAspectFit2() {
@@ -93,17 +93,17 @@ class ImageLoaderExtensionTests: XCTestCase {
         size = CGSize(width: 25, height: 25)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 25, height: 30)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 30, height: 15)
         adjustedSize = CGSize(width: 50, height: 30)
         adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
-        XCTAssertEqual(adjustedSize, adjustedImage.size, "adjust size is failed")
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
 }
