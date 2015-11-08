@@ -28,7 +28,6 @@ extension UIImage {
             }
 
             let decodedSize = CGSize(width: self.size.width / scale, height: self.size.height / scale)
-            print(decodedSize)
             let ratio = size.width/decodedSize.width < size.height/decodedSize.height ? size.width/decodedSize.width : size.height/decodedSize.height
 
             let fitSize = CGSize(width: decodedSize.width * ratio * scale, height: decodedSize.height * ratio * scale)
