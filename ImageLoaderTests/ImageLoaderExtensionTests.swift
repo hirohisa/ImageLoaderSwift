@@ -116,17 +116,17 @@ class ImageLoaderExtensionTests: XCTestCase {
 
         size = CGSize(width: 40, height: 40)
         adjustedSize = CGSize(width: 50, height: 40)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 80)
         adjustedSize = CGSize(width: 100, height: 80)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 80, height: 40)
         adjustedSize = CGSize(width: 80, height: 64)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
