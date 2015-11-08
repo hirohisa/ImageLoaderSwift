@@ -32,6 +32,16 @@ extension UIImage {
 
             let fitSize = CGSize(width: decodedSize.width * ratio * scale, height: decodedSize.height * ratio * scale)
             return render(fitSize)
+        case .ScaleAspectFill:
+            if size.width * scale > self.size.width || size.height * scale > self.size.height {
+                return self
+            }
+
+            let decodedSize = CGSize(width: self.size.width / scale, height: self.size.height / scale)
+            let ratio = size.width/decodedSize.width > size.height/decodedSize.height ? size.width/decodedSize.width : size.height/decodedSize.height
+
+            let fitSize = CGSize(width: decodedSize.width * ratio * scale, height: decodedSize.height * ratio * scale)
+            return render(fitSize)
         default:
             return self
         }
