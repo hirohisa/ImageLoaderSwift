@@ -17,6 +17,11 @@ private var ImageLoaderBlockKey = 0
 */
 extension UIImageView {
 
+    public static var imageLoader = Manager()
+    var imageLoader: Manager {
+        return UIImageView.imageLoader
+    }
+
     // MARK: - properties
 
     private var URL: NSURL? {
@@ -51,7 +56,7 @@ extension UIImageView {
 
     public func cancelLoading() {
         if let URL = URL {
-            sharedInstance.cancel(URL, block: block as? Block)
+            imageLoader.cancel(URL, block: block as? Block)
         }
     }
 
@@ -60,31 +65,35 @@ extension UIImageView {
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
 
-        let _completionHandler: CompletionHandler = { URL, image, error, cacheType in
+        let closure: CompletionHandler = { URL, image, error, cacheType in
 
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 // requesting is success then set image
-                if let wSelf = self, let thisURL = wSelf.URL, let image = image where thisURL.isEqual(URL) {
-                    if sharedInstance.automaticallyAdjustsSize {
-                        wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale)
-                    } else {
-                        wSelf.image = image
+                if let wSelf = self, let thisURL = wSelf.URL, var image = image where thisURL.isEqual(URL) {
+                    if wSelf.imageLoader.automaticallyAdjustsSize {
+                        image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
                     }
+
+                    wSelf.image = image
                 }
                 completionHandler?(URL, image, error, cacheType)
             }
         }
 
         // caching
-        if let image = sharedInstance.cache[URL] {
-            _completionHandler(URL, image, nil, .Cache)
+        if let image = imageLoader.cache[URL] {
+            closure(URL, image, nil, .Cache)
             return
         }
 
-        dispatch_async(UIImageView._requesting_queue) {
-            let block = Block(completionHandler: _completionHandler)
-            sharedInstance.load(URL).appendBlock(block)
-            self.block = block
+        dispatch_async(UIImageView._requesting_queue) { [weak self] in
+            guard let wSelf = self else {
+                return
+            }
+
+            let block = Block(completionHandler: closure)
+            wSelf.imageLoader.load(URL).appendBlock(block)
+            wSelf.block = block
         }
 
     }

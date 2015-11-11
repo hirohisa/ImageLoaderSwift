@@ -34,17 +34,6 @@ extension String: URLLiteralConvertible {
     }
 }
 
-extension UIImage {
-
-    func adjusts(size: CGSize, scale: CGFloat) -> UIImage {
-        let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-        UIGraphicsBeginImageContext(scaledSize)
-        drawInRect(CGRect(x: 0, y: 0, width: scaledSize.width, height: scaledSize.height))
-
-        return UIGraphicsGetImageFromCurrentImageContext()
-    }
-}
-
 // MARK: Cache
 
 /**
@@ -110,7 +99,7 @@ public class Manager {
 
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
-    init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
+    public init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
         cache: ImageCache = Diskcached()
         ) {
             session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -225,6 +214,10 @@ public class Manager {
                 remove(URL)
             }
         }
+
+        func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, willCacheResponse proposedResponse: NSCachedURLResponse, completionHandler: (NSCachedURLResponse?) -> Void) {
+            completionHandler(nil)
+        }
     }
 }
 
@@ -233,7 +226,7 @@ public class Manager {
 */
 public class Loader {
 
-    unowned let delegate: Manager
+    weak var delegate: Manager?
     let task: NSURLSessionDataTask
     var receivedData = NSMutableData()
     internal var blocks: [Block] = []
@@ -288,14 +281,23 @@ public class Loader {
                 failure(URL, error: error)
                 return
             }
-            dispatch_async(delegate.decompressingQueue) {
-                self.success(URL, data: self.receivedData)
+
+            guard let delegate = delegate else {
+                return
+            }
+
+            dispatch_async(delegate.decompressingQueue) { [weak self] in
+                guard let wSelf = self else {
+                    return
+                }
+
+                wSelf.success(URL, data: wSelf.receivedData)
             }
         }
     }
 
     private func success(URL: NSURL, data: NSData) {
-        let image = UIImage(data: data)
+        let image = UIImage.decode(data)
         _toCache(URL, image: image)
 
         for block: Block in blocks {
@@ -313,7 +315,7 @@ public class Loader {
 
     private func _toCache(URL: NSURL, image: UIImage?) {
         if let image = image {
-            delegate.cache[URL] = image
+            delegate?.cache[URL] = image
         }
     }
 
