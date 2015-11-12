@@ -35,6 +35,7 @@ class PerfomanceTestViewController: CollectionViewController {
         let imageURL = String.imageURL(indexPath.row % 100)
 
         let startDate = NSDate()
+        cell.imageView.contentMode = contentMode
         cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, _) -> Void in
             let diff = NSDate().timeIntervalSinceDate(startDate)
             print("loading time: \(diff)")
