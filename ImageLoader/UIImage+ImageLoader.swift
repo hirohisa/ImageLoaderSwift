@@ -22,6 +22,13 @@ extension UIImage {
 
     func adjusts(size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
         switch contentMode {
+        case .ScaleToFill:
+            if size.width * scale > self.size.width || size.height * scale > self.size.height {
+                return self
+            }
+
+            let fitSize = CGSize(width: size.width * scale, height: size.height * scale)
+            return render(fitSize)
         case .ScaleAspectFit:
             if size.width * scale > self.size.width || size.height * scale > self.size.height {
                 return self
