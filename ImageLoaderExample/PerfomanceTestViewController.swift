@@ -33,7 +33,23 @@ class PerfomanceTestViewController: CollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
 
         let imageURL = String.imageURL(indexPath.row % 100)
-        cell.imageView.load(imageURL)
+
+        let startDate = NSDate()
+        cell.imageView.contentMode = contentMode
+        cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, type) -> Void in
+            switch type {
+            case .None:
+                let diff = NSDate().timeIntervalSinceDate(startDate)
+                print("loading time: \(diff)")
+                if let image = cell.imageView.image {
+                    print("from network, image size: \(image.size)")
+                }
+            case .Cache:
+                if let image = cell.imageView.image {
+                    print("from cache, image size: \(image.size)")
+                }
+            }
+        }
 
         return cell
     }

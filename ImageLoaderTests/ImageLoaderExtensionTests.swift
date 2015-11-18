@@ -130,4 +130,36 @@ class ImageLoaderExtensionTests: XCTestCase {
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
+    func testImageAdjustsRectangleScaleToFill() {
+        var image: UIImage!
+        var size: CGSize!
+        var adjustedSize: CGSize!
+        var adjustedImage: UIImage!
+
+        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 80))
+
+        // Scale 1
+
+        size = CGSize(width: 40, height: 40)
+        adjustedSize = CGSize(width: 40, height: 40)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleToFill)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        size = CGSize(width: 50, height: 80)
+        adjustedSize = CGSize(width: 50, height: 80)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleToFill)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        // Scale 2
+        size = CGSize(width: 40, height: 40)
+        adjustedSize = CGSize(width: 80, height: 80)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleToFill)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        size = CGSize(width: 50, height: 80)
+        adjustedSize = CGSize(width: 100, height: 80)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleToFill)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+    }
+
 }

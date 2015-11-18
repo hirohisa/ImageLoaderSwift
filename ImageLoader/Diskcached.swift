@@ -63,16 +63,7 @@ class Diskcached {
 extension Diskcached {
 
     private func objectForKey(aKey: NSURL) -> UIImage? {
-
-        if let image = images[aKey] {
-            return image
-        }
-
-        if let data = NSData(contentsOfFile: _path(aKey.absoluteString)) {
-            return UIImage(data: data)
-        }
-
-        return nil
+        return UIImage(contentsOfFile: _path(aKey.absoluteString))
     }
 
     private func _path(name: String) -> String {
@@ -84,7 +75,6 @@ extension Diskcached {
         images[aKey] = anObject
 
         let block: () -> Void = {
-
             if let data = UIImageJPEGRepresentation(anObject, 1) {
                 data.writeToFile(self._path(aKey.absoluteString), atomically: false)
             }
@@ -104,7 +94,7 @@ extension Diskcached: ImageCache {
 
         get {
             var value : UIImage?
-            dispatch_sync(_subscript_queue) {
+            autoreleasepool {
                 value = self.objectForKey(aKey)
             }
 
