@@ -87,19 +87,16 @@ class ImageLoaderTests: XCTestCase {
         let manager = Manager()
         let loader = manager.load(URL)
 
-        XCTAssert(loader.state == .Running,
-            "loader's status is not running, now is \(loader.state.toString())")
+        XCTAssert(loader.state == .Running, loader.state.toString())
         loader.completionHandler { completedURL, image, error, cacheType in
 
-            XCTAssertEqual(URL, completedURL,
-                "URL \(URL) and completedURL \(completedURL) are not same. ")
-            XCTAssert(manager.state == .Ready,
-                "manager's state is not ready, now is \(manager.state.toString())")
+            XCTAssertEqual(URL, completedURL)
+            XCTAssert(manager.state == .Ready, manager.state.toString())
             expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error, "loader did not finish")
+            XCTAssertNil(error)
         }
     }
 
@@ -113,16 +110,15 @@ class ImageLoaderTests: XCTestCase {
         let manager = Manager()
         let loader = manager.load(URL)
 
-        XCTAssert(loader.state == .Running,
-            "loader's status is not running, now is \(loader.state.toString())")
+        XCTAssert(loader.state == .Running, loader.state.toString())
         loader.completionHandler { completedURL, image, error, cacheType in
 
-            XCTAssertNil(manager.delegate[URL], "loader did not remove from delegate")
+            XCTAssertNil(manager.delegate[URL])
             expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error, "loader did not finish")
+            XCTAssertNil(error)
         }
     }
 
@@ -137,12 +133,9 @@ class ImageLoaderTests: XCTestCase {
         URL = NSURL(string: "http://test/path2")
         let loader2 = manager.load(URL)
 
-        XCTAssert(loader1.state == .Running,
-            "loader's status is not running, now is \(loader1.state.toString())")
-        XCTAssert(loader2.state == .Running,
-            "loader's status is not running, now is \(loader2.state.toString())")
-        XCTAssert(loader1 !== loader2,
-            "loaders are same")
+        XCTAssert(loader1.state == .Running, loader1.state.toString())
+        XCTAssert(loader2.state == .Running, loader2.state.toString())
+        XCTAssert(loader1 !== loader2)
 
     }
 
@@ -158,12 +151,9 @@ class ImageLoaderTests: XCTestCase {
         URL = NSURL(string: "http://test/path")
         let loader2 = manager.load(URL)
 
-        XCTAssert(loader1.state == .Running,
-            "loader's status is not running, now is \(loader1.state.toString())")
-        XCTAssert(loader2.state == .Running,
-            "loader's status is not running, now is \(loader2.state.toString())")
-        XCTAssert(loader1 === loader2,
-            "loaders are not same")
+        XCTAssert(loader1.state == .Running, loader1.state.toString())
+        XCTAssert(loader2.state == .Running, loader2.state.toString())
+        XCTAssert(loader1 === loader2)
 
     }
 
@@ -176,18 +166,15 @@ class ImageLoaderTests: XCTestCase {
         let manager = Manager()
         let loader = manager.load(URL)
 
-        XCTAssert(loader.state == .Running,
-            "loader's status is not running, now is \(loader.state.toString())")
+        XCTAssert(loader.state == .Running, loader.state.toString())
         loader.completionHandler { completedURL, image, error, cacheType in
 
-            XCTAssertNil(image,
-                "image exist in completion block when status code is 404")
-
+            XCTAssertNil(image)
             expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error, "loader did not finish")
+            XCTAssertNil(error)
         }
     }
 
@@ -197,15 +184,13 @@ class ImageLoaderTests: XCTestCase {
 
         let manager: Manager = Manager()
 
-        XCTAssert(manager.state == .Ready,
-            "manager's state is not ready, now is \(manager.state.toString())")
+        XCTAssert(manager.state == .Ready, manager.state.toString())
 
         manager.load(URL)
         manager.cancel(URL, block: nil)
 
         let loader: Loader? = manager.delegate[URL]
-        XCTAssertNil(loader,
-            "Store doesnt remove the loader, \(loader)")
+        XCTAssertNil(loader)
 
     }
 
@@ -225,17 +210,14 @@ class ImageLoaderTests: XCTestCase {
 
         let keepingLoader: Loader? = keepingManager.delegate[URL]
         let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
-        XCTAssertNotNil(keepingLoader,
-            "property `shouldKeepLoader is true` doesnt work normally, \(keepingLoader)")
-        XCTAssertNil(notkeepingLoader,
-            "property `shouldKeepLoader is false` doesnt work normally, \(notkeepingLoader)")
+        XCTAssertNotNil(keepingLoader)
+        XCTAssertNil(notkeepingLoader)
     }
 
     func testTooManyLoaderRun() {
         let manager: Manager = Manager()
 
-        XCTAssert(manager.state == .Ready,
-            "manager's state is not ready, now is \(manager.state.toString())")
+        XCTAssert(manager.state == .Ready, manager.state.toString())
 
         for i in 0...100 {
             let URL = "https://image/\(i)"
@@ -251,10 +233,8 @@ class StringTests: XCTestCase {
         let string = "http://test.com"
         let valid = "http%3A%2F%2Ftest.com"
 
-        XCTAssertNotEqual(string, string.escape(),
-            "String cant escape, \(string.escape())")
-        XCTAssertEqual(valid, string.escape(),
-            "String cant escape, \(string.escape())")
+        XCTAssertNotEqual(string, string.escape())
+        XCTAssertEqual(valid, string.escape())
     }
 }
 
@@ -264,7 +244,7 @@ class URLLiteralConvertibleTests: XCTestCase {
         let URL = "http://twitter.com/?status=Hello World".imageLoaderURL
         let valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
 
-        XCTAssertEqual(URL, valid, "result that \(URL) is escaped is failed.")
+        XCTAssertEqual(URL, valid)
     }
     
 }
