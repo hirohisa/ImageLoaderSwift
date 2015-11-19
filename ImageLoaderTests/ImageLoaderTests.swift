@@ -223,11 +223,11 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
 
-        for i in 0...100 {
+        for i in 0...20 {
             let URL = "https://image/\(i)"
             manager.load(URL)
         }
-        XCTAssertEqual(manager.delegate.loaders.count, 100)
+        XCTAssertEqual(manager.delegate.loaders.count, 20)
     }
 }
 
