@@ -230,6 +230,19 @@ class ImageLoaderTests: XCTestCase {
         XCTAssertNil(notkeepingLoader,
             "property `shouldKeepLoader is false` doesnt work normally, \(notkeepingLoader)")
     }
+
+    func testTooManyLoaderRun() {
+        let manager: Manager = Manager()
+
+        XCTAssert(manager.state == .Ready,
+            "manager's state is not ready, now is \(manager.state.toString())")
+
+        for i in 0...100 {
+            let URL = "https://image/\(i)"
+            manager.load(URL)
+        }
+        XCTAssertEqual(manager.delegate.loaders.count, 100)
+    }
 }
 
 class StringTests: XCTestCase {

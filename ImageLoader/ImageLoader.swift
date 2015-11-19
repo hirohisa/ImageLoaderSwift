@@ -171,7 +171,7 @@ public class Manager {
     class SessionDataDelegate: NSObject, NSURLSessionDataDelegate {
 
         private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        private var loaders = [NSURL: Loader]()
+        var loaders = [NSURL: Loader]()
 
         subscript (URL: NSURL) -> Loader? {
             get {
