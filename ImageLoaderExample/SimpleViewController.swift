@@ -19,6 +19,8 @@ class SimpleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Simple"
+
+        imageView.backgroundColor = UIColor.blackColor()
     }
 
     // MARK: - try
