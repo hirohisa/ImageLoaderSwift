@@ -81,9 +81,29 @@ extension UIImage {
         }
 
         var image: UIImage?
+
         autoreleasepool {
-            let bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
+            var bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
+            let alphaInfo = CGImageGetAlphaInfo(CGImage)
             let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
+            switch (colorSpaceModel.rawValue) {
+            case CGColorSpaceModel.RGB.rawValue:
+
+                // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
+                var info = CGImageAlphaInfo.PremultipliedFirst
+                switch alphaInfo {
+                case .None:
+                    info = CGImageAlphaInfo.NoneSkipFirst
+                default:
+                    break
+                }
+                bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
+                bitmapInfoValue |= info.rawValue
+            default:
+                break
+            }
+
             let context = CGBitmapContextCreate(
                 nil,
                 width,
