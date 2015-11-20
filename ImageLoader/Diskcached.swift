@@ -93,12 +93,7 @@ extension Diskcached: ImageCache {
     subscript (aKey: NSURL) -> UIImage? {
 
         get {
-            var value : UIImage?
-            autoreleasepool {
-                value = self.objectForKey(aKey)
-            }
-
-            return value
+            return self.objectForKey(aKey)
         }
 
         set {

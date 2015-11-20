@@ -191,7 +191,7 @@ public class Manager {
         }
 
         private func remove(URL: NSURL) -> Loader? {
-            if let loader = self[URL] {
+            if let loader = loaders[URL] {
                 loaders[URL] = nil
                 return loader
             }
@@ -210,8 +210,9 @@ public class Manager {
 
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
             if let URL = task.originalRequest?.URL, let loader = self[URL] {
-                loader.complete(error)
-                remove(URL)
+                loader.complete(error) { [unowned self] in
+                    self.remove(URL)
+                }
             }
         }
 
@@ -226,10 +227,10 @@ public class Manager {
 */
 public class Loader {
 
-    weak var delegate: Manager?
+    unowned let delegate: Manager
     let task: NSURLSessionDataTask
     var receivedData = NSMutableData()
-    internal var blocks: [Block] = []
+    var blocks: [Block] = []
 
     init (task: NSURLSessionDataTask, delegate: Manager) {
         self.task = task
@@ -274,15 +275,11 @@ public class Loader {
         receivedData.appendData(data)
     }
 
-    private func complete(error: NSError?) {
+    private func complete(error: NSError?, completionHandler: () -> Void) {
 
         if let URL = task.originalRequest?.URL {
             if let error = error {
-                failure(URL, error: error)
-                return
-            }
-
-            guard let delegate = delegate else {
+                failure(URL, error: error, completionHandler: completionHandler)
                 return
             }
 
@@ -291,12 +288,12 @@ public class Loader {
                     return
                 }
 
-                wSelf.success(URL, data: wSelf.receivedData)
+                wSelf.success(URL, data: wSelf.receivedData, completionHandler: completionHandler)
             }
         }
     }
 
-    private func success(URL: NSURL, data: NSData) {
+    private func success(URL: NSURL, data: NSData, completionHandler: () -> Void) {
         let image = UIImage.decode(data)
         _toCache(URL, image: image)
 
@@ -304,18 +301,20 @@ public class Loader {
             block.completionHandler(URL, image, nil, .None)
         }
         blocks = []
+        completionHandler()
     }
 
-    private func failure(URL: NSURL, error: NSError) {
+    private func failure(URL: NSURL, error: NSError, completionHandler: () -> Void) {
         for block: Block in blocks {
             block.completionHandler(URL, nil, error, .None)
         }
         blocks = []
+        completionHandler()
     }
 
     private func _toCache(URL: NSURL, image: UIImage?) {
         if let image = image {
-            delegate?.cache[URL] = image
+            delegate.cache[URL] = image
         }
     }
 

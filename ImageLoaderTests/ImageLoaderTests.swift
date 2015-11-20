@@ -111,10 +111,14 @@ class ImageLoaderTests: XCTestCase {
         let loader = manager.load(URL)
 
         XCTAssert(loader.state == .Running, loader.state.toString())
+
         loader.completionHandler { completedURL, image, error, cacheType in
 
-            XCTAssertNil(manager.delegate[URL])
-            expectation.fulfill()
+            let time  = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+            dispatch_after(time, dispatch_get_main_queue(), {
+                XCTAssertNil(manager.delegate[URL], "loader did not remove from delegate")
+                expectation.fulfill()
+            })
         }
 
         waitForExpectationsWithTimeout(5) { error in
@@ -219,11 +223,11 @@ class ImageLoaderTests: XCTestCase {
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
 
-        for i in 0...100 {
+        for i in 0...20 {
             let URL = "https://image/\(i)"
             manager.load(URL)
         }
-        XCTAssertEqual(manager.delegate.loaders.count, 100)
+        XCTAssertEqual(manager.delegate.loaders.count, 20)
     }
 }
 
