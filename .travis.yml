@@ -1,16 +1,12 @@
 language: objective-c
 osx_image: xcode7
-
 env:
-  secure: "IHqePcV1D1/M1Ma+p63cHLEPRXeOnEcR6Y/qIDMYNCrfMVqmERi9eqcTPK2j+Z3CoKYNe7M3duRA50uYOnr+Dh04rYOMkwCToUV3VcV2X1Y9f81JSzAPl9qmqpnifG/634CbZAYNmrjcv6SetU+9awXsN8CONUH+343jbfMY478="
-
+  global:
+  - secure: VYaQYQwtmD+Dkf+J1rUjEhJ6nWbCzCDdmkFIPD31YZL+l+Cds6bRmXM6tirHGmPYbs9dTF22TUnSs2EjgoYkhkq3pcgVo6AWfjlMIavmm6wnOzHxu998T59RMuvoJOVfAF4SlPbBoieNLO++DNK+ntBxVWw/vxj4dGIdFJheXD4=
 before_install:
-  - gem install cocoapods xcpretty
+  - gem install xcpretty
   - brew update
   - brew install carthage
-
 script:
   - rake test
-
 after_success:
-  #- make send-coverage
