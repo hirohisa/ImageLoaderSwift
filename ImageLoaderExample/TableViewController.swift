@@ -24,7 +24,7 @@ class TableViewController: UITableViewController {
         cell.thumbnailView.load(URL, placeholder: placeholder) { URL, image, error, cacheType in
             print("URL \(URL)")
             print("error \(error)")
-            print("image \(image?.size)")
+            print("image \(image?.size), render-image \(cell.thumbnailView.image?.size)")
             print("cacheType \(cacheType.hashValue)")
             if cacheType == CacheType.None {
                 let transition = CATransition()

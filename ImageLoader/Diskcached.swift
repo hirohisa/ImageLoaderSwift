@@ -26,7 +26,7 @@ extension String {
 
 class Diskcached {
 
-    private var images = [NSURL: UIImage]()
+    private var storedData = [NSURL: NSData]()
 
     class Directory {
         init() {
@@ -62,24 +62,25 @@ class Diskcached {
 
 extension Diskcached {
 
-    private func objectForKey(aKey: NSURL) -> UIImage? {
-        return UIImage(contentsOfFile: _path(aKey.absoluteString))
+    private func objectForKey(aKey: NSURL) -> NSData? {
+        if let data = storedData[aKey] {
+            return data
+        }
+
+        return NSData(contentsOfFile: _path(aKey.absoluteString))
     }
 
     private func _path(name: String) -> String {
         return directory.path + "/" + name.escape()
     }
 
-    private func setObject(anObject: UIImage, forKey aKey: NSURL) {
+    private func setObject(anObject: NSData, forKey aKey: NSURL) {
 
-        images[aKey] = anObject
+        storedData[aKey] = anObject
 
         let block: () -> Void = {
-            if let data = UIImageJPEGRepresentation(anObject, 1) {
-                data.writeToFile(self._path(aKey.absoluteString), atomically: false)
-            }
-
-            self.images[aKey] = nil
+            anObject.writeToFile(self._path(aKey.absoluteString), atomically: false)
+            self.storedData[aKey] = nil
         }
 
         dispatch_async(_set_queue, block)
@@ -88,9 +89,9 @@ extension Diskcached {
 
 // MARK: ImageLoaderCacheProtocol
 
-extension Diskcached: ImageCache {
+extension Diskcached: ImageLoaderCache {
 
-    subscript (aKey: NSURL) -> UIImage? {
+    subscript (aKey: NSURL) -> NSData? {
 
         get {
             return self.objectForKey(aKey)

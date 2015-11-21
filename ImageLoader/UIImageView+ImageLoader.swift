@@ -75,8 +75,8 @@ extension UIImageView {
         }
 
         // caching
-        if let image = imageLoader.cache[URL] {
-            closure(URL, image, nil, .Cache)
+        if let data = imageLoader.cache[URL] {
+            closure(URL, UIImage.decode(data), nil, .Cache)
             return
         }
 

@@ -38,11 +38,11 @@ extension String: URLLiteralConvertible {
 
 /**
     Cache for `ImageLoader` have to implement methods.
-    fetch image by cache before sending a request and set image into cache after receiving image data.
+    find data in Cache before sending a request and set data into cache after receiving.
 */
-public protocol ImageCache: class {
+public protocol ImageLoaderCache: class {
 
-    subscript (aKey: NSURL) -> UIImage? {
+    subscript (aKey: NSURL) -> NSData? {
         get
         set
     }
@@ -88,7 +88,7 @@ public enum CacheType {
 public class Manager {
 
     let session: NSURLSession
-    let cache: ImageCache
+    let cache: ImageLoaderCache
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var automaticallyAdjustsSize = true
 
@@ -100,7 +100,7 @@ public class Manager {
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
     public init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageCache = Diskcached()
+        cache: ImageLoaderCache = Diskcached()
         ) {
             session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
             self.cache = cache
@@ -295,7 +295,7 @@ public class Loader {
 
     private func success(URL: NSURL, data: NSData, completionHandler: () -> Void) {
         let image = UIImage.decode(data)
-        _toCache(URL, image: image)
+        _toCache(URL, data: data)
 
         for block: Block in blocks {
             block.completionHandler(URL, image, nil, .None)
@@ -312,12 +312,11 @@ public class Loader {
         completionHandler()
     }
 
-    private func _toCache(URL: NSURL, image: UIImage?) {
-        if let image = image {
-            delegate.cache[URL] = image
+    private func _toCache(URL: NSURL, data: NSData?) {
+        if let data = data {
+            delegate.cache[URL] = data
         }
     }
-
 }
 
 // MARK: singleton instance
@@ -348,7 +347,11 @@ public func cancel(URL: URLLiteralConvertible) -> Loader? {
     Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
 */
 public func cache(URL: URLLiteralConvertible) -> UIImage? {
-    return sharedInstance.cache[URL.imageLoaderURL]
+
+    if let data = sharedInstance.cache[URL.imageLoaderURL] {
+        return UIImage.decode(data)
+    }
+    return nil
 }
 
 public var state: State {
