@@ -16,9 +16,11 @@
 		65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */; };
 		65D6FBC61A03859E00CF1DB7 /* black.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 65D6FBC51A03859E00CF1DB7 /* black.jpg */; };
 		A125B14D1A5F620B00250601 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A125B14C1A5F620B00250601 /* ImageLoader.framework */; };
-		A168B1091BDBDF9900646115 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B1081BDBDF9900646115 /* TableViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A168B10B1BDBE68200646115 /* ResizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B10A1BDBE68200646115 /* ResizeViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A168B10F1BDBE6F600646115 /* PerfomanceTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A13D8A431C03498A00B59641 /* CPUAndMemoryPeformanceTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D8A421C03498A00B59641 /* CPUAndMemoryPeformanceTestViewController.swift */; };
+		A13D8A451C0349F600B59641 /* BlockingMainThreadPerfomanceTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13D8A441C0349F600B59641 /* BlockingMainThreadPerfomanceTestViewController.swift */; };
+		A168B1091BDBDF9900646115 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B1081BDBDF9900646115 /* TableViewController.swift */; };
+		A168B10B1BDBE68200646115 /* ResizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A168B10A1BDBE68200646115 /* ResizeViewController.swift */; };
+		A1B052591C03469500B67C0F /* Watchdog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B052581C03469500B67C0F /* Watchdog.swift */; };
 		A1EE65CA1A41F93B00BEA147 /* SuspendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65C91A41F93B00BEA147 /* SuspendViewController.swift */; };
 		A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EE65CB1A41F9DF00BEA147 /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -35,9 +37,11 @@
 		65D6FBC11A03859500CF1DB7 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		65D6FBC51A03859E00CF1DB7 /* black.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = black.jpg; sourceTree = "<group>"; };
 		A125B14C1A5F620B00250601 /* ImageLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageLoader.framework; path = "build/Release-iphoneos/ImageLoader.framework"; sourceTree = "<group>"; };
+		A13D8A421C03498A00B59641 /* CPUAndMemoryPeformanceTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPUAndMemoryPeformanceTestViewController.swift; sourceTree = "<group>"; };
+		A13D8A441C0349F600B59641 /* BlockingMainThreadPerfomanceTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockingMainThreadPerfomanceTestViewController.swift; sourceTree = "<group>"; };
 		A168B1081BDBDF9900646115 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		A168B10A1BDBE68200646115 /* ResizeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeViewController.swift; sourceTree = "<group>"; };
-		A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfomanceTestViewController.swift; sourceTree = "<group>"; };
+		A1B052581C03469500B67C0F /* Watchdog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Watchdog.swift; sourceTree = "<group>"; };
 		A1EE65C91A41F93B00BEA147 /* SuspendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuspendViewController.swift; sourceTree = "<group>"; };
 		A1EE65CB1A41F9DF00BEA147 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +89,7 @@
 				65D6FBA61A03855700CF1DB7 /* Images.xcassets */,
 				65D6FBA81A03855700CF1DB7 /* LaunchScreen.xib */,
 				65D6FB9D1A03855700CF1DB7 /* Supporting Files */,
+				A1B052581C03469500B67C0F /* Watchdog.swift */,
 			);
 			path = ImageLoaderExample;
 			sourceTree = "<group>";
@@ -119,7 +124,8 @@
 		A168B1101BDBE9C100646115 /* PerfomanceTest */ = {
 			isa = PBXGroup;
 			children = (
-				A168B10E1BDBE6F600646115 /* PerfomanceTestViewController.swift */,
+				A13D8A421C03498A00B59641 /* CPUAndMemoryPeformanceTestViewController.swift */,
+				A13D8A441C0349F600B59641 /* BlockingMainThreadPerfomanceTestViewController.swift */,
 			);
 			name = PerfomanceTest;
 			sourceTree = "<group>";
@@ -196,12 +202,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A13D8A431C03498A00B59641 /* CPUAndMemoryPeformanceTestViewController.swift in Sources */,
 				A1EE65CC1A41F9DF00BEA147 /* Utils.swift in Sources */,
 				A168B1091BDBDF9900646115 /* TableViewController.swift in Sources */,
-				A168B10F1BDBE6F600646115 /* PerfomanceTestViewController.swift in Sources */,
 				A1EE65CA1A41F93B00BEA147 /* SuspendViewController.swift in Sources */,
+				A1B052591C03469500B67C0F /* Watchdog.swift in Sources */,
 				65D6FBC21A03859500CF1DB7 /* MultipleViewController.swift in Sources */,
 				65D6FBA01A03855700CF1DB7 /* AppDelegate.swift in Sources */,
+				A13D8A451C0349F600B59641 /* BlockingMainThreadPerfomanceTestViewController.swift in Sources */,
 				659D34AB1AD7A2B800FEFABC /* CollectionViewController.swift in Sources */,
 				A168B10B1BDBE68200646115 /* ResizeViewController.swift in Sources */,
 				65D6FBC41A03859500CF1DB7 /* SimpleViewController.swift in Sources */,
