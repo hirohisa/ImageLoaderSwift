@@ -41,3 +41,7 @@ xcuserdata
 Carthage/Checkouts
 
 Carthage/Build
+
+# Ruby
+.bundle
+vendor/bundle/
