@@ -1,14 +1,14 @@
 //
-//  PerfomanceTestViewController.swift
+//  CPUAndMemoryPeformanceTestViewController.swift
 //  ImageLoaderExample
 //
-//  Created by Hirohisa Kawasaki on 10/25/15.
+//  Created by Hirohisa Kawasaki on 11/23/15.
 //  Copyright © 2015 Hirohisa Kawasaki. All rights reserved.
 //
 
 import UIKit
 
-class PerfomanceTestViewController: CollectionViewController {
+class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
 
     var timer: NSTimer?
     func report() {
