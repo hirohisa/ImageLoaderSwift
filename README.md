@@ -18,7 +18,7 @@ Features
 - [x] After image view start loading another image, previous loading task is possible to live with caching.
 - [x] Support `NSURL`, `String` and `NSURLComponents` by `URLLiteralConvertible`
 - [ ] Optimize to use memory when image is set.
-- [ ] Support image type .jpeg, .png
+- [x] Support image type .jpeg, .png
 - [ ] Comprehensive Unit Test Coverage
 
 Requirements
