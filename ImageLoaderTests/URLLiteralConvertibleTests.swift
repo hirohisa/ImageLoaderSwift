@@ -8,6 +8,17 @@
 
 import XCTest
 
+class StringTests: XCTestCase {
+
+    func testEscape() {
+        let string = "http://test.com"
+        let valid = "http%3A%2F%2Ftest.com"
+
+        XCTAssertNotEqual(string, string.escape())
+        XCTAssertEqual(valid, string.escape())
+    }
+}
+
 class URLLiteralConvertibleTests: XCTestCase {
 
     func testEscapes() {
