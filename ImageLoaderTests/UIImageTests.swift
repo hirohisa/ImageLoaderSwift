@@ -1,5 +1,5 @@
 //
-//  ImageLoaderExtensionTests.swift
+//  UIImageTests.swift
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 10/15/15.
@@ -32,7 +32,7 @@ extension UIImage {
     }
 }
 
-class ImageLoaderExtensionTests: XCTestCase {
+class UIImageTests: XCTestCase {
 
     func testImageAdjustsScale() {
         var image: UIImage!
