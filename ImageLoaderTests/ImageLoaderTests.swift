@@ -76,4 +76,8 @@ class ImageLoaderTests: XCTestCase {
     func removeOHHTTPStubs() {
         OHHTTPStubs.removeAllStubs()
     }
+
+    func waitForAsyncTask(duration: NSTimeInterval = 0.1) {
+        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: duration))
+    }
 }
