@@ -220,6 +220,10 @@ public class Manager {
             completionHandler(nil)
         }
     }
+
+    deinit {
+        session.invalidateAndCancel()
+    }
 }
 
 /**
