@@ -11,13 +11,6 @@ import UIKit
 
 // MARK: Optimize image
 
-extension CGBitmapInfo {
-    private var alphaInfo: CGImageAlphaInfo? {
-        let info = intersect(.AlphaInfoMask)
-        return CGImageAlphaInfo(rawValue: info.rawValue)
-    }
-}
-
 extension UIImage {
 
     func adjusts(size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
@@ -80,49 +73,46 @@ extension UIImage {
             return self
         }
 
-        var image: UIImage?
+        var bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
+        let alphaInfo = CGImageGetAlphaInfo(CGImage)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
+        switch (colorSpaceModel.rawValue) {
+        case CGColorSpaceModel.RGB.rawValue:
 
-        autoreleasepool {
-            var bitmapInfoValue = CGImageGetBitmapInfo(CGImage).rawValue
-            let alphaInfo = CGImageGetAlphaInfo(CGImage)
-            let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
-            switch (colorSpaceModel.rawValue) {
-            case CGColorSpaceModel.RGB.rawValue:
-
-                // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
-                var info = CGImageAlphaInfo.PremultipliedFirst
-                switch alphaInfo {
-                case .None:
-                    info = CGImageAlphaInfo.NoneSkipFirst
-                default:
-                    break
-                }
-                bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
-                bitmapInfoValue |= info.rawValue
+            // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
+            var info = CGImageAlphaInfo.PremultipliedFirst
+            switch alphaInfo {
+            case .None:
+                info = CGImageAlphaInfo.NoneSkipFirst
             default:
                 break
             }
-
-            let context = CGBitmapContextCreate(
-                nil,
-                width,
-                height,
-                bitsPerComponent,
-                0,
-                colorSpace,
-                bitmapInfoValue
-            )
-
-            let frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-            CGContextDrawImage(context, frame, CGImage)
-
-            if let cgImage = CGBitmapContextCreateImage(context) {
-                image = UIImage(CGImage: cgImage)
-            }
-            CGContextClearRect(context, frame)
+            bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
+            bitmapInfoValue |= info.rawValue
+        default:
+            break
         }
+
+        let context = CGBitmapContextCreate(
+            nil,
+            width,
+            height,
+            bitsPerComponent,
+            0,
+            colorSpace,
+            bitmapInfoValue
+        )
+
+        let frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+        CGContextDrawImage(context, frame, CGImage)
+
+        var image: UIImage?
+        if let cgImage = CGBitmapContextCreateImage(context) {
+            image = UIImage(CGImage: cgImage)
+        }
+        CGContextClearRect(context, frame)
 
         return image ?? self
     }
