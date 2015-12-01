@@ -26,7 +26,7 @@ extension String {
 
 class Diskcached {
 
-    private var storedData = [NSURL: NSData]()
+    var storedData = [NSURL: NSData]()
 
     class Directory {
         init() {

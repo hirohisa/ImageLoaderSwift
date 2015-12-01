@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		650F993C1C0DA09B00540E8D /* DiskcachedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */; };
 		6529075C1BA19BEE002B8D89 /* OHHTTPStubs.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075D1BA19D5F002B8D89 /* ImageLoader.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075E1BA19DB2002B8D89 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; };
@@ -52,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskcachedTests.swift; sourceTree = "<group>"; };
 		6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = ../Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B2CF1519EF9F6600DA3605 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				65B2CF2319EF9F6600DA3605 /* ImageLoaderTests.swift */,
 				A166A16C1C0C2A4000E71C42 /* LoaderTests.swift */,
 				A1E989311BCEC9BB00948F82 /* UIImageTests.swift */,
+				650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */,
 				A166A16A1C0B918700E71C42 /* URLLiteralConvertibleTests.swift */,
 				65B2CF2119EF9F6600DA3605 /* Supporting Files */,
 			);
@@ -272,6 +275,7 @@
 				A166A16B1C0B918700E71C42 /* URLLiteralConvertibleTests.swift in Sources */,
 				A1FC211D1BDFF5CB003FD093 /* UIImage+ImageLoader.swift in Sources */,
 				A1B7FEBF1A480F1800819BD1 /* Diskcached.swift in Sources */,
+				650F993C1C0DA09B00540E8D /* DiskcachedTests.swift in Sources */,
 				65B2CF2419EF9F6600DA3605 /* ImageLoaderTests.swift in Sources */,
 				65C68E5F19F501CF0053E66D /* UIImageView+ImageLoader.swift in Sources */,
 				65C68E6219F502B20053E66D /* ImageLoader.swift in Sources */,
