@@ -6,9 +6,7 @@
 //  Copyright © 2015 Hirohisa Kawasaki. All rights reserved.
 //
 
-import UIKit
 import XCTest
-@testable import ImageLoader
 
 class LoaderTests: ImageLoaderTests {
 
