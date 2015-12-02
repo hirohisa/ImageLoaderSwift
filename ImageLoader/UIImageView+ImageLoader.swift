@@ -13,8 +13,8 @@ private var ImageLoaderURLKey = 0
 private var ImageLoaderBlockKey = 0
 
 /**
-    Extension using ImageLoader sends a request, receives image and displays.
-*/
+ Extension using ImageLoader sends a request, receives image and displays.
+ */
 extension UIImageView {
 
     public static var imageLoader = Manager()
@@ -87,7 +87,7 @@ extension UIImageView {
 
             let block = Block(completionHandler: closure)
             let loader = wSelf.imageLoader.load(URL)
-                loader.appendBlock(block)
+            loader.appendBlock(block)
             wSelf.block = block
         }
     }
@@ -99,5 +99,5 @@ extension UIImageView {
             self.image = image
         }
     }
-
+    
 }
