@@ -67,4 +67,33 @@ class ManagerTests: ImageLoaderTests {
         XCTAssert(loader.state == .Completed, loader.state.toString())
         XCTAssert(canceledLoader!.state == .Completed, loader.state.toString())
     }
+
+    func testCancelWhenHasBlock() {
+        let URL = NSURL(string: "http://manager/test/cancel")!
+
+        let block = Block { (URL, _, error, _) -> Void in
+            XCTAssertTrue(false, "dont call this completion handler")
+        }
+
+        let manager = Manager()
+        manager.cancel(URL)
+        XCTAssert(manager.state == .Ready, manager.state.toString())
+
+        let loader = manager.load(URL)
+        loader.appendBlock(block)
+        waitForAsyncTask()
+
+        XCTAssert(manager.state == .Running, manager.state.toString())
+        XCTAssert(loader.state == .Running, loader.state.toString())
+
+        let canceledLoader = manager.cancel(URL, block: block)
+        XCTAssert(canceledLoader!.state == .Canceling, loader.state.toString())
+        XCTAssertTrue(loader.blocks.isEmpty)
+        XCTAssertTrue(canceledLoader!.blocks.isEmpty)
+        waitForAsyncTask()
+
+        XCTAssert(manager.state == .Ready, manager.state.toString())
+        XCTAssert(loader.state == .Completed, loader.state.toString())
+        XCTAssert(canceledLoader!.state == .Completed, loader.state.toString())
+    }
 }
