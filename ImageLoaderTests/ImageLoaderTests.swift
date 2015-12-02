@@ -57,19 +57,27 @@ class ImageLoaderTests: XCTestCase {
     func setUpOHHTTPStubs() {
         OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
             return true
-            }, withStubResponse: { request in
-                let data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
-                let response = OHHTTPStubsResponse(data: data, statusCode: 200, headers: nil)
-
-                if let path = request.URL?.path as String? {
+        }, withStubResponse: { request in
+            var data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
+            var statusCode = Int32(200)
+            if let path = request.URL?.path where !path.isEmpty {
+                switch path {
+                case _ where path.hasSuffix("white"):
+                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("white", ofType: "png")!
+                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                case _ where path.hasSuffix("black"):
+                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("black", ofType: "png")!
+                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                default:
                     if let i = Int(path) where 400 <= i && i < 600 {
-                        response.statusCode = Int32(i)
+                        statusCode = Int32(i)
                     }
                 }
+            }
 
-                response.responseTime = 1
-
-                return response
+            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
+            response.responseTime = 1
+            return response
         })
     }
 
