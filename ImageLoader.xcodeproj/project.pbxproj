@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		650F993C1C0DA09B00540E8D /* DiskcachedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */; };
 		650F99401C0DBD5B00540E8D /* ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993F1C0DBD5B00540E8D /* ManagerTests.swift */; };
+		650F99421C0EC16E00540E8D /* UIImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F99411C0EC16E00540E8D /* UIImageViewTests.swift */; };
+		650F99481C0EC45D00540E8D /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = 650F99471C0EC45D00540E8D /* black.png */; };
+		650F994A1C0EC46300540E8D /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 650F99491C0EC46300540E8D /* white.png */; };
 		6529075C1BA19BEE002B8D89 /* OHHTTPStubs.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075D1BA19D5F002B8D89 /* ImageLoader.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075E1BA19DB2002B8D89 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; };
@@ -56,6 +59,9 @@
 /* Begin PBXFileReference section */
 		650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskcachedTests.swift; sourceTree = "<group>"; };
 		650F993F1C0DBD5B00540E8D /* ManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerTests.swift; sourceTree = "<group>"; };
+		650F99411C0EC16E00540E8D /* UIImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewTests.swift; sourceTree = "<group>"; };
+		650F99471C0EC45D00540E8D /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
+		650F99491C0EC46300540E8D /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = ../Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B2CF1519EF9F6600DA3605 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,6 +145,7 @@
 				A166A16C1C0C2A4000E71C42 /* LoaderTests.swift */,
 				650F993F1C0DBD5B00540E8D /* ManagerTests.swift */,
 				A1E989311BCEC9BB00948F82 /* UIImageTests.swift */,
+				650F99411C0EC16E00540E8D /* UIImageViewTests.swift */,
 				A166A16A1C0B918700E71C42 /* URLLiteralConvertibleTests.swift */,
 				65B2CF2119EF9F6600DA3605 /* Supporting Files */,
 			);
@@ -148,6 +155,8 @@
 		65B2CF2119EF9F6600DA3605 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				650F99471C0EC45D00540E8D /* black.png */,
+				650F99491C0EC46300540E8D /* white.png */,
 				6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */,
 				65B2CF2219EF9F6600DA3605 /* Info.plist */,
 			);
@@ -254,6 +263,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				650F99481C0EC45D00540E8D /* black.png in Resources */,
+				650F994A1C0EC46300540E8D /* white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				650F99421C0EC16E00540E8D /* UIImageViewTests.swift in Sources */,
 				A166A16B1C0B918700E71C42 /* URLLiteralConvertibleTests.swift in Sources */,
 				650F99401C0DBD5B00540E8D /* ManagerTests.swift in Sources */,
 				A1FC211D1BDFF5CB003FD093 /* UIImage+ImageLoader.swift in Sources */,
