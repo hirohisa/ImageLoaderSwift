@@ -39,11 +39,25 @@ class DiskcachedTests: XCTestCase {
         let cached = Diskcached()
         cached[URL] = data
 
-        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 5))
+        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
 
         XCTAssertNotNil(cached[URL])
         XCTAssertEqual(cached[URL]!, data)
         XCTAssertNil(cached.storedData[URL])
+    }
+
+    func testCleanDisk() {
+        let URL = NSURL(string: "http://test/save_to_file_for_clean")!
+        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
+        let data = UIImageJPEGRepresentation(image, 1)
+
+        let cached = Diskcached()
+        cached[URL] = data
+
+        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
+
+        cached.removeAllObjects()
+        XCTAssertNil(cached[URL])
     }
 
 }
