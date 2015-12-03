@@ -44,13 +44,18 @@ extension UIImageView {
 
     // MARK: - public
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
-        cancelLoading()
+        dispatch_async(UIImageView._Queue) { [weak self] in
+            guard let wSelf = self else {
+                return
+            }
+
+            wSelf.cancelLoading()
+        }
 
         if let placeholder = placeholder {
             image = placeholder
         }
 
-        self.URL = URL.imageLoaderURL
         _load(URL.imageLoaderURL, completionHandler: completionHandler)
     }
 
@@ -64,7 +69,6 @@ extension UIImageView {
     private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
-
         let closure: CompletionHandler = { URL, image, error, cacheType in
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
@@ -86,8 +90,9 @@ extension UIImageView {
             }
 
             let block = Block(completionHandler: closure)
-            let loader = wSelf.imageLoader.load(URL)
-            loader.appendBlock(block)
+            wSelf.imageLoader.load(URL).appendBlock(block)
+
+            wSelf.URL = URL
             wSelf.block = block
         }
     }

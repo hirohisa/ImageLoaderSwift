@@ -48,6 +48,10 @@ extension UIImage {
     }
 
     private func render(size: CGSize) -> UIImage {
+        if size.width == 0 || size.height == 0 {
+            return self
+        }
+
         UIGraphicsBeginImageContext(size)
         drawInRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
 

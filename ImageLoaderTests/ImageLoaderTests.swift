@@ -35,8 +35,6 @@ extension State {
             return "Ready"
         case Running:
             return "Running"
-        case Suspended:
-            return "Suspended"
         }
     }
 }
@@ -46,19 +44,19 @@ class ImageLoaderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         setUpOHHTTPStubs()
+        Diskcached.removeAllObjects()
     }
 
     override func tearDown() {
         removeOHHTTPStubs()
         super.tearDown()
-
     }
 
     func setUpOHHTTPStubs() {
         OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
             return true
         }, withStubResponse: { request in
-            var data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
+            var data = NSData()
             var statusCode = Int32(200)
             if let path = request.URL?.path where !path.isEmpty {
                 switch path {
@@ -85,7 +83,7 @@ class ImageLoaderTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    func waitForAsyncTask(duration: NSTimeInterval = 0.1) {
+    func waitForAsyncTask(duration: NSTimeInterval = 0.01) {
         NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: duration))
     }
 }

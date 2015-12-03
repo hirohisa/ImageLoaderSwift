@@ -63,13 +63,11 @@ class Block: NSObject {
 /**
     Use to check state of loaders that manager has.
     Ready:      The manager have no loaders
-    Running:    The manager has loaders, and they are running
-    Suspended:  The manager has loaders, and their states are all suspended
+    Running:    The manager has loaders
 */
 public enum State {
     case Ready
     case Running
-    case Suspended
 }
 
 /**
@@ -109,21 +107,7 @@ public class Manager {
     // MARK: state
 
     var state: State {
-
-        var status = State.Ready
-        for loader in delegate.loaders.values {
-            switch loader.state {
-            case .Running:
-                status = .Running
-            case .Suspended:
-                if status == .Ready {
-                    status = .Suspended
-                }
-            default:
-                break
-            }
-        }
-        return status
+        return delegate.isEmpty ? .Ready : .Running
     }
 
     // MARK: loading
@@ -188,6 +172,15 @@ public class Manager {
                     }
                 }
             }
+        }
+
+        var isEmpty: Bool {
+            var isEmpty = false
+            dispatch_sync(_queue) {
+                isEmpty = self.loaders.isEmpty
+            }
+
+            return isEmpty
         }
 
         private func remove(URL: NSURL) -> Loader? {

@@ -24,7 +24,7 @@ class LoaderTests: ImageLoaderTests {
         loader.completionHandler { completedURL, image, error, cacheType in
 
             XCTAssertEqual(URL, completedURL)
-            XCTAssert(manager.state == .Ready, manager.state.toString())
+            XCTAssert(manager.state == .Running, manager.state.toString())
             expectation.fulfill()
         }
 
@@ -149,16 +149,5 @@ class LoaderTests: ImageLoaderTests {
         let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
         XCTAssertNotNil(keepingLoader)
         XCTAssertNil(notkeepingLoader)
-    }
-
-    func testTooManyLoad() {
-        let manager: Manager = Manager()
-        XCTAssert(manager.state == .Ready, manager.state.toString())
-
-        for i in 0...20 {
-            let URL = "https://image/\(i)"
-            manager.load(URL)
-        }
-        XCTAssertEqual(manager.delegate.loaders.count, 20)
     }
 }
