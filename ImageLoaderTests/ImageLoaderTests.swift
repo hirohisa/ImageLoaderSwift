@@ -35,8 +35,6 @@ extension State {
             return "Ready"
         case Running:
             return "Running"
-        case Suspended:
-            return "Suspended"
         }
     }
 }
@@ -46,30 +44,38 @@ class ImageLoaderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         setUpOHHTTPStubs()
+        Diskcached.removeAllObjects()
     }
 
     override func tearDown() {
         removeOHHTTPStubs()
         super.tearDown()
-
     }
 
     func setUpOHHTTPStubs() {
         OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
             return true
-            }, withStubResponse: { request in
-                let data = try! NSJSONSerialization.dataWithJSONObject([:], options: [])
-                let response = OHHTTPStubsResponse(data: data, statusCode: 200, headers: nil)
-
-                if let path = request.URL?.path as String? {
+        }, withStubResponse: { request in
+            var data = NSData()
+            var statusCode = Int32(200)
+            if let path = request.URL?.path where !path.isEmpty {
+                switch path {
+                case _ where path.hasSuffix("white"):
+                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("white", ofType: "png")!
+                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                case _ where path.hasSuffix("black"):
+                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("black", ofType: "png")!
+                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                default:
                     if let i = Int(path) where 400 <= i && i < 600 {
-                        response.statusCode = Int32(i)
+                        statusCode = Int32(i)
                     }
                 }
+            }
 
-                response.responseTime = 1
-
-                return response
+            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
+            response.responseTime = 1
+            return response
         })
     }
 
@@ -77,178 +83,7 @@ class ImageLoaderTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    func testLoaderRunWithURL() {
-
-        let expectation = expectationWithDescription("wait until loader complete")
-
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/path")
-
-        let manager = Manager()
-        let loader = manager.load(URL)
-
-        XCTAssert(loader.state == .Running, loader.state.toString())
-        loader.completionHandler { completedURL, image, error, cacheType in
-
-            XCTAssertEqual(URL, completedURL)
-            XCTAssert(manager.state == .Ready, manager.state.toString())
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error)
-        }
+    func waitForAsyncTask(duration: NSTimeInterval = 0.01) {
+        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: duration))
     }
-
-    func testLoaderRemoveAfterRunning() {
-
-        let expectation = expectationWithDescription("wait until loader complete")
-
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/remove")
-
-        let manager = Manager()
-        let loader = manager.load(URL)
-
-        XCTAssert(loader.state == .Running, loader.state.toString())
-
-        loader.completionHandler { completedURL, image, error, cacheType in
-
-            let time  = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
-            dispatch_after(time, dispatch_get_main_queue(), {
-                XCTAssertNil(manager.delegate[URL], "loader did not remove from delegate")
-                expectation.fulfill()
-            })
-        }
-
-        waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error)
-        }
-    }
-
-    func testLoadersRunWithURL() {
-
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/path")
-
-        let manager = Manager()
-        let loader1 = manager.load(URL)
-
-        URL = NSURL(string: "http://test/path2")
-        let loader2 = manager.load(URL)
-
-        XCTAssert(loader1.state == .Running, loader1.state.toString())
-        XCTAssert(loader2.state == .Running, loader2.state.toString())
-        XCTAssert(loader1 !== loader2)
-
-    }
-
-
-    func testLoadersRunWithSameURL() {
-
-        var URL: NSURL!
-        URL = NSURL(string: "http://test/path")
-
-        let manager = Manager()
-        let loader1 = manager.load(URL)
-
-        URL = NSURL(string: "http://test/path")
-        let loader2 = manager.load(URL)
-
-        XCTAssert(loader1.state == .Running, loader1.state.toString())
-        XCTAssert(loader2.state == .Running, loader2.state.toString())
-        XCTAssert(loader1 === loader2)
-
-    }
-
-    func testLoaderRunWith404() {
-
-        let expectation = expectationWithDescription("wait until loader complete")
-
-        let URL = NSURL(string: "http://test/404")!
-
-        let manager = Manager()
-        let loader = manager.load(URL)
-
-        XCTAssert(loader.state == .Running, loader.state.toString())
-        loader.completionHandler { completedURL, image, error, cacheType in
-
-            XCTAssertNil(image)
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(5) { error in
-            XCTAssertNil(error)
-        }
-    }
-
-    func testLoaderCancelWithURL() {
-
-        let URL = NSURL(string: "http://test/path")!
-
-        let manager: Manager = Manager()
-
-        XCTAssert(manager.state == .Ready, manager.state.toString())
-
-        manager.load(URL)
-        manager.cancel(URL, block: nil)
-
-        let loader: Loader? = manager.delegate[URL]
-        XCTAssertNil(loader)
-
-    }
-
-    func testLoaderShouldKeepLoader() {
-        let URL = NSURL(string: "http://test/path")!
-
-        let keepingManager = Manager()
-        keepingManager.shouldKeepLoader = true
-        let notkeepingManager = Manager()
-        notkeepingManager.shouldKeepLoader = false
-
-        keepingManager.load(URL)
-        notkeepingManager.load(URL)
-
-        keepingManager.cancel(URL)
-        notkeepingManager.cancel(URL)
-
-        let keepingLoader: Loader? = keepingManager.delegate[URL]
-        let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
-        XCTAssertNotNil(keepingLoader)
-        XCTAssertNil(notkeepingLoader)
-    }
-
-    func testTooManyLoaderRun() {
-        let manager: Manager = Manager()
-
-        XCTAssert(manager.state == .Ready, manager.state.toString())
-
-        for i in 0...20 {
-            let URL = "https://image/\(i)"
-            manager.load(URL)
-        }
-        XCTAssertEqual(manager.delegate.loaders.count, 20)
-    }
-}
-
-class StringTests: XCTestCase {
-
-    func testEscape() {
-        let string = "http://test.com"
-        let valid = "http%3A%2F%2Ftest.com"
-
-        XCTAssertNotEqual(string, string.escape())
-        XCTAssertEqual(valid, string.escape())
-    }
-}
-
-class URLLiteralConvertibleTests: XCTestCase {
-
-    func testEscapes() {
-        let URL = "http://twitter.com/?status=Hello World".imageLoaderURL
-        let valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
-
-        XCTAssertEqual(URL, valid)
-    }
-    
 }

@@ -26,7 +26,7 @@ extension String {
 
 class Diskcached {
 
-    private var storedData = [NSURL: NSData]()
+    var storedData = [NSURL: NSData]()
 
     class Directory {
         init() {
@@ -58,9 +58,22 @@ class Diskcached {
     private let _subscript_queue = dispatch_queue_create("swift.imageloader.queues.diskcached.subscript", DISPATCH_QUEUE_CONCURRENT)
 }
 
-// MARK: accessor
-
 extension Diskcached {
+
+    class func removeAllObjects() {
+        Diskcached().removeAllObjects()
+    }
+
+    func removeAllObjects() {
+        let manager = NSFileManager.defaultManager()
+        for subpath in manager.subpathsAtPath(directory.path) ?? [] {
+            let path = directory.path + "/" + subpath
+            do {
+                try manager.removeItemAtPath(path)
+            } catch _ {
+            }
+        }
+    }
 
     private func objectForKey(aKey: NSURL) -> NSData? {
         if let data = storedData[aKey] {
@@ -92,9 +105,12 @@ extension Diskcached {
 extension Diskcached: ImageLoaderCache {
 
     subscript (aKey: NSURL) -> NSData? {
-
         get {
-            return self.objectForKey(aKey)
+            var data : NSData?
+            dispatch_sync(_subscript_queue) {
+                data = self.objectForKey(aKey)
+            }
+            return data
         }
 
         set {

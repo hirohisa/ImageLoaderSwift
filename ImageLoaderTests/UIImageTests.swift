@@ -1,5 +1,5 @@
 //
-//  ImageLoaderExtensionTests.swift
+//  UIImageTests.swift
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 10/15/15.
@@ -32,7 +32,7 @@ extension UIImage {
     }
 }
 
-class ImageLoaderExtensionTests: XCTestCase {
+class UIImageTests: XCTestCase {
 
     func testImageAdjustsScale() {
         var image: UIImage!
@@ -159,6 +159,33 @@ class ImageLoaderExtensionTests: XCTestCase {
         size = CGSize(width: 50, height: 80)
         adjustedSize = CGSize(width: 100, height: 80)
         adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleToFill)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+    }
+
+    func testImageAdjustsScaleUnsupportContentMode() {
+        var image: UIImage!
+        var size: CGSize!
+        var adjustedSize: CGSize!
+        var adjustedImage: UIImage!
+
+        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
+
+        size = CGSize(width: 50, height: 50)
+        adjustedSize = CGSize(width: 100, height: 100)
+
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Redraw)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Center)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Top)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Left)
+        XCTAssertEqual(adjustedSize, adjustedImage.size)
+
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Right)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
