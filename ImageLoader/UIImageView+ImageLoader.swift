@@ -80,6 +80,7 @@ extension UIImageView {
 
         // caching
         if let data = imageLoader.cache[URL] {
+            self.URL = URL
             closure(URL, UIImage.decode(data), nil, .Cache)
             return
         }
