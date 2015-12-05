@@ -19,7 +19,7 @@ Features
 - [x] Support `NSURL`, `String` and `NSURLComponents` by `URLLiteralConvertible`
 - [ ] Optimize to use memory when image is set.
 - [x] Support image type .jpeg, .png
-- [ ] Comprehensive Unit Test Coverage
+- [x] Comprehensive Unit Test Coverage
 
 Requirements
 ----------
