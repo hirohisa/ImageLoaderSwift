@@ -67,7 +67,7 @@ extension UIImage {
     func decoded() -> UIImage {
         let width = CGImageGetWidth(CGImage)
         let height = CGImageGetHeight(CGImage)
-        if !(width > 0 && height > 0) {
+        if size.width == 0 || size.height == 0 {
             return self
         }
 
@@ -81,9 +81,7 @@ extension UIImage {
         let alphaInfo = CGImageGetAlphaInfo(CGImage)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let colorSpaceModel = CGColorSpaceGetModel(colorSpace)
-        switch (colorSpaceModel.rawValue) {
-        case CGColorSpaceModel.RGB.rawValue:
-
+        if colorSpaceModel == CGColorSpaceModel.RGB {
             // Reference: http://stackoverflow.com/questions/23723564/which-cgimagealphainfo-should-we-use
             var info = CGImageAlphaInfo.PremultipliedFirst
             switch alphaInfo {
@@ -94,8 +92,6 @@ extension UIImage {
             }
             bitmapInfoValue &= ~CGBitmapInfo.AlphaInfoMask.rawValue
             bitmapInfoValue |= info.rawValue
-        default:
-            break
         }
 
         let context = CGBitmapContextCreate(
