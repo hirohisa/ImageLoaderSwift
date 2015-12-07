@@ -78,7 +78,9 @@ class UIImageViewTests: ImageLoaderTests {
             XCTAssertNil(error)
             XCTAssertEqual(string.imageLoaderURL, URL)
 
-            // XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage)) // TODO: Crash in travis CI, success in local
+            self.waitForAsyncTask(0.1)
+
+            XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
         }
         imageView.image = blackImage
