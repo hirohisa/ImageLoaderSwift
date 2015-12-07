@@ -157,7 +157,6 @@ class UIImageViewTests: ImageLoaderTests {
             }
         }
 
-
         waitForExpectationsWithTimeout(5) { error in
             XCTAssertNil(error)
         }
