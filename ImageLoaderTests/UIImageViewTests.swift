@@ -69,6 +69,24 @@ class UIImageViewTests: ImageLoaderTests {
         }
     }
 
+    func testLoadImageWithPlaceholder() {
+        let expectation = expectationWithDescription("wait until loading")
+
+        let string = "http://test/load_with_placeholder/white"
+
+        imageView.load(string, placeholder: self.blackImage) { URL, image, error, type in
+            XCTAssertNil(error)
+            XCTAssertEqual(string.imageLoaderURL, URL)
+            XCTAssertTrue(image!.isEqualTo(self.whiteImage))
+            expectation.fulfill()
+        }
+        XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
+
+        waitForExpectationsWithTimeout(5) { error in
+            XCTAssertNil(error)
+        }
+    }
+
     func testSetImageSoonAfterLoading() {
         let expectation = expectationWithDescription("wait until loading")
 
