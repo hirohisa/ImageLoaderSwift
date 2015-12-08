@@ -65,10 +65,14 @@ public class Manager {
         return nil
     }
 
-    func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
+    func cancel(URL: URLLiteralConvertible, block: Block?) -> Loader? {
+        return cancel(URL, identifier: block?.identifier)
+    }
+
+    func cancel(URL: URLLiteralConvertible, identifier: Int? = nil) -> Loader? {
         if let loader = delegate[URL.imageLoaderURL] {
-            if let block = block {
-                loader.remove(block)
+            if let identifier = identifier {
+                loader.remove(identifier)
             }
 
             if !shouldKeepLoader && loader.blocks.count == 0 {
@@ -169,7 +173,12 @@ public class Loader {
     }
 
     public func completionHandler(completionHandler: CompletionHandler) -> Self {
-        let block = Block(completionHandler: completionHandler)
+        let identifier = (blocks.last?.identifier ?? 0) + 1
+        return self.completionHandler(identifier, completionHandler: completionHandler)
+    }
+
+    public func completionHandler(identifier: Int, completionHandler: CompletionHandler) -> Self {
+        let block = Block(identifier: identifier, completionHandler: completionHandler)
         return appendBlock(block)
     }
 
@@ -192,9 +201,9 @@ public class Loader {
         task.cancel()
     }
 
-    private func remove(block: Block) {
+    private func remove(identifier: Int) {
         // needs to queue with sync
-        blocks = blocks.filter{ !$0.isEqual(block) }
+        blocks = blocks.filter{ $0.identifier != identifier }
     }
 
     private func receive(data: NSData) {

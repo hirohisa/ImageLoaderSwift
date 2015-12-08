@@ -51,13 +51,21 @@ public protocol ImageLoaderCache: class {
 
 public typealias CompletionHandler = (NSURL, UIImage?, NSError?, CacheType) -> Void
 
-class Block: NSObject {
+class Block {
 
+    let identifier: Int
     let completionHandler: CompletionHandler
-    init(completionHandler: CompletionHandler) {
+    init(identifier: Int, completionHandler: CompletionHandler) {
+        self.identifier = identifier
         self.completionHandler = completionHandler
     }
 
+}
+
+extension Block: Equatable {}
+
+func ==(lhs: Block, rhs: Block) -> Bool {
+    return lhs.identifier == rhs.identifier
 }
 
 /**
