@@ -69,6 +69,24 @@ class UIImageViewTests: ImageLoaderTests {
         }
     }
 
+    func testLoadImageWithPlaceholder() {
+        let expectation = expectationWithDescription("wait until loading")
+
+        let string = "http://test/load_with_placeholder/white"
+
+        imageView.load(string, placeholder: self.blackImage) { URL, image, error, type in
+            XCTAssertNil(error)
+            XCTAssertEqual(string.imageLoaderURL, URL)
+            XCTAssertTrue(image!.isEqualTo(self.whiteImage))
+            expectation.fulfill()
+        }
+        XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
+
+        waitForExpectationsWithTimeout(5) { error in
+            XCTAssertNil(error)
+        }
+    }
+
     func testSetImageSoonAfterLoading() {
         let expectation = expectationWithDescription("wait until loading")
 
@@ -78,7 +96,9 @@ class UIImageViewTests: ImageLoaderTests {
             XCTAssertNil(error)
             XCTAssertEqual(string.imageLoaderURL, URL)
 
-            // XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage)) // TODO: Crash in travis CI, success in local
+            self.waitForAsyncTask(0.1)
+
+            XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
         }
         imageView.image = blackImage
@@ -136,7 +156,6 @@ class UIImageViewTests: ImageLoaderTests {
                 expectation.fulfill()
             }
         }
-
 
         waitForExpectationsWithTimeout(5) { error in
             XCTAssertNil(error)

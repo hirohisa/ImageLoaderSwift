@@ -3,7 +3,7 @@
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 10/17/14.
-//  Copyright (c) 2014 Hirohisa Kawasaki. All rights reserved.
+//  Copyright © 2014 Hirohisa Kawasaki. All rights reserved.
 //
 
 import Foundation
@@ -45,9 +45,7 @@ extension UIImageView {
     // MARK: - public
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
         dispatch_async(UIImageView._Queue) { [weak self] in
-            guard let wSelf = self else {
-                return
-            }
+            guard let wSelf = self else { return }
 
             wSelf.cancelLoading()
         }
@@ -67,13 +65,12 @@ extension UIImageView {
 
     // MARK: - private
     private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
+    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.render", DISPATCH_QUEUE_CONCURRENT)
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
-        let closure: CompletionHandler = { URL, image, error, cacheType in
-            dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
-                    wSelf.imageLoader_setImage(image)
-                }
+        let closure: CompletionHandler = { [weak self] URL, image, error, cacheType in
+            if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
+                wSelf.imageLoader_setImage(image)
             }
             completionHandler?(URL, image, error, cacheType)
         }
@@ -86,9 +83,7 @@ extension UIImageView {
         }
 
         dispatch_async(UIImageView._Queue) { [weak self] in
-            guard let wSelf = self else {
-                return
-            }
+            guard let wSelf = self else { return }
 
             let block = Block(completionHandler: closure)
             wSelf.imageLoader.load(URL).appendBlock(block)
@@ -99,10 +94,20 @@ extension UIImageView {
     }
 
     private func imageLoader_setImage(image: UIImage) {
-        if imageLoader.automaticallyAdjustsSize {
-            self.image = image.adjusts(frame.size, scale: UIScreen.mainScreen().scale, contentMode: contentMode)
-        } else {
-            self.image = image
+
+        dispatch_async(UIImageView._ioQueue) { [weak self] in
+            guard let wSelf = self else { return }
+
+            var image = image
+            if wSelf.imageLoader.automaticallyAdjustsSize {
+                image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
+            }
+
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                guard let wSelf = self else { return }
+
+                wSelf.image = image
+            }
         }
     }
     

@@ -34,6 +34,7 @@ extension UIImage {
 
 class UIImageTests: XCTestCase {
 
+    // MARK: - adjusts
     func testImageAdjustsScale() {
         var image: UIImage!
         var size: CGSize!
@@ -187,6 +188,21 @@ class UIImageTests: XCTestCase {
 
         adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Right)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
+    }
+
+    func testSizeIsZeroWhenRendering() {
+        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))!
+        let renderedImage = image.render(CGSizeZero)
+
+        XCTAssertEqual(image, renderedImage)
+    }
+
+    // MARK: - decoded
+    func testImageSizeIsZeroWhenDecoded() {
+        let image = UIImage()
+        let renderedImage = image.decoded()
+
+        XCTAssertEqual(image, renderedImage)
     }
 
 }

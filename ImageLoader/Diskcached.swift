@@ -3,7 +3,7 @@
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 12/21/14.
-//  Copyright (c) 2014 Hirohisa Kawasaki. All rights reserved.
+//  Copyright © 2014 Hirohisa Kawasaki. All rights reserved.
 //
 
 import Foundation
@@ -54,7 +54,7 @@ class Diskcached {
     }
     let directory = Directory()
 
-    private let _set_queue = dispatch_queue_create("swift.imageloader.queues.diskcached.set", DISPATCH_QUEUE_SERIAL)
+    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.set", DISPATCH_QUEUE_SERIAL)
     private let _subscript_queue = dispatch_queue_create("swift.imageloader.queues.diskcached.subscript", DISPATCH_QUEUE_CONCURRENT)
 }
 
@@ -96,7 +96,7 @@ extension Diskcached {
             self.storedData[aKey] = nil
         }
 
-        dispatch_async(_set_queue, block)
+        dispatch_async(_ioQueue, block)
     }
 }
 
