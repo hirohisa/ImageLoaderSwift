@@ -65,7 +65,6 @@ extension UIImageView {
 
     // MARK: - private
     private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
-    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.render", DISPATCH_QUEUE_CONCURRENT)
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
         let closure: CompletionHandler = { [weak self] URL, image, error, cacheType in
@@ -94,20 +93,14 @@ extension UIImageView {
     }
 
     private func imageLoader_setImage(image: UIImage) {
-
-        dispatch_async(UIImageView._ioQueue) { [weak self] in
+        var image = image
+        if imageLoader.automaticallyAdjustsSize {
+            image = image.adjusts(frame.size, scale: UIScreen.mainScreen().scale, contentMode: contentMode)
+        }
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
             guard let wSelf = self else { return }
 
-            var image = image
-            if wSelf.imageLoader.automaticallyAdjustsSize {
-                image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
-            }
-
-            dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                guard let wSelf = self else { return }
-
-                wSelf.image = image
-            }
+            wSelf.image = image
         }
     }
     
