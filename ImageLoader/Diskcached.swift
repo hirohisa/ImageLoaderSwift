@@ -55,7 +55,6 @@ class Diskcached {
     let directory = Directory()
 
     private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.set", DISPATCH_QUEUE_SERIAL)
-    private let _subscript_queue = dispatch_queue_create("swift.imageloader.queues.diskcached.subscript", DISPATCH_QUEUE_CONCURRENT)
 }
 
 extension Diskcached {
@@ -107,14 +106,14 @@ extension Diskcached: ImageLoaderCache {
     subscript (aKey: NSURL) -> NSData? {
         get {
             var data : NSData?
-            dispatch_sync(_subscript_queue) {
+            dispatch_sync(_ioQueue) {
                 data = self.objectForKey(aKey)
             }
             return data
         }
 
         set {
-            dispatch_barrier_async(_subscript_queue) {
+            dispatch_barrier_async(_ioQueue) {
                 self.setObject(newValue!, forKey: aKey)
             }
         }
