@@ -94,25 +94,26 @@ extension UIImage {
             bitmapInfoValue |= info.rawValue
         }
 
-        let context = CGBitmapContextCreate(
-            nil,
-            width,
-            height,
-            bitsPerComponent,
-            0,
-            colorSpace,
-            bitmapInfoValue
-        )
-
-        let frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-        CGContextDrawImage(context, frame, CGImage)
-
         var image: UIImage?
-        if let cgImage = CGBitmapContextCreateImage(context) {
-            image = UIImage(CGImage: cgImage)
+        autoreleasepool {
+            let context = CGBitmapContextCreate(
+                nil,
+                width,
+                height,
+                bitsPerComponent,
+                0,
+                colorSpace,
+                bitmapInfoValue
+            )
+
+            let frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+            CGContextDrawImage(context, frame, CGImage)
+
+            if let cgImage = CGBitmapContextCreateImage(context) {
+                image = UIImage(CGImage: cgImage)
+            }
         }
-        CGContextClearRect(context, frame)
 
         return image ?? self
     }
