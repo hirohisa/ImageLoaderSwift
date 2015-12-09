@@ -60,7 +60,6 @@ class ManagerTests: ImageLoaderTests {
         XCTAssert(loader.state == .Running, loader.state.toString())
 
         manager.cancel(URL)
-        XCTAssert(loader.state == .Canceling, loader.state.toString())
         waitForAsyncTask()
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
