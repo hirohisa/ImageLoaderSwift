@@ -33,15 +33,6 @@ extension UIImageView {
         }
     }
 
-    private var block: Block? {
-        get {
-            return objc_getAssociatedObject(self, &ImageLoaderBlockKey) as? Block
-        }
-        set(newValue) {
-            objc_setAssociatedObject(self, &ImageLoaderBlockKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-
     // MARK: - public
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
         dispatch_async(UIImageView._Queue) { [weak self] in
@@ -59,7 +50,7 @@ extension UIImageView {
 
     public func cancelLoading() {
         if let URL = URL {
-            imageLoader.cancel(URL, block: block)
+            imageLoader.cancel(URL, identifier: hash)
         }
     }
 
@@ -81,14 +72,14 @@ extension UIImageView {
             return
         }
 
+        let identifier = hash
         dispatch_async(UIImageView._Queue) { [weak self] in
             guard let wSelf = self else { return }
 
-            let block = Block(completionHandler: closure)
+            let block = Block(identifier: identifier, completionHandler: closure)
             wSelf.imageLoader.load(URL).appendBlock(block)
 
             wSelf.URL = URL
-            wSelf.block = block
         }
     }
 

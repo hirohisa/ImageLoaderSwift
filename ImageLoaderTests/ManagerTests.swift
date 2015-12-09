@@ -60,7 +60,6 @@ class ManagerTests: ImageLoaderTests {
         XCTAssert(loader.state == .Running, loader.state.toString())
 
         manager.cancel(URL)
-        XCTAssert(loader.state == .Canceling, loader.state.toString())
         waitForAsyncTask()
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
@@ -70,7 +69,7 @@ class ManagerTests: ImageLoaderTests {
     func testCancelWhenHasBlock() {
         let URL = NSURL(string: "http://manager/test_when_has_block/cancel")!
 
-        let block = Block { (URL, _, error, _) -> Void in
+        let block = Block(identifier: 1) { (URL, _, error, _) -> Void in
             XCTAssertTrue(false, "dont call this completion handler")
         }
 
@@ -96,10 +95,10 @@ class ManagerTests: ImageLoaderTests {
         let expectation = expectationWithDescription("wait until loader complete")
         let URL = NSURL(string: "http://manager/test/cancel")!
 
-        let block1 = Block { (URL, _, error, _) -> Void in
+        let block1 = Block(identifier: 1) { (URL, _, error, _) -> Void in
             XCTAssertTrue(false, "dont call this completion handler")
         }
-        let block2 = Block { (URL, _, error, _) -> Void in
+        let block2 = Block(identifier: 2) { (URL, _, error, _) -> Void in
             expectation.fulfill()
         }
 

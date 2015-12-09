@@ -45,6 +45,7 @@ class UIImageViewTests: ImageLoaderTests {
     override func setUp() {
         super.setUp()
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        UIImageView.imageLoader.automaticallyAdjustsSize = false
     }
 
     override func tearDown() {
@@ -95,8 +96,6 @@ class UIImageViewTests: ImageLoaderTests {
         imageView.load(string, placeholder: nil) { URL, image, error, type in
             XCTAssertNil(error)
             XCTAssertEqual(string.imageLoaderURL, URL)
-
-            self.waitForAsyncTask(0.1)
 
             XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
@@ -149,9 +148,6 @@ class UIImageViewTests: ImageLoaderTests {
 
             self.imageView.load(string2, placeholder: nil) { URL, image, error, type in
                 XCTAssertTrue(image!.isEqualTo(self.whiteImage))
-
-                self.waitForAsyncTask()
-
                 XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
                 expectation.fulfill()
             }
