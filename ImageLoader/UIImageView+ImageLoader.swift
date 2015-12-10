@@ -92,14 +92,17 @@ extension UIImageView {
     }
 
     private func imageLoader_setImage(image: UIImage) {
-        var image = image
-        if imageLoader.automaticallyAdjustsSize {
-            image = image.adjusts(frame.size, scale: UIScreen.mainScreen().scale, contentMode: contentMode)
-        }
+        let size = frame.size
+        let mode = contentMode
+
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
             guard let wSelf = self else { return }
 
-            wSelf.image = image
+            if wSelf.imageLoader.automaticallyAdjustsSize {
+                wSelf.image = image.adjusts(size, scale: UIScreen.mainScreen().scale, contentMode: mode)
+            } else {
+                wSelf.image = image
+            }
         }
     }
     
