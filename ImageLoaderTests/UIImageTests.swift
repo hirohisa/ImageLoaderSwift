@@ -197,12 +197,4 @@ class UIImageTests: XCTestCase {
         XCTAssertEqual(image, renderedImage)
     }
 
-    // MARK: - decoded
-    func testImageSizeIsZeroWhenDecoded() {
-        let image = UIImage()
-        let renderedImage = image.decoded()
-
-        XCTAssertEqual(image, renderedImage)
-    }
-
 }

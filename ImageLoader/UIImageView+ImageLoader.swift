@@ -26,10 +26,17 @@ extension UIImageView {
 
     private var URL: NSURL? {
         get {
-            return objc_getAssociatedObject(self, &ImageLoaderURLKey) as? NSURL
+            var URL: NSURL?
+            dispatch_sync(UIImageView._ioQueue) {
+                URL = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? NSURL
+            }
+
+            return URL
         }
         set(newValue) {
-            objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            dispatch_barrier_async(UIImageView._ioQueue) {
+                objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
         }
     }
 
@@ -55,6 +62,7 @@ extension UIImageView {
     }
 
     // MARK: - private
+    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
     private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
 
     private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
