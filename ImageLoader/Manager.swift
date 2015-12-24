@@ -69,13 +69,13 @@ public class Manager {
         return cancel(URL, identifier: block?.identifier)
     }
 
-    func cancel(URL: URLLiteralConvertible, identifier: Int? = nil) -> Loader? {
+    func cancel(URL: URLLiteralConvertible, identifier: Int?) -> Loader? {
         if let loader = delegate[URL.imageLoaderURL] {
             if let identifier = identifier {
                 loader.remove(identifier)
             }
 
-            if !shouldKeepLoader && loader.blocks.count == 0 {
+            if !shouldKeepLoader && loader.blocks.isEmpty {
                 loader.cancel()
                 delegate.remove(URL.imageLoaderURL)
             }
@@ -87,20 +87,20 @@ public class Manager {
 
     class SessionDataDelegate: NSObject, NSURLSessionDataDelegate {
 
-        private let _queue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
-        var loaders = [NSURL: Loader]()
+        private let _ioQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
+        var loaders: [NSURL: Loader] = [:]
 
         subscript (URL: NSURL) -> Loader? {
             get {
                 var loader : Loader?
-                dispatch_sync(_queue) {
+                dispatch_sync(_ioQueue) {
                     loader = self.loaders[URL]
                 }
                 return loader
             }
             set {
                 if let newValue = newValue {
-                    dispatch_barrier_async(_queue) {
+                    dispatch_barrier_async(_ioQueue) {
                         self.loaders[URL] = newValue
                     }
                 }
@@ -109,7 +109,7 @@ public class Manager {
 
         var isEmpty: Bool {
             var isEmpty = false
-            dispatch_sync(_queue) {
+            dispatch_sync(_ioQueue) {
                 isEmpty = self.loaders.isEmpty
             }
 
@@ -125,7 +125,7 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-            if let URL = dataTask.originalRequest?.URL, let loader = self[URL] {
+            if let URL = dataTask.originalRequest?.URL, loader = self[URL] {
                 loader.receive(data)
             }
         }
@@ -135,7 +135,7 @@ public class Manager {
         }
 
         func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-            if let URL = task.originalRequest?.URL, let loader = self[URL] {
+            if let URL = task.originalRequest?.URL, loader = loaders[URL] {
                 loader.complete(error) { [unowned self] in
                     self.remove(URL)
                 }
@@ -232,7 +232,7 @@ public class Loader {
         let image = UIImage.decode(data)
         _toCache(URL, data: data)
 
-        for block: Block in blocks {
+        for block in blocks {
             block.completionHandler(URL, image, nil, .None)
         }
         blocks = []
@@ -240,7 +240,7 @@ public class Loader {
     }
 
     private func failure(URL: NSURL, error: NSError, completionHandler: () -> Void) {
-        for block: Block in blocks {
+        for block in blocks {
             block.completionHandler(URL, nil, error, .None)
         }
         blocks = []
