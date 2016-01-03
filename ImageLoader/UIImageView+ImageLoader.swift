@@ -20,6 +20,7 @@ extension UIImageView {
     public static var imageLoader = Manager()
 
     // MARK: - properties
+    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
 
     private var URL: NSURL? {
         get {
@@ -37,9 +38,11 @@ extension UIImageView {
         }
     }
 
-    // MARK: - public
+    private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
+
+    // MARK: - functions
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
-        dispatch_async(UIImageView._Queue) { [weak self] in
+        enqueue { [weak self] in
             guard let wSelf = self else { return }
 
             wSelf.cancelLoading()
@@ -59,8 +62,6 @@ extension UIImageView {
     }
 
     // MARK: - private
-    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
-    private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
 
     private func imageLoader_load(URL: NSURL, completionHandler: CompletionHandler?) {
         let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
@@ -77,8 +78,9 @@ extension UIImageView {
             return
         }
 
+
         let identifier = hash
-        dispatch_async(UIImageView._Queue) { [weak self] in
+        let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
             let block = Block(identifier: identifier, completionHandler: handler)
@@ -86,6 +88,12 @@ extension UIImageView {
 
             wSelf.URL = URL
         }
+
+        enqueue(block)
+    }
+
+    private func enqueue(block: () -> Void) {
+        dispatch_async(UIImageView._Queue, block)
     }
 
     private func imageLoader_setImage(image: UIImage) {
