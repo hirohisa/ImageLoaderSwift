@@ -42,15 +42,14 @@ extension UIImageView {
 
     // MARK: - functions
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
-        enqueue { [weak self] in
+        let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
             wSelf.cancelLoading()
         }
+        enqueue(block)
 
-        if let placeholder = placeholder {
-            image = placeholder
-        }
+        image = placeholder
 
         imageLoader_load(URL.imageLoaderURL, completionHandler: completionHandler)
     }
