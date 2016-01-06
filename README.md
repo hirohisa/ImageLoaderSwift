@@ -1,7 +1,7 @@
 ImageLoader
 =======
 [![Build-Status](https://api.travis-ci.org/hirohisa/ImageLoaderSwift.svg?branch=master)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
-[![CocoaPods](https://img.shields.io/cocoapods/v/ImageLoader.svg)](https://cocoapods.org/)
+[![CocoaPods](https://img.shields.io/cocoapods/v/ImageLoader.svg)](https://cocoapods.org/pods/ImageLoader)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![codecov.io](https://codecov.io/github/hirohisa/ImageLoaderSwift/coverage.svg?branch=master)](https://codecov.io/github/hirohisa/ImageLoaderSwift?branch=master)
 [![license](https://img.shields.io/badge/license-MIT-000000.svg)](https://github.com/hirohisa/ImageLoaderSwift/blob/master/LICENSE)

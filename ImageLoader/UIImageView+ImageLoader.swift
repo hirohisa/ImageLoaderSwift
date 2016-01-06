@@ -18,11 +18,9 @@ private var ImageLoaderBlockKey = 0
 extension UIImageView {
 
     public static var imageLoader = Manager()
-    var imageLoader: Manager {
-        return UIImageView.imageLoader
-    }
 
     // MARK: - properties
+    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
 
     private var URL: NSURL? {
         get {
@@ -40,33 +38,32 @@ extension UIImageView {
         }
     }
 
-    // MARK: - public
+    private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
+
+    // MARK: - functions
     public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
-        dispatch_async(UIImageView._Queue) { [weak self] in
+        let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
             wSelf.cancelLoading()
         }
+        enqueue(block)
 
-        if let placeholder = placeholder {
-            image = placeholder
-        }
+        image = placeholder
 
-        _load(URL.imageLoaderURL, completionHandler: completionHandler)
+        imageLoader_load(URL.imageLoaderURL, completionHandler: completionHandler)
     }
 
     public func cancelLoading() {
         if let URL = URL {
-            imageLoader.cancel(URL, identifier: hash)
+            UIImageView.imageLoader.cancel(URL, identifier: hash)
         }
     }
 
     // MARK: - private
-    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
-    private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
 
-    private func _load(URL: NSURL, completionHandler: CompletionHandler?) {
-        let closure: CompletionHandler = { [weak self] URL, image, error, cacheType in
+    private func imageLoader_load(URL: NSURL, completionHandler: CompletionHandler?) {
+        let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
             if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
                 wSelf.imageLoader_setImage(image)
             }
@@ -74,32 +71,36 @@ extension UIImageView {
         }
 
         // caching
-        if let data = imageLoader.cache[URL] {
+        if let data = UIImageView.imageLoader.cache[URL] {
             self.URL = URL
-            closure(URL, UIImage.decode(data), nil, .Cache)
+            handler(URL, UIImage.decode(data), nil, .Cache)
             return
         }
 
+
         let identifier = hash
-        dispatch_async(UIImageView._Queue) { [weak self] in
+        let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
-            let block = Block(identifier: identifier, completionHandler: closure)
-            wSelf.imageLoader.load(URL).appendBlock(block)
+            let block = Block(identifier: identifier, completionHandler: handler)
+            UIImageView.imageLoader.load(URL).appendBlock(block)
 
             wSelf.URL = URL
         }
+
+        enqueue(block)
+    }
+
+    private func enqueue(block: () -> Void) {
+        dispatch_async(UIImageView._Queue, block)
     }
 
     private func imageLoader_setImage(image: UIImage) {
-        let size = frame.size
-        let mode = contentMode
-
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
             guard let wSelf = self else { return }
 
-            if wSelf.imageLoader.automaticallyAdjustsSize {
-                wSelf.image = image.adjusts(size, scale: UIScreen.mainScreen().scale, contentMode: mode)
+            if UIImageView.imageLoader.automaticallyAdjustsSize {
+                wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
             } else {
                 wSelf.image = image
             }
