@@ -65,7 +65,7 @@ public class Manager {
         return nil
     }
 
-    func cancel(URL: URLLiteralConvertible, block: Block?) -> Loader? {
+    func cancel(URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
         return cancel(URL, identifier: block?.identifier)
     }
 
