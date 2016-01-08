@@ -24,7 +24,7 @@ extension String {
     }
 }
 
-class Diskcached {
+public class Diskcached {
 
     var storedData = [NSURL: NSData]()
 
@@ -60,7 +60,7 @@ class Diskcached {
 
 extension Diskcached {
 
-    class func removeAllObjects() {
+    public class func removeAllObjects() {
         Diskcached().removeAllObjects()
     }
 
@@ -104,7 +104,7 @@ extension Diskcached {
 
 extension Diskcached: ImageLoaderCache {
 
-    subscript (aKey: NSURL) -> NSData? {
+    public subscript (aKey: NSURL) -> NSData? {
         get {
             var data : NSData?
             dispatch_sync(_subscriptQueue) {
