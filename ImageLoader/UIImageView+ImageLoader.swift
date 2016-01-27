@@ -65,7 +65,7 @@ extension UIImageView {
     private func imageLoader_load(URL: NSURL, completionHandler: CompletionHandler?) {
         let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
             if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
-                wSelf.imageLoader_setImage(image)
+                wSelf.imageLoader_setImage(image, cacheType)
             }
             completionHandler?(URL, image, error, cacheType)
         }
@@ -95,16 +95,26 @@ extension UIImageView {
         dispatch_async(UIImageView._Queue, block)
     }
 
-    private func imageLoader_setImage(image: UIImage) {
+    private func imageLoader_setImage(image: UIImage, _ cacheType: CacheType) {
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
             guard let wSelf = self else { return }
 
+            // Add a transition
+            if cacheType == CacheType.None {
+                let transition = CATransition()
+                transition.duration = 0.5
+                transition.type = kCATransitionFade
+                wSelf.layer.addAnimation(transition, forKey: nil)
+            }
+
+            // Set an image
             if UIImageView.imageLoader.automaticallyAdjustsSize {
                 wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
             } else {
                 wSelf.image = image
             }
+
         }
     }
-    
+
 }
