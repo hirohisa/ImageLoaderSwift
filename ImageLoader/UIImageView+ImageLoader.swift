@@ -100,7 +100,7 @@ extension UIImageView {
             guard let wSelf = self else { return }
 
             // Add a transition
-            if cacheType == CacheType.None {
+            if UIImageView.imageLoader.automaticallyAddTransition && cacheType == CacheType.None {
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.type = kCATransitionFade
