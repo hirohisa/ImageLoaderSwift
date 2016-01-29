@@ -46,14 +46,6 @@ class MultipleViewController: UITableViewController {
             print("URL \(URL)")
             print("error \(error)")
             print("view's size \(cell.imageView?.frame.size), image's size \(cell.imageView?.image?.size)")
-            print("cacheType \(cacheType.hashValue)")
-            if cacheType == CacheType.None {
-                let transition = CATransition()
-                transition.duration = 0.5
-                transition.type = kCATransitionFade
-                cell.imageView?.layer.addAnimation(transition, forKey: nil)
-                cell.imageView?.image = image
-            }
         }
 
         return cell
