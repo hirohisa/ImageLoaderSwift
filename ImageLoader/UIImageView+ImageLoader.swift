@@ -67,7 +67,10 @@ extension UIImageView {
             if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
-            completionHandler?(URL, image, error, cacheType)
+
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler?(URL, image, error, cacheType)
+            }
         }
 
         // caching
