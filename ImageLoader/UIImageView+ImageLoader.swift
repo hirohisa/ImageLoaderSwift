@@ -101,6 +101,7 @@ extension UIImageView {
     private func imageLoader_setImage(image: UIImage, _ cacheType: CacheType) {
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
             guard let wSelf = self else { return }
+            if !UIImageView.imageLoader.automaticallySetImage { return }
 
             // Add a transition
             if UIImageView.imageLoader.automaticallyAddTransition && cacheType == CacheType.None {

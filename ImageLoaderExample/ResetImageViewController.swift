@@ -11,14 +11,14 @@ import ImageLoader
 
 class ResetImageViewController: CollectionViewController {
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        UIImageView.imageLoader.automaticallyAddTransition = false
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        UIImageView.imageLoader.automaticallySetImage = false
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        UIImageView.imageLoader.automaticallyAddTransition = true
+        UIImageView.imageLoader.automaticallySetImage = true
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -26,7 +26,6 @@ class ResetImageViewController: CollectionViewController {
 
         let imageURL = String.imageURL(indexPath.row)
         cell.imageView.load(imageURL, placeholder: nil) { _, image, _, cacheType in
-
             if cacheType == CacheType.None {
                 let transition = CATransition()
                 transition.duration = 0.5

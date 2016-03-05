@@ -19,6 +19,7 @@ public class Manager {
     let delegate: SessionDataDelegate = SessionDataDelegate()
     public var automaticallyAdjustsSize = true
     public var automaticallyAddTransition = true
+    public var automaticallySetImage = true
 
     /**
      Use to kill or keep a fetching image loader when it's blocks is to empty by imageview or anyone.
