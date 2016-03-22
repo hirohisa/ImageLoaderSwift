@@ -29,7 +29,7 @@ class CollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change", style: .Plain, target: self, action: "changeContentMode")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change", style: .Plain, target: self, action: #selector(CollectionViewController.changeContentMode))
         reloadData()
     }
 

@@ -15,7 +15,7 @@ class SuspendViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(SuspendViewController.play))
     }
 
     func play() {
@@ -29,10 +29,10 @@ class SuspendViewController: UITableViewController {
     }
 
     func toggle(loading loading: Bool) {
-        var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: "play")
+        var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(SuspendViewController.play))
 
         if loading {
-            buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: "pause")
+            buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: #selector(SuspendViewController.pause))
         }
         navigationItem.rightBarButtonItem = buttonItem
     }
