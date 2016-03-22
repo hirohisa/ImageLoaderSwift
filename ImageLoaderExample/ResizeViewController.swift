@@ -20,7 +20,7 @@ class ResizeViewController: CollectionViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         ImageLoader.sharedInstance.automaticallyAdjustsSize = true
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "report", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(AppDelegate.report), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
 
