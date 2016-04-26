@@ -100,8 +100,6 @@ extension Disk {
     }
 }
 
-// MARK: ImageLoaderCacheProtocol
-
 extension Disk: ImageLoaderCache {
 
     public subscript (aKey: NSURL) -> NSData? {
