@@ -29,7 +29,7 @@ public class Manager {
     private let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
 
     public init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
-        cache: ImageLoaderCache = Diskcached()
+        cache: ImageLoaderCache = Disk()
         ) {
             session = NSURLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
             self.cache = cache

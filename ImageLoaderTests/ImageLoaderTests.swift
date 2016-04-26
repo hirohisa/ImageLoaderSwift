@@ -44,7 +44,7 @@ class ImageLoaderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         setUpOHHTTPStubs()
-        Diskcached.removeAllObjects()
+        Disk.removeAllObjects()
     }
 
     override func tearDown() {

@@ -1,5 +1,5 @@
 //
-//  DiskcachedTests.swift
+//  DiskTests.swift
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 12/1/15.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import ImageLoader
 
-class DiskcachedTests: XCTestCase {
+class DiskTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
@@ -24,11 +24,11 @@ class DiskcachedTests: XCTestCase {
         let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)
 
-        let cached = Diskcached()
-        cached[URL] = data
+        let disk = Disk()
+        disk[URL] = data
 
-        XCTAssertNotNil(cached[URL])
-        XCTAssertEqual(cached[URL]!, data)
+        XCTAssertNotNil(disk[URL])
+        XCTAssertEqual(disk[URL]!, data)
     }
 
     func testSetAndWriteToDisk() {
@@ -36,14 +36,14 @@ class DiskcachedTests: XCTestCase {
         let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)
 
-        let cached = Diskcached()
-        cached[URL] = data
+        let disk = Disk()
+        disk[URL] = data
 
         NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
 
-        XCTAssertNotNil(cached[URL])
-        XCTAssertEqual(cached[URL]!, data)
-        XCTAssertNil(cached.storedData[URL])
+        XCTAssertNotNil(disk[URL])
+        XCTAssertEqual(disk[URL]!, data)
+        XCTAssertNil(disk.storedData[URL])
     }
 
     func testCleanDisk() {
@@ -51,13 +51,13 @@ class DiskcachedTests: XCTestCase {
         let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)
 
-        let cached = Diskcached()
-        cached[URL] = data
+        let disk = Disk()
+        disk[URL] = data
 
         NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
 
-        cached.removeAllObjects()
-        XCTAssertNil(cached[URL])
+        disk.removeAllObjects()
+        XCTAssertNil(disk[URL])
     }
 
 }

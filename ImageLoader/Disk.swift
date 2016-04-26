@@ -1,5 +1,5 @@
 //
-//  Diskcached.swift
+//  Disk.swift
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 12/21/14.
@@ -24,7 +24,7 @@ extension String {
     }
 }
 
-public class Diskcached {
+public class Disk {
 
     var storedData = [NSURL: NSData]()
 
@@ -47,21 +47,21 @@ public class Diskcached {
 
         var path: String {
             let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
-            let directoryName = "swift.imageloader.diskcached"
+            let directoryName = "swift.imageloader.disk"
 
             return cacheDirectory + "/" + directoryName
         }
     }
     let directory = Directory()
 
-    private let _subscriptQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.subscript", DISPATCH_QUEUE_CONCURRENT)
-    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.set", DISPATCH_QUEUE_SERIAL)
+    private let _subscriptQueue = dispatch_queue_create("swift.imageloader.queues.disk.subscript", DISPATCH_QUEUE_CONCURRENT)
+    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.disk.set", DISPATCH_QUEUE_SERIAL)
 }
 
-extension Diskcached {
+extension Disk {
 
     public class func removeAllObjects() {
-        Diskcached().removeAllObjects()
+        Disk().removeAllObjects()
     }
 
     func removeAllObjects() {
@@ -102,7 +102,7 @@ extension Diskcached {
 
 // MARK: ImageLoaderCacheProtocol
 
-extension Diskcached: ImageLoaderCache {
+extension Disk: ImageLoaderCache {
 
     public subscript (aKey: NSURL) -> NSData? {
         get {
