@@ -11,18 +11,24 @@ import XCTest
 
 class DiskTests: XCTestCase {
 
+    func generateData() -> NSData {
+        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
+        let data = UIImageJPEGRepresentation(image, 1)!
+
+        return data
+    }
+
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
 
     func testSet() {
         let URL = NSURL(string: "http://test/sample")!
-        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
-        let data = UIImageJPEGRepresentation(image, 1)
+        let data = generateData()
 
         let disk = Disk()
         disk[URL] = data
@@ -33,8 +39,7 @@ class DiskTests: XCTestCase {
 
     func testSetAndWriteToDisk() {
         let URL = NSURL(string: "http://test/save_to_file")!
-        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
-        let data = UIImageJPEGRepresentation(image, 1)
+        let data = generateData()
 
         let disk = Disk()
         disk[URL] = data
@@ -48,8 +53,7 @@ class DiskTests: XCTestCase {
 
     func testCleanDisk() {
         let URL = NSURL(string: "http://test/save_to_file_for_clean")!
-        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
-        let data = UIImageJPEGRepresentation(image, 1)
+        let data = generateData()
 
         let disk = Disk()
         disk[URL] = data
@@ -59,5 +63,4 @@ class DiskTests: XCTestCase {
         disk.removeAllObjects()
         XCTAssertNil(disk[URL])
     }
-
 }
