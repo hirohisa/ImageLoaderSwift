@@ -112,17 +112,6 @@ public func cancel(URL: URLLiteralConvertible) -> Loader? {
     return sharedInstance.cancel(URL)
 }
 
-/**
-    Fetches the image using the shared manager instance's `ImageCache` object for the specified URL.
-*/
-public func cache(URL: URLLiteralConvertible) -> UIImage? {
-
-    if let data = sharedInstance.cache[URL.imageLoaderURL] {
-        return UIImage.decode(data)
-    }
-    return nil
-}
-
 public var state: State {
     return sharedInstance.state
 }
