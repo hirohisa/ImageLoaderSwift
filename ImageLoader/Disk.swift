@@ -26,7 +26,7 @@ extension String {
 
 public class Disk {
 
-    var storedData = [NSURL: NSData]()
+    var storedData = [String: NSData]()
 
     class Directory {
         init() {
@@ -75,28 +75,34 @@ extension Disk {
         }
     }
 
-    private func objectForKey(aKey: NSURL) -> NSData? {
+    public func get(aKey: String) -> NSData? {
         if let data = storedData[aKey] {
             return data
         }
+        return NSData(contentsOfFile: _path(aKey))
+    }
 
-        return NSData(contentsOfFile: _path(aKey.absoluteString))
+    private func get(aKey: NSURL) -> NSData? {
+        return get(aKey.absoluteString.escape())
     }
 
     private func _path(name: String) -> String {
-        return directory.path + "/" + name.escape()
+        return directory.path + "/" + name
     }
 
-    private func setObject(anObject: NSData, forKey aKey: NSURL) {
-
+    public func set(anObject: NSData, forKey aKey: String) {
         storedData[aKey] = anObject
 
         let block: () -> Void = {
-            anObject.writeToFile(self._path(aKey.absoluteString), atomically: false)
+            anObject.writeToFile(self._path(aKey), atomically: false)
             self.storedData[aKey] = nil
         }
 
         dispatch_async(_ioQueue, block)
+    }
+
+    private func set(anObject: NSData, forKey aKey: NSURL) {
+        set(anObject, forKey: aKey.absoluteString.escape())
     }
 }
 
@@ -106,14 +112,14 @@ extension Disk: ImageLoaderCache {
         get {
             var data : NSData?
             dispatch_sync(_subscriptQueue) {
-                data = self.objectForKey(aKey)
+                data = self.get(aKey)
             }
             return data
         }
 
         set {
             dispatch_barrier_async(_subscriptQueue) {
-                self.setObject(newValue!, forKey: aKey)
+                self.set(newValue!, forKey: aKey)
             }
         }
     }

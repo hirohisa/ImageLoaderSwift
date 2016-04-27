@@ -27,7 +27,7 @@ class DiskTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSet() {
+    func testSetAndGet() {
         let URL = NSURL(string: "http://test/sample")!
         let data = generateData()
 
@@ -36,6 +36,34 @@ class DiskTests: XCTestCase {
 
         XCTAssertNotNil(disk[URL])
         XCTAssertEqual(disk[URL]!, data)
+    }
+
+    func testSetAndGetWithString() {
+        let key = "1234"
+
+        let data = generateData()
+
+        let disk = Disk()
+        disk.set(data, forKey: key)
+
+        XCTAssertNotNil(disk.get(key))
+        XCTAssertEqual(disk.get(key)!, data)
+    }
+
+    func testSetFromURLAndGetWithString() {
+        let string = "http://test.com"
+        let encodedString = "http%3A%2F%2Ftest.com"
+
+        let URL = NSURL(string: string)!
+        let data = generateData()
+
+        let disk = Disk()
+        disk[URL] = data
+
+        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
+
+        XCTAssertNotNil(disk.get(encodedString))
+        XCTAssertEqual(disk.get(encodedString)!, data)
     }
 
     func testSetAndWriteToDisk() {
@@ -49,7 +77,7 @@ class DiskTests: XCTestCase {
 
         XCTAssertNotNil(disk[URL])
         XCTAssertEqual(disk[URL]!, data)
-        XCTAssertNil(disk.storedData[URL])
+        XCTAssertNil(disk.storedData[URL.absoluteString])
     }
 
     func testCleanDisk() {
