@@ -60,11 +60,11 @@ public class Disk {
 
 extension Disk {
 
-    public class func removeAllObjects() {
-        Disk().removeAllObjects()
+    public class func cleanUp() {
+        Disk().cleanUp()
     }
 
-    func removeAllObjects() {
+    func cleanUp() {
         let manager = NSFileManager.defaultManager()
         for subpath in manager.subpathsAtPath(directory.path) ?? [] {
             let path = directory.path + "/" + subpath

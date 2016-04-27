@@ -20,6 +20,7 @@ class DiskTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        Disk.cleanUp()
     }
 
     override func tearDown() {
@@ -60,7 +61,7 @@ class DiskTests: XCTestCase {
 
         NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
 
-        disk.removeAllObjects()
+        Disk.cleanUp()
         XCTAssertNil(disk[URL])
     }
 }
