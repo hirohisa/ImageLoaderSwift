@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		650F993C1C0DA09B00540E8D /* DiskcachedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */; };
+		650F993C1C0DA09B00540E8D /* DiskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993B1C0DA09B00540E8D /* DiskTests.swift */; };
 		650F99401C0DBD5B00540E8D /* ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F993F1C0DBD5B00540E8D /* ManagerTests.swift */; };
 		650F99421C0EC16E00540E8D /* UIImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650F99411C0EC16E00540E8D /* UIImageViewTests.swift */; };
 		650F99481C0EC45D00540E8D /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = 650F99471C0EC45D00540E8D /* black.png */; };
@@ -16,20 +16,22 @@
 		6529075D1BA19D5F002B8D89 /* ImageLoader.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075E1BA19DB2002B8D89 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; };
 		653AAE361C155069003E0325 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653AAE351C155069003E0325 /* Manager.swift */; };
-		653AAE371C1550BD003E0325 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653AAE351C155069003E0325 /* Manager.swift */; };
 		65677D061C0EF4F300120684 /* UIImageView+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65677D051C0EF4F300120684 /* UIImageView+ImageLoader.swift */; };
 		65B2CF1719EF9F6600DA3605 /* ImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 65B2CF1619EF9F6600DA3605 /* ImageLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		65B2CF1D19EF9F6600DA3605 /* ImageLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */; };
 		65B2CF2419EF9F6600DA3605 /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B2CF2319EF9F6600DA3605 /* ImageLoaderTests.swift */; };
+		65B4D1DD1CD6FD9600D4A4C8 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4D1DC1CD6FD9600D4A4C8 /* Loader.swift */; };
+		65B4D1E01CD6FF1900D4A4C8 /* Disk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Disk.swift */; };
+		65B4D1E11CD6FF1900D4A4C8 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C68E6019F502B20053E66D /* ImageLoader.swift */; };
+		65B4D1E21CD6FF1900D4A4C8 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653AAE351C155069003E0325 /* Manager.swift */; };
+		65B4D1E31CD6FF1900D4A4C8 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4D1DC1CD6FD9600D4A4C8 /* Loader.swift */; };
+		65B4D1E41CD6FF1900D4A4C8 /* UIImage+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC211B1BDFEB19003FD093 /* UIImage+ImageLoader.swift */; };
 		65C68E6119F502B20053E66D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C68E6019F502B20053E66D /* ImageLoader.swift */; };
-		65C68E6219F502B20053E66D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C68E6019F502B20053E66D /* ImageLoader.swift */; };
 		A166A16B1C0B918700E71C42 /* URLLiteralConvertibleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A166A16A1C0B918700E71C42 /* URLLiteralConvertibleTests.swift */; };
 		A166A16D1C0C2A4000E71C42 /* LoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A166A16C1C0C2A4000E71C42 /* LoaderTests.swift */; };
-		A17327831A45D793000D10E0 /* Diskcached.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Diskcached.swift */; };
-		A1B7FEBF1A480F1800819BD1 /* Diskcached.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Diskcached.swift */; };
+		A17327831A45D793000D10E0 /* Disk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17327821A45D793000D10E0 /* Disk.swift */; };
 		A1E989321BCEC9BB00948F82 /* UIImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E989311BCEC9BB00948F82 /* UIImageTests.swift */; };
 		A1FC211C1BDFEB19003FD093 /* UIImage+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC211B1BDFEB19003FD093 /* UIImage+ImageLoader.swift */; };
-		A1FC211D1BDFF5CB003FD093 /* UIImage+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FC211B1BDFEB19003FD093 /* UIImage+ImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +60,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskcachedTests.swift; sourceTree = "<group>"; };
+		650F993B1C0DA09B00540E8D /* DiskTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskTests.swift; sourceTree = "<group>"; };
 		650F993F1C0DBD5B00540E8D /* ManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerTests.swift; sourceTree = "<group>"; };
 		650F99411C0EC16E00540E8D /* UIImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewTests.swift; sourceTree = "<group>"; };
 		650F99471C0EC45D00540E8D /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
@@ -72,10 +74,11 @@
 		65B2CF1C19EF9F6600DA3605 /* ImageLoaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageLoaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B2CF2219EF9F6600DA3605 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65B2CF2319EF9F6600DA3605 /* ImageLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderTests.swift; sourceTree = "<group>"; };
+		65B4D1DC1CD6FD9600D4A4C8 /* Loader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		65C68E6019F502B20053E66D /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		A166A16A1C0B918700E71C42 /* URLLiteralConvertibleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLLiteralConvertibleTests.swift; sourceTree = "<group>"; };
 		A166A16C1C0C2A4000E71C42 /* LoaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderTests.swift; sourceTree = "<group>"; };
-		A17327821A45D793000D10E0 /* Diskcached.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diskcached.swift; sourceTree = "<group>"; };
+		A17327821A45D793000D10E0 /* Disk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disk.swift; sourceTree = "<group>"; };
 		A1E989311BCEC9BB00948F82 /* UIImageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageTests.swift; sourceTree = "<group>"; };
 		A1FC211B1BDFEB19003FD093 /* UIImage+ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ImageLoader.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,9 +125,10 @@
 			isa = PBXGroup;
 			children = (
 				65B2CF1619EF9F6600DA3605 /* ImageLoader.h */,
-				A17327821A45D793000D10E0 /* Diskcached.swift */,
+				A17327821A45D793000D10E0 /* Disk.swift */,
 				65C68E6019F502B20053E66D /* ImageLoader.swift */,
 				653AAE351C155069003E0325 /* Manager.swift */,
+				65B4D1DC1CD6FD9600D4A4C8 /* Loader.swift */,
 				A1FC211B1BDFEB19003FD093 /* UIImage+ImageLoader.swift */,
 				65677D051C0EF4F300120684 /* UIImageView+ImageLoader.swift */,
 				65B2CF1419EF9F6600DA3605 /* Supporting Files */,
@@ -143,7 +147,7 @@
 		65B2CF2019EF9F6600DA3605 /* ImageLoaderTests */ = {
 			isa = PBXGroup;
 			children = (
-				650F993B1C0DA09B00540E8D /* DiskcachedTests.swift */,
+				650F993B1C0DA09B00540E8D /* DiskTests.swift */,
 				65B2CF2319EF9F6600DA3605 /* ImageLoaderTests.swift */,
 				A166A16C1C0C2A4000E71C42 /* LoaderTests.swift */,
 				650F993F1C0DBD5B00540E8D /* ManagerTests.swift */,
@@ -278,8 +282,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A17327831A45D793000D10E0 /* Diskcached.swift in Sources */,
+				A17327831A45D793000D10E0 /* Disk.swift in Sources */,
 				65677D061C0EF4F300120684 /* UIImageView+ImageLoader.swift in Sources */,
+				65B4D1DD1CD6FD9600D4A4C8 /* Loader.swift in Sources */,
 				65C68E6119F502B20053E66D /* ImageLoader.swift in Sources */,
 				A1FC211C1BDFEB19003FD093 /* UIImage+ImageLoader.swift in Sources */,
 				653AAE361C155069003E0325 /* Manager.swift in Sources */,
@@ -290,15 +295,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65B4D1E01CD6FF1900D4A4C8 /* Disk.swift in Sources */,
+				65B4D1E11CD6FF1900D4A4C8 /* ImageLoader.swift in Sources */,
+				65B4D1E21CD6FF1900D4A4C8 /* Manager.swift in Sources */,
+				65B4D1E31CD6FF1900D4A4C8 /* Loader.swift in Sources */,
+				65B4D1E41CD6FF1900D4A4C8 /* UIImage+ImageLoader.swift in Sources */,
 				650F99421C0EC16E00540E8D /* UIImageViewTests.swift in Sources */,
 				A166A16B1C0B918700E71C42 /* URLLiteralConvertibleTests.swift in Sources */,
 				650F99401C0DBD5B00540E8D /* ManagerTests.swift in Sources */,
-				A1FC211D1BDFF5CB003FD093 /* UIImage+ImageLoader.swift in Sources */,
-				A1B7FEBF1A480F1800819BD1 /* Diskcached.swift in Sources */,
-				650F993C1C0DA09B00540E8D /* DiskcachedTests.swift in Sources */,
+				650F993C1C0DA09B00540E8D /* DiskTests.swift in Sources */,
 				65B2CF2419EF9F6600DA3605 /* ImageLoaderTests.swift in Sources */,
-				65C68E6219F502B20053E66D /* ImageLoader.swift in Sources */,
-				653AAE371C1550BD003E0325 /* Manager.swift in Sources */,
 				A166A16D1C0C2A4000E71C42 /* LoaderTests.swift in Sources */,
 				A1E989321BCEC9BB00948F82 /* UIImageTests.swift in Sources */,
 			);

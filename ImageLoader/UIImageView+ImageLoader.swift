@@ -17,7 +17,7 @@ private var ImageLoaderBlockKey = 0
  */
 extension UIImageView {
 
-    public static var imageLoader = Manager()
+    public static var imageLoader = sharedInstance
 
     // MARK: - properties
     private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
@@ -68,7 +68,7 @@ extension UIImageView {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
-            dispatch_async(dispatch_get_main_queue()) {
+            dispatch_main {
                 completionHandler?(URL, image, error, cacheType)
             }
         }
@@ -99,7 +99,7 @@ extension UIImageView {
     }
 
     private func imageLoader_setImage(image: UIImage, _ cacheType: CacheType) {
-        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+        dispatch_main { [weak self] in
             guard let wSelf = self else { return }
             if !UIImageView.imageLoader.automaticallySetImage { return }
 

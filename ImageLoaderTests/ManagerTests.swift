@@ -18,7 +18,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     override func tearDown() {
-        waitForAsyncTask(1)
+        waitForAsyncTask(5)
         super.tearDown()
     }
 
@@ -88,7 +88,6 @@ class ManagerTests: ImageLoaderTests {
         waitForAsyncTask()
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
-        XCTAssert(loader.state == .Completed, loader.state.toString())
     }
 
     func testCancelWhenHasTwoBlocks() {

@@ -1,5 +1,5 @@
 //
-//  Diskcached.swift
+//  Disk.swift
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 12/21/14.
@@ -11,7 +11,7 @@ import UIKit
 
 extension String {
 
-    func escape() -> String {
+    public func escape() -> String {
 
         let str = CFURLCreateStringByAddingPercentEscapes(
             kCFAllocatorDefault,
@@ -24,9 +24,9 @@ extension String {
     }
 }
 
-public class Diskcached {
+public class Disk {
 
-    var storedData = [NSURL: NSData]()
+    var storedData = [String: NSData]()
 
     class Directory {
         init() {
@@ -47,24 +47,24 @@ public class Diskcached {
 
         var path: String {
             let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
-            let directoryName = "swift.imageloader.diskcached"
+            let directoryName = "swift.imageloader.disk"
 
             return cacheDirectory + "/" + directoryName
         }
     }
     let directory = Directory()
 
-    private let _subscriptQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.subscript", DISPATCH_QUEUE_CONCURRENT)
-    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.diskcached.set", DISPATCH_QUEUE_SERIAL)
+    private let _subscriptQueue = dispatch_queue_create("swift.imageloader.queues.disk.subscript", DISPATCH_QUEUE_CONCURRENT)
+    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.disk.set", DISPATCH_QUEUE_SERIAL)
 }
 
-extension Diskcached {
+extension Disk {
 
-    public class func removeAllObjects() {
-        Diskcached().removeAllObjects()
+    public class func cleanUp() {
+        Disk().cleanUp()
     }
 
-    func removeAllObjects() {
+    func cleanUp() {
         let manager = NSFileManager.defaultManager()
         for subpath in manager.subpathsAtPath(directory.path) ?? [] {
             let path = directory.path + "/" + subpath
@@ -75,47 +75,59 @@ extension Diskcached {
         }
     }
 
-    private func objectForKey(aKey: NSURL) -> NSData? {
+    public class func get(aKey: String) -> NSData? {
+        return Disk().get(aKey)
+    }
+
+    public class func set(anObject: NSData, forKey aKey: String) {
+        Disk().set(anObject, forKey: aKey)
+    }
+
+    public func get(aKey: String) -> NSData? {
         if let data = storedData[aKey] {
             return data
         }
+        return NSData(contentsOfFile: _path(aKey))
+    }
 
-        return NSData(contentsOfFile: _path(aKey.absoluteString))
+    private func get(aKey: NSURL) -> NSData? {
+        return get(aKey.absoluteString.escape())
     }
 
     private func _path(name: String) -> String {
-        return directory.path + "/" + name.escape()
+        return directory.path + "/" + name
     }
 
-    private func setObject(anObject: NSData, forKey aKey: NSURL) {
-
+    public func set(anObject: NSData, forKey aKey: String) {
         storedData[aKey] = anObject
 
         let block: () -> Void = {
-            anObject.writeToFile(self._path(aKey.absoluteString), atomically: false)
+            anObject.writeToFile(self._path(aKey), atomically: false)
             self.storedData[aKey] = nil
         }
 
         dispatch_async(_ioQueue, block)
     }
+
+    private func set(anObject: NSData, forKey aKey: NSURL) {
+        set(anObject, forKey: aKey.absoluteString.escape())
+    }
 }
 
-// MARK: ImageLoaderCacheProtocol
-
-extension Diskcached: ImageLoaderCache {
+extension Disk: ImageLoaderCache {
 
     public subscript (aKey: NSURL) -> NSData? {
         get {
             var data : NSData?
             dispatch_sync(_subscriptQueue) {
-                data = self.objectForKey(aKey)
+                data = self.get(aKey)
             }
             return data
         }
 
         set {
             dispatch_barrier_async(_subscriptQueue) {
-                self.setObject(newValue!, forKey: aKey)
+                self.set(newValue!, forKey: aKey)
             }
         }
     }

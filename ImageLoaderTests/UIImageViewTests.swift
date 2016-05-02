@@ -44,6 +44,7 @@ class UIImageViewTests: ImageLoaderTests {
 
     override func setUp() {
         super.setUp()
+        Disk.cleanUp()
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         UIImageView.imageLoader.automaticallyAdjustsSize = false
     }

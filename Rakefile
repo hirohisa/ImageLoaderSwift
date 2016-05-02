@@ -1,7 +1,7 @@
 NAME = "ImageLoader"
 WORKSPACE = "#{NAME}.xcworkspace"
-SDK = "iphonesimulator9.2"
-DESTINATION = "platform=iOS Simulator,name=iPhone 6,OS=9.2"
+SDK = "iphonesimulator"
+DESTINATION = "platform=iOS Simulator,name=iPhone 6,OS=9.3"
 
 task :test do
   sh "carthage bootstrap --platform iOS"
