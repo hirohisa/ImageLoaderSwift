@@ -9,22 +9,13 @@
 import XCTest
 @testable import ImageLoader
 
-class DiskTests: XCTestCase {
+class DiskTests: ImageLoaderTests {
 
     func generateData() -> NSData {
         let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)!
 
         return data
-    }
-
-    override func setUp() {
-        super.setUp()
-        Disk.cleanUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
     }
 
     func testSetAndGet() {

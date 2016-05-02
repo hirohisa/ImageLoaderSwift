@@ -44,7 +44,6 @@ class ImageLoaderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         setUpOHHTTPStubs()
-        Disk.cleanUp()
     }
 
     override func tearDown() {
