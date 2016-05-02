@@ -17,7 +17,7 @@ private var ImageLoaderBlockKey = 0
  */
 extension UIImageView {
 
-    public static var imageLoader = Manager()
+    public static var imageLoader = sharedInstance
 
     // MARK: - properties
     private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
