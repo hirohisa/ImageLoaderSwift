@@ -88,7 +88,6 @@ class ManagerTests: ImageLoaderTests {
         waitForAsyncTask()
 
         XCTAssert(manager.state == .Ready, manager.state.toString())
-        XCTAssert(loader.state == .Completed, loader.state.toString())
     }
 
     func testCancelWhenHasTwoBlocks() {
