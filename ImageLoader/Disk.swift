@@ -11,7 +11,7 @@ import UIKit
 
 extension String {
 
-    func escape() -> String {
+    public func escape() -> String {
 
         let str = CFURLCreateStringByAddingPercentEscapes(
             kCFAllocatorDefault,
@@ -73,6 +73,14 @@ extension Disk {
             } catch _ {
             }
         }
+    }
+
+    public class func get(aKey: String) -> NSData? {
+        return Disk().get(aKey)
+    }
+
+    public class func set(anObject: NSData, forKey aKey: String) {
+        Disk().set(anObject, forKey: aKey)
     }
 
     public func get(aKey: String) -> NSData? {
