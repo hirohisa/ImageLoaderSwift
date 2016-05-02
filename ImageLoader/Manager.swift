@@ -26,7 +26,7 @@ public class Manager {
      */
     public var shouldKeepLoader = false
 
-    let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+    let decompressingQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_CONCURRENT)
 
     public init(configuration: NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration(),
         cache: ImageLoaderCache = Disk()

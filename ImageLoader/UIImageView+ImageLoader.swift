@@ -68,7 +68,7 @@ extension UIImageView {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
-            dispatch_async(dispatch_get_main_queue()) {
+            dispatch_main {
                 completionHandler?(URL, image, error, cacheType)
             }
         }
@@ -99,7 +99,7 @@ extension UIImageView {
     }
 
     private func imageLoader_setImage(image: UIImage, _ cacheType: CacheType) {
-        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+        dispatch_main { [weak self] in
             guard let wSelf = self else { return }
             if !UIImageView.imageLoader.automaticallySetImage { return }
 
