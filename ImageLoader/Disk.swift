@@ -91,7 +91,7 @@ extension Disk {
     }
 
     private func get(aKey: NSURL) -> NSData? {
-        return get(aKey.absoluteString.escape())
+        return get(aKey.absoluteString!.escape())
     }
 
     private func _path(name: String) -> String {
@@ -110,7 +110,7 @@ extension Disk {
     }
 
     private func set(anObject: NSData, forKey aKey: NSURL) {
-        set(anObject, forKey: aKey.absoluteString.escape())
+        set(anObject, forKey: aKey.absoluteString!.escape())
     }
 }
 
