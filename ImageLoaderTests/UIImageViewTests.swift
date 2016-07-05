@@ -12,13 +12,13 @@ import XCTest
 
 extension UIImage {
 
-    func isEqualTo(image: UIImage) -> Bool {
+    func isEqualTo(_ image: UIImage) -> Bool {
         if size == image.size {
-            let ldp = CGImageGetDataProvider(CGImage)
-            let ldt = NSData(data: CGDataProviderCopyData(ldp)!)
+            let ldp = cgImage?.dataProvider
+            let ldt = NSData(data: ldp?.data! as! Data) as Data
 
-            let rdp = CGImageGetDataProvider(image.CGImage)
-            let rdt = NSData(data: CGDataProviderCopyData(rdp)!)
+            let rdp = image.cgImage?.dataProvider
+            let rdt = NSData(data: rdp?.data! as! Data) as Data
 
             return ldt == rdt
         }
@@ -31,12 +31,12 @@ extension UIImage {
 class UIImageViewTests: ImageLoaderTests {
 
     let whiteImage: UIImage = {
-        let imagePath = NSBundle(forClass: UIImageViewTests.self).pathForResource("white", ofType: "png")!
+        let imagePath = Bundle(for: UIImageViewTests.self).pathForResource("white", ofType: "png")!
         return UIImage(contentsOfFile: imagePath)!
     }()
 
     let blackImage: UIImage = {
-        let imagePath = NSBundle(forClass: UIImageViewTests.self).pathForResource("black", ofType: "png")!
+        let imagePath = Bundle(for: UIImageViewTests.self).pathForResource("black", ofType: "png")!
         return UIImage(contentsOfFile: imagePath)!
     }()
 
@@ -55,7 +55,7 @@ class UIImageViewTests: ImageLoaderTests {
     }
 
     func testLoadImage() {
-        let expectation = expectationWithDescription("wait until loading")
+        let expectation = self.expectation(withDescription: "wait until loading")
 
         let string = "http://test/load/white"
 
@@ -66,13 +66,13 @@ class UIImageViewTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(withTimeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testLoadImageWithPlaceholder() {
-        let expectation = expectationWithDescription("wait until loading")
+        let expectation = self.expectation(withDescription: "wait until loading")
 
         let string = "http://test/load_with_placeholder/white"
 
@@ -84,13 +84,13 @@ class UIImageViewTests: ImageLoaderTests {
         }
         XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(withTimeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testSetImageSoonAfterLoading() {
-        let expectation = expectationWithDescription("wait until loading")
+        let expectation = self.expectation(withDescription: "wait until loading")
 
         let string = "http://test/set_image_after_loading/white"
 
@@ -104,13 +104,13 @@ class UIImageViewTests: ImageLoaderTests {
         imageView.image = blackImage
         XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(withTimeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testLastestLoadIsAliveWhenTwiceLoad() {
-        let expectation = expectationWithDescription("wait until loading")
+        let expectation = self.expectation(withDescription: "wait until loading")
 
         let string1 = "http://test/lastest_load_first/black"
         let string2 = "http://test/lastest_load_second/white"
@@ -126,13 +126,13 @@ class UIImageViewTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(withTimeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testTwiceLoadsInLoadingCompletion() {
-        let expectation = expectationWithDescription("wait until loading")
+        let expectation = self.expectation(withDescription: "wait until loading")
 
         let string = "http://test/load_first_before_twice_load/white"
         let string1 = "http://test/load_first_in_block/black"
@@ -154,7 +154,7 @@ class UIImageViewTests: ImageLoaderTests {
             }
         }
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(withTimeout: 5) { error in
             XCTAssertNil(error)
         }
     }

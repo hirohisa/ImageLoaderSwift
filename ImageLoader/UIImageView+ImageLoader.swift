@@ -20,28 +20,28 @@ extension UIImageView {
     public static var imageLoader = sharedInstance
 
     // MARK: - properties
-    private static let _ioQueue = dispatch_queue_create("swift.imageloader.queues.io", DISPATCH_QUEUE_CONCURRENT)
+    private static let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.io", attributes: DispatchQueueAttributes.concurrent)
 
-    private var URL: NSURL? {
+    private var URL: Foundation.URL? {
         get {
-            var URL: NSURL?
-            dispatch_sync(UIImageView._ioQueue) {
-                URL = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? NSURL
+            var URL: Foundation.URL?
+            UIImageView._ioQueue.sync {
+                URL = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? Foundation.URL
             }
 
             return URL
         }
         set(newValue) {
-            dispatch_barrier_async(UIImageView._ioQueue) {
+            UIImageView._ioQueue.async {
                 objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
 
-    private static let _Queue = dispatch_queue_create("swift.imageloader.queues.request", DISPATCH_QUEUE_SERIAL)
+    private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request", attributes: DispatchQueueAttributes.serial)
 
     // MARK: - functions
-    public func load(URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
+    public func load(_ URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
         let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
@@ -62,9 +62,9 @@ extension UIImageView {
 
     // MARK: - private
 
-    private func imageLoader_load(URL: NSURL, completionHandler: CompletionHandler?) {
+    private func imageLoader_load(_ URL: Foundation.URL, completionHandler: CompletionHandler?) {
         let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
-            if let wSelf = self, thisURL = wSelf.URL, image = image where thisURL.isEqual(URL) {
+            if let wSelf = self, thisURL = wSelf.URL, image = image where (thisURL == URL) {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
@@ -76,7 +76,7 @@ extension UIImageView {
         // caching
         if let data = UIImageView.imageLoader.cache[URL] {
             self.URL = URL
-            handler(URL, UIImage.decode(data), nil, .Cache)
+            handler(URL, UIImage.decode(data), nil, .cache)
             return
         }
 
@@ -94,26 +94,26 @@ extension UIImageView {
         enqueue(block)
     }
 
-    private func enqueue(block: () -> Void) {
-        dispatch_async(UIImageView._Queue, block)
+    private func enqueue(_ block: () -> Void) {
+        UIImageView._Queue.async(execute: block)
     }
 
-    private func imageLoader_setImage(image: UIImage, _ cacheType: CacheType) {
+    private func imageLoader_setImage(_ image: UIImage, _ cacheType: CacheType) {
         dispatch_main { [weak self] in
             guard let wSelf = self else { return }
             if !UIImageView.imageLoader.automaticallySetImage { return }
 
             // Add a transition
-            if UIImageView.imageLoader.automaticallyAddTransition && cacheType == CacheType.None {
+            if UIImageView.imageLoader.automaticallyAddTransition && cacheType == CacheType.none {
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.type = kCATransitionFade
-                wSelf.layer.addAnimation(transition, forKey: nil)
+                wSelf.layer.add(transition, forKey: nil)
             }
 
             // Set an image
             if UIImageView.imageLoader.automaticallyAdjustsSize {
-                wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.mainScreen().scale, contentMode: wSelf.contentMode)
+                wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.main().scale, contentMode: wSelf.contentMode)
             } else {
                 wSelf.image = image
             }

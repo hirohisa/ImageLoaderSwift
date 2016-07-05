@@ -18,17 +18,17 @@ extension UIImage {
         let frameFor1px = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContext(frameFor1px.size)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, frameFor1px)
+        context?.setFillColor(color.cgColor)
+        context?.fill(frameFor1px)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        guard let CGImage = image.CGImage else {
+        guard let CGImage = image?.cgImage else {
             return nil
         }
 
-        self.init(CGImage: CGImage)
+        self.init(cgImage: CGImage)
     }
 }
 
@@ -41,20 +41,20 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 50)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 50)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleAspectFit)
         adjustedSize = CGSize(width: 100, height: 100)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 200, height: 200)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFit)
         adjustedSize = CGSize(width: 100, height: 100)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
@@ -65,21 +65,21 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 50, height: 30))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 50, height: 30))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 60)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 60, height: 30)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
@@ -89,21 +89,21 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 60))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 60))
 
         size = CGSize(width: 25, height: 25)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 25, height: 30)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 30, height: 15)
         adjustedSize = CGSize(width: 50, height: 30)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleAspectFit)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleAspectFit)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
@@ -113,21 +113,21 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 80))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 80))
 
         size = CGSize(width: 40, height: 40)
         adjustedSize = CGSize(width: 50, height: 40)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 80)
         adjustedSize = CGSize(width: 100, height: 80)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 80, height: 40)
         adjustedSize = CGSize(width: 80, height: 64)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleAspectFill)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleAspectFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
@@ -137,29 +137,29 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 80))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 80))
 
         // Scale 1
 
         size = CGSize(width: 40, height: 40)
         adjustedSize = CGSize(width: 40, height: 40)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleToFill)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleToFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 80)
         adjustedSize = CGSize(width: 50, height: 80)
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .ScaleToFill)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .scaleToFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         // Scale 2
         size = CGSize(width: 40, height: 40)
         adjustedSize = CGSize(width: 80, height: 80)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleToFill)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleToFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
         size = CGSize(width: 50, height: 80)
         adjustedSize = CGSize(width: 100, height: 80)
-        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .ScaleToFill)
+        adjustedImage = image!.adjusts(size, scale: 2, contentMode: .scaleToFill)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
@@ -169,30 +169,30 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))
+        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 100, height: 100)
 
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Redraw)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .redraw)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Center)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .center)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Top)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .top)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Left)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .left)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
 
-        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .Right)
+        adjustedImage = image!.adjusts(size, scale: 1, contentMode: .right)
         XCTAssertEqual(adjustedSize, adjustedImage.size)
     }
 
     func testSizeIsZeroWhenRendering() {
-        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 100, height: 100))!
-        let renderedImage = image.render(CGSizeZero)
+        let image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))!
+        let renderedImage = image.render(CGSize.zero)
 
         XCTAssertEqual(image, renderedImage)
     }

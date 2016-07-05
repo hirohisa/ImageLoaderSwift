@@ -23,16 +23,16 @@ class URLLiteralConvertibleTests: XCTestCase {
 
     func testEscapes() {
         let URL = "http://twitter.com/?status=Hello World".imageLoaderURL
-        let valid = NSURL(string: "http://twitter.com/?status=Hello%20World")!
+        let valid = Foundation.URL(string: "http://twitter.com/?status=Hello%20World")!
 
         XCTAssertEqual(URL, valid)
     }
 
     func testConvertImageLoaderURL() {
         let string = "https://host/path"
-        let URLString = string.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!
-        let URL = NSURL(string: URLString)!
-        let components = NSURLComponents(string: URLString)!
+        let URLString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let URL = Foundation.URL(string: URLString)!
+        let components = URLComponents(string: URLString)!
 
         XCTAssertEqual(string.imageLoaderURL, URL)
         XCTAssertEqual(string.imageLoaderURL.absoluteString, URLString)
@@ -46,9 +46,9 @@ class URLLiteralConvertibleTests: XCTestCase {
 
     func testConvertImageLoaderURLIfNeededPercentEncoding() {
         let string = "https://host/path?query=１枚目"
-        let URLString = string.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())!
-        let URL = NSURL(string: URLString)!
-        let components = NSURLComponents(string: URLString)!
+        let URLString = string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let URL = Foundation.URL(string: URLString)!
+        let components = URLComponents(string: URLString)!
 
         XCTAssertEqual(string.imageLoaderURL, URL)
         XCTAssertEqual(string.imageLoaderURL.absoluteString, URLString)

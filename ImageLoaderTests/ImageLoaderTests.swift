@@ -11,17 +11,17 @@ import XCTest
 @testable import ImageLoader
 import OHHTTPStubs
 
-extension NSURLSessionTaskState {
+extension URLSessionTask.State {
 
     func toString() -> String {
         switch self {
-        case Running:
+        case running:
             return "Running"
-        case Suspended:
+        case suspended:
             return "Suspended"
-        case Canceling:
+        case canceling:
             return "Canceling"
-        case Completed:
+        case completed:
             return "Completed"
         }
     }
@@ -31,9 +31,9 @@ extension State {
 
     func toString() -> String {
         switch self {
-        case .Ready:
+        case .ready:
             return "Ready"
-        case Running:
+        case running:
             return "Running"
         }
     }
@@ -52,18 +52,18 @@ class ImageLoaderTests: XCTestCase {
     }
 
     func setUpOHHTTPStubs() {
-        OHHTTPStubs.stubRequestsPassingTest({ request -> Bool in
+        OHHTTPStubs.stubRequests(passingTest: { request -> Bool in
             return true
         }, withStubResponse: { request in
-            var data = NSData()
+            var data = Data()
             var statusCode = Int32(200)
-            if let path = request.URL?.path where !path.isEmpty {
+            if let path = request.url?.path where !path.isEmpty {
                 switch path {
                 case _ where path.hasSuffix("white"):
-                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("white", ofType: "png")!
+                    let imagePath = Bundle(for: self.dynamicType).pathForResource("white", ofType: "png")!
                     data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
                 case _ where path.hasSuffix("black"):
-                    let imagePath = NSBundle(forClass: self.dynamicType).pathForResource("black", ofType: "png")!
+                    let imagePath = Bundle(for: self.dynamicType).pathForResource("black", ofType: "png")!
                     data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
                 default:
                     if let i = Int(path) where 400 <= i && i < 600 {
@@ -82,7 +82,7 @@ class ImageLoaderTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    func waitForAsyncTask(duration: NSTimeInterval = 0.01) {
-        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: duration))
+    func waitForAsyncTask(_ duration: TimeInterval = 0.01) {
+        RunLoop.main().run(until: Date(timeIntervalSinceNow: duration))
     }
 }
