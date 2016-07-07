@@ -108,8 +108,8 @@ public func suspend(_ URL: URLLiteralConvertible) -> Loader? {
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
-public func cancel(_ URL: URLLiteralConvertible) -> Loader? {
-    return sharedInstance.cancel(URL)
+public func cancel(_ URL: URLLiteralConvertible) {
+    sharedInstance.cancel(URL)
 }
 
 public var state: State {

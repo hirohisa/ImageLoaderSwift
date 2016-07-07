@@ -86,7 +86,7 @@ extension UIImageView {
             guard let wSelf = self else { return }
 
             let block = Block(identifier: identifier, completionHandler: handler)
-            UIImageView.imageLoader.load(url).appendBlock(block)
+            let _ = UIImageView.imageLoader.load(url).appendBlock(block)
 
             wSelf.url = url
         }

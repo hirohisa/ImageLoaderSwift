@@ -67,11 +67,11 @@ public class Manager {
         return nil
     }
 
-    func cancel(_ URL: URLLiteralConvertible, block: Block? = nil) -> Loader? {
-        return cancel(URL, identifier: block?.identifier)
+    func cancel(_ URL: URLLiteralConvertible, block: Block? = nil) {
+        cancel(URL, identifier: block?.identifier)
     }
 
-    func cancel(_ URL: URLLiteralConvertible, identifier: Int?) -> Loader? {
+    func cancel(_ URL: URLLiteralConvertible, identifier: Int?) {
         if let loader = delegate[URL.imageLoaderURL] {
             if let identifier = identifier {
                 loader.remove(identifier)
@@ -81,10 +81,7 @@ public class Manager {
                 loader.cancel()
                 delegate.remove(URL.imageLoaderURL)
             }
-            return loader
         }
-
-        return nil
     }
 
     class SessionDataDelegate: NSObject, URLSessionDataDelegate {
@@ -118,12 +115,8 @@ public class Manager {
             return isEmpty
         }
 
-        private func remove(_ url: URL) -> Loader? {
-            if let loader = loaders[url] {
-                loaders[url] = nil
-                return loader
-            }
-            return nil
+        private func remove(_ url: URL) {
+            loaders[url] = nil
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
