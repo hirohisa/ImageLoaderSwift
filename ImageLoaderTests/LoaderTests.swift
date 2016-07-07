@@ -14,16 +14,16 @@ class LoaderTests: ImageLoaderTests {
 
         let expectation = self.expectation(withDescription: "wait until loader complete")
 
-        var URL: URL!
+        var url: URL!
         url = URL(string: "http://test/path")
 
         let manager = Manager()
-        let loader = manager.load(URL)
+        let loader = manager.load(url)
 
         XCTAssert(loader.state == .running, loader.state.toString())
-        loader.completionHandler { completedURL, image, error, cacheType in
+        let _ = loader.completionHandler { completedUrl, image, error, cacheType in
 
-            XCTAssertEqual(URL, completedURL)
+            XCTAssertEqual(url, completedUrl)
             XCTAssert(manager.state == .running, manager.state.toString())
             expectation.fulfill()
         }
@@ -37,19 +37,19 @@ class LoaderTests: ImageLoaderTests {
 
         let expectation = self.expectation(withDescription: "wait until loader complete")
 
-        var URL: URL!
+        var url: URL!
         url = URL(string: "http://test/remove")
 
         let manager = Manager()
-        let loader = manager.load(URL)
+        let loader = manager.load(url)
 
         XCTAssert(loader.state == .running, loader.state.toString())
 
-        loader.completionHandler { completedURL, image, error, cacheType in
+        let _ = loader.completionHandler { completedUrl, image, error, cacheType in
 
             let time  = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-            DispatchQueue.main.after(when: time, block: {
-                XCTAssertNil(manager.delegate[URL], "loader did not remove from delegate")
+            DispatchQueue.main.after(when: time, execute: { 
+                XCTAssertNil(manager.delegate[url], "loader did not remove from delegate")
                 expectation.fulfill()
             })
         }
@@ -61,14 +61,14 @@ class LoaderTests: ImageLoaderTests {
 
     func testSomeLoad() {
 
-        var URL: URL!
+        var url: URL!
         url = URL(string: "http://test/path")
 
         let manager = Manager()
-        let loader1 = manager.load(URL)
+        let loader1 = manager.load(url)
 
         url = URL(string: "http://test/path2")
-        let loader2 = manager.load(URL)
+        let loader2 = manager.load(url)
 
         XCTAssert(loader1.state == .running, loader1.state.toString())
         XCTAssert(loader2.state == .running, loader2.state.toString())
@@ -79,14 +79,14 @@ class LoaderTests: ImageLoaderTests {
 
     func testSomeLoadSameURL() {
 
-        var URL: URL!
+        var url: URL!
         url = URL(string: "http://test/path")
 
         let manager = Manager()
-        let loader1 = manager.load(URL)
+        let loader1 = manager.load(url)
 
         url = URL(string: "http://test/path")
-        let loader2 = manager.load(URL)
+        let loader2 = manager.load(url)
 
         XCTAssert(loader1.state == .running, loader1.state.toString())
         XCTAssert(loader2.state == .running, loader2.state.toString())
@@ -101,10 +101,10 @@ class LoaderTests: ImageLoaderTests {
         let url = URL(string: "http://test/404")!
 
         let manager = Manager()
-        let loader = manager.load(URL)
+        let loader = manager.load(url)
 
         XCTAssert(loader.state == .running, loader.state.toString())
-        loader.completionHandler { completedURL, image, error, cacheType in
+        let _ = loader.completionHandler { _, image, error, cacheType in
 
             XCTAssertNil(image)
             expectation.fulfill()
@@ -123,10 +123,10 @@ class LoaderTests: ImageLoaderTests {
 
         XCTAssert(manager.state == .ready, manager.state.toString())
 
-        manager.load(URL)
-        manager.cancel(URL, block: nil)
+        let _ = manager.load(url)
+        manager.cancel(url, block: nil)
 
-        let loader: Loader? = manager.delegate[URL]
+        let loader: Loader? = manager.delegate[url]
         XCTAssertNil(loader)
 
     }
@@ -139,14 +139,14 @@ class LoaderTests: ImageLoaderTests {
         let notkeepingManager = Manager()
         notkeepingManager.shouldKeepLoader = false
 
-        keepingManager.load(URL)
-        notkeepingManager.load(URL)
+        let _ = keepingManager.load(url)
+        let _ = notkeepingManager.load(url)
 
-        keepingManager.cancel(URL)
-        notkeepingManager.cancel(URL)
+        keepingManager.cancel(url)
+        notkeepingManager.cancel(url)
 
-        let keepingLoader: Loader? = keepingManager.delegate[URL]
-        let notkeepingLoader: Loader? = notkeepingManager.delegate[URL]
+        let keepingLoader: Loader? = keepingManager.delegate[url]
+        let notkeepingLoader: Loader? = notkeepingManager.delegate[url]
         XCTAssertNotNil(keepingLoader)
         XCTAssertNil(notkeepingLoader)
     }

@@ -94,22 +94,22 @@ public let sharedInstance = Manager()
 /**
     Creates `Loader` object using the shared manager instance for the specified URL.
 */
-public func load(_ URL: URLLiteralConvertible) -> Loader {
-    return sharedInstance.load(URL)
+public func load(_ url: URLLiteralConvertible) -> Loader {
+    return sharedInstance.load(url)
 }
 
 /**
     Suspends `Loader` object using the shared manager instance for the specified URL.
 */
-public func suspend(_ URL: URLLiteralConvertible) -> Loader? {
-    return sharedInstance.suspend(URL)
+public func suspend(_ url: URLLiteralConvertible) -> Loader? {
+    return sharedInstance.suspend(url)
 }
 
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
-public func cancel(_ URL: URLLiteralConvertible) {
-    sharedInstance.cancel(URL)
+public func cancel(_ url: URLLiteralConvertible) {
+    sharedInstance.cancel(url)
 }
 
 public var state: State {

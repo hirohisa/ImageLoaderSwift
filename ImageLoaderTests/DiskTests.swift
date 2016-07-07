@@ -23,10 +23,10 @@ class DiskTests: ImageLoaderTests {
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
-        XCTAssertNotNil(disk[URL])
-        XCTAssertEqual(disk[URL]!, data)
+        XCTAssertNotNil(disk[url])
+        XCTAssertEqual(disk[url]!, data)
     }
 
     func testSetAndGetWithString() {
@@ -43,13 +43,13 @@ class DiskTests: ImageLoaderTests {
 
     func testSetFromURLAndGetWithString() {
         let string = "http://test.com"
-        let encodedString = "http%3A%2F%2Ftest.com"
+        let encodedString = "http%3A%2F%2Ftest%2Ecom"
 
         let url = URL(string: string)!
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
         RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
 
@@ -62,13 +62,13 @@ class DiskTests: ImageLoaderTests {
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
         RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
 
-        XCTAssertNotNil(disk[URL])
-        XCTAssertEqual(disk[URL]!, data)
-        XCTAssertNil(disk.storedData[URL.absoluteString!])
+        XCTAssertNotNil(disk[url])
+        XCTAssertEqual(disk[url]!, data)
+        XCTAssertNil(disk.storedData[url.absoluteString!])
     }
 
     func testCleanDisk() {
@@ -76,11 +76,11 @@ class DiskTests: ImageLoaderTests {
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
         RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
 
         Disk.cleanUp()
-        XCTAssertNil(disk[URL])
+        XCTAssertNil(disk[url])
     }
 }

@@ -14,13 +14,11 @@ extension UIImage {
 
     func isEqualTo(_ image: UIImage) -> Bool {
         if size == image.size {
-            let ldp = cgImage?.dataProvider
-            let ldt = NSData(data: ldp?.data! as! Data) as Data
-
-            let rdp = image.cgImage?.dataProvider
-            let rdt = NSData(data: rdp?.data! as! Data) as Data
-
-            return ldt == rdt
+            if let lcfdt = cgImage?.dataProvider?.data, rcfdt = image.cgImage?.dataProvider?.data {
+                let ldt = NSData(data: lcfdt as Data)
+                let rdt = NSData(data: rcfdt as Data)
+                return ldt == rdt
+            }
         }
 
         return false
@@ -59,9 +57,9 @@ class UIImageViewTests: ImageLoaderTests {
 
         let string = "http://test/load/white"
 
-        imageView.load(string, placeholder: nil) { URL, image, error, type in
+        imageView.load(string, placeholder: nil) { url, image, error, type in
             XCTAssertNil(error)
-            XCTAssertEqual(string.imageLoaderURL, URL)
+            XCTAssertEqual(string.imageLoaderURL, url)
             XCTAssertTrue(image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
         }
@@ -76,9 +74,9 @@ class UIImageViewTests: ImageLoaderTests {
 
         let string = "http://test/load_with_placeholder/white"
 
-        imageView.load(string, placeholder: self.blackImage) { URL, image, error, type in
+        imageView.load(string, placeholder: self.blackImage) { url, image, error, type in
             XCTAssertNil(error)
-            XCTAssertEqual(string.imageLoaderURL, URL)
+            XCTAssertEqual(string.imageLoaderURL, url)
             XCTAssertTrue(image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
         }
@@ -94,9 +92,9 @@ class UIImageViewTests: ImageLoaderTests {
 
         let string = "http://test/set_image_after_loading/white"
 
-        imageView.load(string, placeholder: nil) { URL, image, error, type in
+        imageView.load(string, placeholder: nil) { url, image, error, type in
             XCTAssertNil(error)
-            XCTAssertEqual(string.imageLoaderURL, URL)
+            XCTAssertEqual(string.imageLoaderURL, url)
 
             XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
@@ -115,12 +113,12 @@ class UIImageViewTests: ImageLoaderTests {
         let string1 = "http://test/lastest_load_first/black"
         let string2 = "http://test/lastest_load_second/white"
 
-        imageView.load(string1, placeholder: nil) { URL, image, error, type in
+        imageView.load(string1, placeholder: nil) { _, image, error, _ in
             XCTAssertNil(image)
             XCTAssertNil(error)
         }
 
-        imageView.load(string2, placeholder: nil) { URL, image, error, type in
+        imageView.load(string2, placeholder: nil) { _, image, error, _ in
             XCTAssertNil(error)
             XCTAssertTrue(image!.isEqualTo(self.whiteImage))
             expectation.fulfill()
@@ -138,16 +136,16 @@ class UIImageViewTests: ImageLoaderTests {
         let string1 = "http://test/load_first_in_block/black"
         let string2 = "http://test/load_second_in_block/white"
 
-        imageView.load(string, placeholder: nil) { URL, image, error, type in
+        imageView.load(string, placeholder: nil) { _, image, error, _ in
             XCTAssertNil(error)
             XCTAssertTrue(image!.isEqualTo(self.whiteImage))
 
-            self.imageView.load(string1, placeholder: nil) { URL, image, error, type in
+            self.imageView.load(string1, placeholder: nil) { _, image, error, _ in
                 XCTAssertNil(image)
                 XCTAssertNil(error)
             }
 
-            self.imageView.load(string2, placeholder: nil) { URL, image, error, type in
+            self.imageView.load(string2, placeholder: nil) { _, image, error, _ in
                 XCTAssertTrue(image!.isEqualTo(self.whiteImage))
                 XCTAssertTrue(self.imageView.image!.isEqualTo(self.whiteImage))
                 expectation.fulfill()

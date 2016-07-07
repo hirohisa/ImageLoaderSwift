@@ -11,16 +11,8 @@ import UIKit
 
 extension String {
 
-    public func escape() -> String {
-
-        let str = CFURLCreateStringByAddingPercentEscapes(
-            kCFAllocatorDefault,
-            self,
-            nil,
-            "!*'\"();:@&=+$,/?%#[]% ",
-            CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue))
-
-        return str as! String
+    public func escape() -> String? {
+        return addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
     }
 }
 

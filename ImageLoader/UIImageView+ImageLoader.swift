@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-private var ImageLoaderURLKey = 0
+private var ImageLoaderUrlKey = 0
 private var ImageLoaderBlockKey = 0
 
 /**
@@ -26,14 +26,14 @@ extension UIImageView {
         get {
             var url: URL?
             UIImageView._ioQueue.sync {
-                url = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? URL
+                url = objc_getAssociatedObject(self, &ImageLoaderUrlKey) as? URL
             }
 
             return url
         }
         set(newValue) {
             UIImageView._ioQueue.async {
-                objc_setAssociatedObject(self, &ImageLoaderURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &ImageLoaderUrlKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -41,7 +41,7 @@ extension UIImageView {
     private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request", attributes: DispatchQueueAttributes.serial)
 
     // MARK: - functions
-    public func load(_ URL: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
+    public func load(_ url: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
         let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 
@@ -51,7 +51,7 @@ extension UIImageView {
 
         image = placeholder
 
-        imageLoader_load(URL.imageLoaderURL, completionHandler: completionHandler)
+        imageLoader_load(url.imageLoaderURL, completionHandler: completionHandler)
     }
 
     public func cancelLoading() {
@@ -63,13 +63,13 @@ extension UIImageView {
     // MARK: - private
 
     private func imageLoader_load(_ url: URL, completionHandler: CompletionHandler?) {
-        let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
-            if let wSelf = self, thisURL = wSelf.url, image = image where (thisURL == URL) {
+        let handler: CompletionHandler = { [weak self] url, image, error, cacheType in
+            if let wSelf = self, selfUrl = wSelf.url, image = image where selfUrl == url {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
             dispatch_main {
-                completionHandler?(URL, image, error, cacheType)
+                completionHandler?(url, image, error, cacheType)
             }
         }
 

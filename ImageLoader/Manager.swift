@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /**
- Responsible for creating and managing `Loader` objects and controlling of `NSURLSession` and `ImageCache`
+ Responsible for creating and managing `Loader` objects and controlling of `URLSession` and `ImageCache`
  */
 public class Manager {
 
@@ -43,23 +43,23 @@ public class Manager {
 
     // MARK: loading
 
-    func load(_ URL: URLLiteralConvertible) -> Loader {
-        if let loader = delegate[URL.imageLoaderURL] {
+    func load(_ url: URLLiteralConvertible) -> Loader {
+        if let loader = delegate[url.imageLoaderURL] {
             loader.resume()
             return loader
         }
 
-        let request = NSMutableURLRequest(url: URL.imageLoaderURL)
+        let request = NSMutableURLRequest(url: url.imageLoaderURL)
         request.setValue("image/*", forHTTPHeaderField: "Accept")
         let task = session.dataTask(with: request.url!)
 
         let loader = Loader(task: task, delegate: self)
-        delegate[URL.imageLoaderURL] = loader
+        delegate[url.imageLoaderURL] = loader
         return loader
     }
 
-    func suspend(_ URL: URLLiteralConvertible) -> Loader? {
-        if let loader = delegate[URL.imageLoaderURL] {
+    func suspend(_ url: URLLiteralConvertible) -> Loader? {
+        if let loader = delegate[url.imageLoaderURL] {
             loader.suspend()
             return loader
         }
@@ -67,19 +67,19 @@ public class Manager {
         return nil
     }
 
-    func cancel(_ URL: URLLiteralConvertible, block: Block? = nil) {
-        cancel(URL, identifier: block?.identifier)
+    func cancel(_ url: URLLiteralConvertible, block: Block? = nil) {
+        cancel(url, identifier: block?.identifier)
     }
 
-    func cancel(_ URL: URLLiteralConvertible, identifier: Int?) {
-        if let loader = delegate[URL.imageLoaderURL] {
+    func cancel(_ url: URLLiteralConvertible, identifier: Int?) {
+        if let loader = delegate[url.imageLoaderURL] {
             if let identifier = identifier {
                 loader.remove(identifier)
             }
 
             if !shouldKeepLoader && loader.blocks.isEmpty {
                 loader.cancel()
-                delegate.remove(URL.imageLoaderURL)
+                delegate.remove(url.imageLoaderURL)
             }
         }
     }
