@@ -23,7 +23,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testLoad() {
-        let URL = Foundation.URL(string: "http://manager/test/load")!
+        let url = URL(string: "http://manager/test/load")!
 
         manager.load(URL)
         XCTAssert(manager.state == .running, manager.state.toString())
@@ -34,7 +34,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testSuspend() {
-        let URL = Foundation.URL(string: "http://manager/test/suspend")!
+        let url = URL(string: "http://manager/test/suspend")!
 
         manager.suspend(URL)
         XCTAssert(manager.state == .ready, manager.state.toString())
@@ -51,7 +51,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testCancel() {
-        let URL = Foundation.URL(string: "http://manager/test/cancel")!
+        let url = URL(string: "http://manager/test/cancel")!
 
         manager.cancel(URL)
         XCTAssert(manager.state == .ready, manager.state.toString())
@@ -67,7 +67,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testCancelWhenHasBlock() {
-        let URL = Foundation.URL(string: "http://manager/test_when_has_block/cancel")!
+        let url = URL(string: "http://manager/test_when_has_block/cancel")!
 
         let block = Block(identifier: 1) { (URL, _, error, _) -> Void in
             XCTAssertTrue(false, "dont call this completion handler")
@@ -92,7 +92,7 @@ class ManagerTests: ImageLoaderTests {
 
     func testCancelWhenHasTwoBlocks() {
         let expectation = self.expectation(withDescription: "wait until loader complete")
-        let URL = Foundation.URL(string: "http://manager/test/cancel")!
+        let url = URL(string: "http://manager/test/cancel")!
 
         let block1 = Block(identifier: 1) { (URL, _, error, _) -> Void in
             XCTAssertTrue(false, "dont call this completion handler")

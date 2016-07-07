@@ -11,7 +11,7 @@ import ImageLoader
 
 class SuspendViewController: UITableViewController {
 
-    var URLs = [URL]()
+    var urls = [URL]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,28 +39,28 @@ class SuspendViewController: UITableViewController {
 
 
     func startLoading() {
-        let start = URLs.count
+        let start = urls.count
         for i in start...start+10 {
-            let URL = Foundation.URL.imageURL(i)
-            ImageLoader.load(URL).completionHandler { completedURL, image, error, cacheType in
+            let url = URL.imageURL(i)
+            ImageLoader.load(url).completionHandler { completedURL, image, error, cacheType in
                 self.insertRow(completedURL)
             }
         }
     }
 
     func pauseLoading() {
-        let end = URLs.count
+        let end = urls.count
         for i in end-10...end {
-            let URL = Foundation.URL.imageURL(i)
-            ImageLoader.suspend(URL)
+            let url = URL.imageURL(i)
+            ImageLoader.suspend(url)
         }
     }
 
-    func insertRow(_ URL: Foundation.URL) {
+    func insertRow(_ url: URL) {
 
         DispatchQueue.main.async(execute: {
-            let indexPath = IndexPath(row: self.URLs.count, section: 0)
-            self.URLs.append(URL)
+            let indexPath = IndexPath(row: self.urls.count, section: 0)
+            self.urls.append(url)
 
             self.tableView.beginUpdates()
             self.tableView.insertRows(at: [indexPath], with: .automatic)
@@ -78,8 +78,8 @@ class SuspendViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
-        let URL = self.URLs[(indexPath as NSIndexPath).row]
-        if let data = Disk.get(URL.absoluteString!.escape()) {
+        let url = self.urls[(indexPath as NSIndexPath).row]
+        if let data = Disk.get(url.absoluteString!.escape()) {
             cell.thumbnailView.image = UIImage(data: data)
         }
 
@@ -92,7 +92,7 @@ class SuspendViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return URLs.count
+        return urls.count
     }
 
 }

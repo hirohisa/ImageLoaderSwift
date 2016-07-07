@@ -92,18 +92,18 @@ public class Manager {
         let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.session.io", attributes: DispatchQueueAttributes.concurrent)
         var loaders: [URL: Loader] = [:]
 
-        subscript (URL: URL) -> Loader? {
+        subscript (url: URL) -> Loader? {
             get {
                 var loader : Loader?
                 _ioQueue.sync {
-                    loader = self.loaders[URL]
+                    loader = self.loaders[url]
                 }
                 return loader
             }
             set {
                 if let newValue = newValue {
                     _ioQueue.async {
-                        self.loaders[URL] = newValue
+                        self.loaders[url] = newValue
                     }
                 }
             }
@@ -118,16 +118,16 @@ public class Manager {
             return isEmpty
         }
 
-        private func remove(_ URL: Foundation.URL) -> Loader? {
-            if let loader = loaders[URL] {
-                loaders[URL] = nil
+        private func remove(_ url: URL) -> Loader? {
+            if let loader = loaders[url] {
+                loaders[url] = nil
                 return loader
             }
             return nil
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            if let URL = dataTask.originalRequest?.url, loader = self[URL] {
+            if let url = dataTask.originalRequest?.url, loader = self[url] {
                 loader.receive(data)
             }
         }
@@ -137,9 +137,9 @@ public class Manager {
         }
 
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {
-            if let URL = task.originalRequest?.url, loader = loaders[URL] {
+            if let url = task.originalRequest?.url, loader = loaders[url] {
                 loader.complete(error) { [unowned self] in
-                    self.remove(URL)
+                    self.remove(url)
                 }
             }
         }

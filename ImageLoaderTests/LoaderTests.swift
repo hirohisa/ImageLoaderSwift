@@ -14,8 +14,8 @@ class LoaderTests: ImageLoaderTests {
 
         let expectation = self.expectation(withDescription: "wait until loader complete")
 
-        var URL: Foundation.URL!
-        URL = Foundation.URL(string: "http://test/path")
+        var URL: URL!
+        url = URL(string: "http://test/path")
 
         let manager = Manager()
         let loader = manager.load(URL)
@@ -37,8 +37,8 @@ class LoaderTests: ImageLoaderTests {
 
         let expectation = self.expectation(withDescription: "wait until loader complete")
 
-        var URL: Foundation.URL!
-        URL = Foundation.URL(string: "http://test/remove")
+        var URL: URL!
+        url = URL(string: "http://test/remove")
 
         let manager = Manager()
         let loader = manager.load(URL)
@@ -61,13 +61,13 @@ class LoaderTests: ImageLoaderTests {
 
     func testSomeLoad() {
 
-        var URL: Foundation.URL!
-        URL = Foundation.URL(string: "http://test/path")
+        var URL: URL!
+        url = URL(string: "http://test/path")
 
         let manager = Manager()
         let loader1 = manager.load(URL)
 
-        URL = Foundation.URL(string: "http://test/path2")
+        url = URL(string: "http://test/path2")
         let loader2 = manager.load(URL)
 
         XCTAssert(loader1.state == .running, loader1.state.toString())
@@ -79,13 +79,13 @@ class LoaderTests: ImageLoaderTests {
 
     func testSomeLoadSameURL() {
 
-        var URL: Foundation.URL!
-        URL = Foundation.URL(string: "http://test/path")
+        var URL: URL!
+        url = URL(string: "http://test/path")
 
         let manager = Manager()
         let loader1 = manager.load(URL)
 
-        URL = Foundation.URL(string: "http://test/path")
+        url = URL(string: "http://test/path")
         let loader2 = manager.load(URL)
 
         XCTAssert(loader1.state == .running, loader1.state.toString())
@@ -98,7 +98,7 @@ class LoaderTests: ImageLoaderTests {
 
         let expectation = self.expectation(withDescription: "wait until loader complete")
 
-        let URL = Foundation.URL(string: "http://test/404")!
+        let url = URL(string: "http://test/404")!
 
         let manager = Manager()
         let loader = manager.load(URL)
@@ -117,7 +117,7 @@ class LoaderTests: ImageLoaderTests {
 
     func testCancelAfterLoading() {
 
-        let URL = Foundation.URL(string: "http://test/path")!
+        let url = URL(string: "http://test/path")!
 
         let manager: Manager = Manager()
 
@@ -132,7 +132,7 @@ class LoaderTests: ImageLoaderTests {
     }
 
     func testUseShouldKeepLoader() {
-        let URL = Foundation.URL(string: "http://test/path")!
+        let url = URL(string: "http://test/path")!
 
         let keepingManager = Manager()
         keepingManager.shouldKeepLoader = true

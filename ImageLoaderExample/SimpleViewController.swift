@@ -43,7 +43,7 @@ class SimpleViewController: UIViewController {
 
     func testLoad(_ imageView: UIImageView, URL: URLLiteralConvertible) {
         imageView.load(URL, placeholder: nil) { URL, image, error, cacheType in
-            print("URL \(URL)")
+            print("url \(URL)")
             print("error \(error)")
             print("cacheType \(cacheType.hashValue)")
         }

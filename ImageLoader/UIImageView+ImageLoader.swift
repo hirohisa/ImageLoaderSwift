@@ -22,14 +22,14 @@ extension UIImageView {
     // MARK: - properties
     private static let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.io", attributes: DispatchQueueAttributes.concurrent)
 
-    private var URL: Foundation.URL? {
+    private var url: URL? {
         get {
-            var URL: Foundation.URL?
+            var url: URL?
             UIImageView._ioQueue.sync {
-                URL = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? Foundation.URL
+                url = objc_getAssociatedObject(self, &ImageLoaderURLKey) as? URL
             }
 
-            return URL
+            return url
         }
         set(newValue) {
             UIImageView._ioQueue.async {
@@ -55,16 +55,16 @@ extension UIImageView {
     }
 
     public func cancelLoading() {
-        if let URL = URL {
-            UIImageView.imageLoader.cancel(URL, identifier: hash)
+        if let url = url {
+            UIImageView.imageLoader.cancel(url, identifier: hash)
         }
     }
 
     // MARK: - private
 
-    private func imageLoader_load(_ URL: Foundation.URL, completionHandler: CompletionHandler?) {
+    private func imageLoader_load(_ url: URL, completionHandler: CompletionHandler?) {
         let handler: CompletionHandler = { [weak self] URL, image, error, cacheType in
-            if let wSelf = self, thisURL = wSelf.URL, image = image where (thisURL == URL) {
+            if let wSelf = self, thisURL = wSelf.url, image = image where (thisURL == URL) {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
@@ -74,9 +74,9 @@ extension UIImageView {
         }
 
         // caching
-        if let data = UIImageView.imageLoader.cache[URL] {
-            self.URL = URL
-            handler(URL, UIImage.decode(data), nil, .cache)
+        if let data = UIImageView.imageLoader.cache[url] {
+            self.url = url
+            handler(url, UIImage.decode(data), nil, .cache)
             return
         }
 
@@ -86,9 +86,9 @@ extension UIImageView {
             guard let wSelf = self else { return }
 
             let block = Block(identifier: identifier, completionHandler: handler)
-            UIImageView.imageLoader.load(URL).appendBlock(block)
+            UIImageView.imageLoader.load(url).appendBlock(block)
 
-            wSelf.URL = URL
+            wSelf.url = url
         }
 
         enqueue(block)

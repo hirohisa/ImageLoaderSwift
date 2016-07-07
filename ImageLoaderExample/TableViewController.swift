@@ -19,10 +19,10 @@ class TableViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
-        let URL = String.imageURL((indexPath as NSIndexPath).row)
+        let url = String.imageURL((indexPath as NSIndexPath).row)
         let placeholder = UIImage(named: "black.jpg")!
-        cell.thumbnailView.load(URL, placeholder: placeholder) { URL, image, error, cacheType in
-            print("URL \(URL)")
+        cell.thumbnailView.load(url, placeholder: placeholder) { url, image, error, cacheType in
+            print("url \(url)")
             print("error \(error)")
             print("image \(image?.size), render-image \(cell.thumbnailView.image?.size)")
             print("cacheType \(cacheType.hashValue)")

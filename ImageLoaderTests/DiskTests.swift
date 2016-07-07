@@ -19,7 +19,7 @@ class DiskTests: ImageLoaderTests {
     }
 
     func testSetAndGet() {
-        let URL = Foundation.URL(string: "http://test/sample")!
+        let url = URL(string: "http://test/sample")!
         let data = generateData()
 
         let disk = Disk()
@@ -45,7 +45,7 @@ class DiskTests: ImageLoaderTests {
         let string = "http://test.com"
         let encodedString = "http%3A%2F%2Ftest.com"
 
-        let URL = Foundation.URL(string: string)!
+        let url = URL(string: string)!
         let data = generateData()
 
         let disk = Disk()
@@ -58,7 +58,7 @@ class DiskTests: ImageLoaderTests {
     }
 
     func testSetAndWriteToDisk() {
-        let URL = Foundation.URL(string: "http://test/save_to_file")!
+        let url = URL(string: "http://test/save_to_file")!
         let data = generateData()
 
         let disk = Disk()
@@ -72,7 +72,7 @@ class DiskTests: ImageLoaderTests {
     }
 
     func testCleanDisk() {
-        let URL = Foundation.URL(string: "http://test/save_to_file_for_clean")!
+        let url = URL(string: "http://test/save_to_file_for_clean")!
         let data = generateData()
 
         let disk = Disk()

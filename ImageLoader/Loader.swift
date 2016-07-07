@@ -85,28 +85,28 @@ public class Loader {
         }
     }
 
-    private func success(_ URL: Foundation.URL, data: Data, completionHandler: () -> Void) {
+    private func success(_ url: URL, data: Data, completionHandler: () -> Void) {
         let image = UIImage.decode(data)
-        _toCache(URL, data: data)
+        _toCache(url, data: data)
 
         for block in blocks {
-            block.completionHandler(URL, image, nil, .none)
+            block.completionHandler(url, image, nil, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func failure(_ URL: Foundation.URL, error: NSError, completionHandler: () -> Void) {
+    private func failure(_ url: URL, error: NSError, completionHandler: () -> Void) {
         for block in blocks {
-            block.completionHandler(URL, nil, error, .none)
+            block.completionHandler(url, nil, error, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func _toCache(_ URL: Foundation.URL, data: Data?) {
+    private func _toCache(_ url: URL, data: Data?) {
         if let data = data {
-            delegate.cache[URL] = data
+            delegate.cache[url] = data
         }
     }
 }
