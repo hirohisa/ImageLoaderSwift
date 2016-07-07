@@ -34,7 +34,7 @@ class ResizeViewController: CollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL((indexPath as NSIndexPath).row)
+        let imageURL = String.imageURL(indexPath.row)
         cell.imageView.load(imageURL)
 
         return cell

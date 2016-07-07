@@ -32,14 +32,14 @@ class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL((indexPath as NSIndexPath).row % 100)
+        let imageURL = String.imageURL(indexPath.row % 100)
 
         let startDate = Date()
         cell.imageView.contentMode = contentMode
         cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, type) -> Void in
             switch type {
             case .none:
-                let diff = NSDate().timeIntervalSince(startDate)
+                let diff = Date().timeIntervalSince(startDate)
                 print("loading time: \(diff)")
                 if let image = cell.imageView.image {
                     print("from network, image size: \(image.size)")

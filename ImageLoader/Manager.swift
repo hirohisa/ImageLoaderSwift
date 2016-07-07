@@ -49,7 +49,7 @@ public class Manager {
             return loader
         }
 
-        let request = NSMutableURLRequest(url: url.imageLoaderURL)
+        var request = URLRequest(url: url.imageLoaderURL)
         request.setValue("image/*", forHTTPHeaderField: "Accept")
         let task = session.dataTask(with: request.url!)
 

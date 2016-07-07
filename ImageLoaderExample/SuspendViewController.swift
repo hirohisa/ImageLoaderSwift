@@ -42,7 +42,7 @@ class SuspendViewController: UITableViewController {
         let start = urls.count
         for i in start...start+10 {
             let url = URL.imageURL(i)
-            ImageLoader.load(url).completionHandler { completedURL, image, error, cacheType in
+            let _ = ImageLoader.load(url).completionHandler { completedURL, _, _, _ in
                 self.insertRow(completedURL)
             }
         }
@@ -52,7 +52,7 @@ class SuspendViewController: UITableViewController {
         let end = urls.count
         for i in end-10...end {
             let url = URL.imageURL(i)
-            ImageLoader.suspend(url)
+            let _ = ImageLoader.suspend(url)
         }
     }
 
@@ -78,8 +78,8 @@ class SuspendViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
-        let url = self.urls[(indexPath as NSIndexPath).row]
-        if let data = Disk.get(url.absoluteString!.escape()) {
+        let url = self.urls[indexPath.row]
+        if let str = url.absoluteString!.escape(), data = Disk.get(str) {
             cell.thumbnailView.image = UIImage(data: data)
         }
 

@@ -16,7 +16,7 @@ public class Loader {
 
     unowned let delegate: Manager
     let task: URLSessionDataTask
-    var receivedData = NSMutableData()
+    var receivedData = Data()
     var blocks: [Block] = []
 
     init (task: URLSessionDataTask, delegate: Manager) {
