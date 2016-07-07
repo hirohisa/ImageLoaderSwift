@@ -11,7 +11,7 @@ import UIKit
 
 extension String {
 
-    static func imageURL(index: Int) -> String {
+    static func imageURL(_ index: Int) -> String {
 
         var number: NSString = index.description
         while (number.length < 3) {
@@ -24,9 +24,9 @@ extension String {
 
 }
 
-extension NSURL {
+extension URL {
 
-    class func imageURL(index: Int) -> NSURL {
+    static func imageURL(_ index: Int) -> URL {
 
         var number: NSString = index.description
         while (number.length < 3) {
@@ -34,7 +34,7 @@ extension NSURL {
         }
         let string: String = "https://s3.amazonaws.com/fast-image-cache/demo-images/FICDDemoImage\(number).jpg"
 
-        return NSURL(string: string)!
+        return URL(string: string)!
     }
 
 }
@@ -48,16 +48,16 @@ extension UIImage {
         let frameFor1px = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContext(frameFor1px.size)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context!, color.CGColor)
-        CGContextFillRect(context!, frameFor1px)
+        context!.setFillColor(color.cgColor)
+        context!.fill(frameFor1px)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        guard let CGImage = image!.CGImage else {
+        guard let CGImage = image!.cgImage else {
             return nil
         }
 
-        self.init(CGImage: CGImage)
+        self.init(cgImage: CGImage)
     }
 }

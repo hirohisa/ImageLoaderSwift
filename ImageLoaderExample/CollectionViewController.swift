@@ -14,22 +14,22 @@ class CollectionViewCell: UICollectionViewCell {
 
 class CollectionViewController: UICollectionViewController {
 
-    var contentMode: UIViewContentMode = UIViewContentMode.ScaleToFill {
+    var contentMode: UIViewContentMode = UIViewContentMode.scaleToFill {
         didSet {
             reloadData()
         }
     }
 
     let modeMap: [UIViewContentMode: UIViewContentMode] = [
-        .ScaleToFill: .ScaleAspectFit,
-        .ScaleAspectFit: .ScaleAspectFill,
-        .ScaleAspectFill: .ScaleToFill,
+        .scaleToFill: .scaleAspectFit,
+        .scaleAspectFit: .scaleAspectFill,
+        .scaleAspectFill: .scaleToFill,
     ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change", style: .Plain, target: self, action: #selector(CollectionViewController.changeContentMode))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Change", style: .plain, target: self, action: #selector(CollectionViewController.changeContentMode))
         reloadData()
     }
 
@@ -39,11 +39,11 @@ class CollectionViewController: UICollectionViewController {
 
     func reloadData() {
         switch contentMode {
-        case .ScaleToFill:
+        case .scaleToFill:
             title = "ScaleToFill"
-        case .ScaleAspectFit:
+        case .scaleAspectFit:
             title = "ScaleAspectFit"
-        case .ScaleAspectFill:
+        case .scaleAspectFill:
             title = "ScaleAspectFill"
         default:
             break
@@ -52,21 +52,21 @@ class CollectionViewController: UICollectionViewController {
         collectionView?.reloadData()
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL(indexPath.row)
+        let imageURL = String.imageURL((indexPath as NSIndexPath).row)
         cell.imageView.contentMode = contentMode
         cell.imageView.load(imageURL)
 
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 50
     }
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 }

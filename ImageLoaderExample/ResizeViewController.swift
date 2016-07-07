@@ -11,30 +11,30 @@ import ImageLoader
 
 class ResizeViewController: CollectionViewController {
 
-    var timer: NSTimer?
+    var timer: Timer?
     func report() {
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared().delegate as! AppDelegate
         delegate.report()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         ImageLoader.sharedInstance.automaticallyAdjustsSize = true
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(AppDelegate.report), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.report), userInfo: nil, repeats: true)
+        RunLoop.main().add(timer!, forMode: RunLoopMode.commonModes)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ImageLoader.sharedInstance.automaticallyAdjustsSize = false
         timer?.invalidate()
         timer = nil
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL(indexPath.row)
+        let imageURL = String.imageURL((indexPath as NSIndexPath).row)
         cell.imageView.load(imageURL)
 
         return cell

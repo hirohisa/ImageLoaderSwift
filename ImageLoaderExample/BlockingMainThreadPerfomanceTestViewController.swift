@@ -13,38 +13,38 @@ class BlockingMainThreadPerfomanceTestViewController: CollectionViewController {
     var watchdog: Watchdog?
     func report() {
         print(#function)
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared().delegate as! AppDelegate
         delegate.report()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         watchdog = Watchdog(threshold: 0.1, handler: { duration in
             print("👮 Main thread was blocked for " + String(format:"%.2f", duration) + "s 👮")
         })
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         watchdog = nil
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL(indexPath.row % 100)
+        let imageURL = String.imageURL((indexPath as NSIndexPath).row % 100)
 
-        let startDate = NSDate()
+        let startDate = Date()
         cell.imageView.contentMode = contentMode
         cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, type) -> Void in
             switch type {
-            case .None:
-                let diff = NSDate().timeIntervalSinceDate(startDate)
+            case .none:
+                let diff = NSDate().timeIntervalSince(startDate)
                 print("loading time: \(diff)")
                 if let image = cell.imageView.image {
                     print("from network, image size: \(image.size)")
                 }
-            case .Cache:
+            case .cache:
                 if let image = cell.imageView.image {
                     print("from cache, image size: \(image.size)")
                 }
@@ -54,7 +54,7 @@ class BlockingMainThreadPerfomanceTestViewController: CollectionViewController {
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 200
     }
 

@@ -15,22 +15,22 @@ class TableViewCell: UITableViewCell {
 
 class TableViewController: UITableViewController {
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell", forIndexPath: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
-        let URL = String.imageURL(indexPath.row)
+        let URL = String.imageURL((indexPath as NSIndexPath).row)
         let placeholder = UIImage(named: "black.jpg")!
         cell.thumbnailView.load(URL, placeholder: placeholder) { URL, image, error, cacheType in
             print("URL \(URL)")
             print("error \(error)")
             print("image \(image?.size), render-image \(cell.thumbnailView.image?.size)")
             print("cacheType \(cacheType.hashValue)")
-            if cacheType == CacheType.None {
+            if cacheType == CacheType.none {
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.type = kCATransitionFade
-                cell.thumbnailView.layer.addAnimation(transition, forKey: nil)
+                cell.thumbnailView.layer.add(transition, forKey: nil)
                 cell.thumbnailView.image = image
             }
         }
@@ -39,11 +39,11 @@ class TableViewController: UITableViewController {
 
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 100
     }
 

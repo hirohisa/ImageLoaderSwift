@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         return true
 
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Memory in use (in bytes): \(info.resident_size)")
         } else {
             print("Error with task_info(): " +
-                (String.fromCString(mach_error_string(kerr)) ?? "unknown error"))
+                (String(cString: mach_error_string(kerr)) ?? "unknown error"))
         }
     }
 
@@ -65,12 +65,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static func hostCPULoadInfo() -> host_cpu_load_info? {
 
         var size     = HOST_CPU_LOAD_INFO_COUNT
-        let hostInfo = host_cpu_load_info_t.alloc(1)
+        let hostInfo = host_cpu_load_info_t(allocatingCapacity: 1)
 
         let result = host_statistics(machHost, HOST_CPU_LOAD_INFO, UnsafeMutablePointer(hostInfo), &size)
 
         let data = hostInfo.move()
-        hostInfo.dealloc(1)
+        hostInfo.deallocateCapacity(1)
 
         if result != KERN_SUCCESS {
             return nil
