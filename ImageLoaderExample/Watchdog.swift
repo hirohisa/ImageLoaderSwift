@@ -52,9 +52,7 @@ import Foundation
             true,
             0) { [weak self] (observer, activity) in
 
-                guard let weakSelf = self else {
-                    return
-                }
+                guard let weakSelf = self else { return }
 
                 switch(activity) {
 

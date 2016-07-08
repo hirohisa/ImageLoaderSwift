@@ -26,9 +26,9 @@ public class Manager {
      */
     public var shouldKeepLoader = false
 
-    let decompressingQueue = DispatchQueue(label: "swift.imageloader.queues.decompress", attributes: DispatchQueueAttributes.concurrent)
+    let decompressingQueue = DispatchQueue(label: "swift.imageloader.queues.decompress", attributes: .concurrent)
 
-    public init(configuration: URLSessionConfiguration = URLSessionConfiguration.default(),
+    public init(configuration: URLSessionConfiguration = .default(),
         cache: ImageLoaderCache = Disk()
         ) {
             session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -86,7 +86,7 @@ public class Manager {
 
     class SessionDataDelegate: NSObject, URLSessionDataDelegate {
 
-        let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.session.io", attributes: DispatchQueueAttributes.concurrent)
+        let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.session.io", attributes: .concurrent)
         var loaders: [URL: Loader] = [:]
 
         subscript (url: URL) -> Loader? {

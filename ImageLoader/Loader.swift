@@ -76,9 +76,7 @@ public class Loader {
             }
 
             delegate.decompressingQueue.async { [weak self] in
-                guard let wSelf = self else {
-                    return
-                }
+                guard let wSelf = self else { return }
 
                 wSelf.success(url, data: wSelf.receivedData as Data, completionHandler: completionHandler)
             }

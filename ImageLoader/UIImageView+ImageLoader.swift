@@ -20,7 +20,7 @@ extension UIImageView {
     public static var imageLoader = sharedInstance
 
     // MARK: - properties
-    private static let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.io", attributes: DispatchQueueAttributes.concurrent)
+    private static let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.io", attributes: .concurrent)
 
     private var url: URL? {
         get {
@@ -38,10 +38,10 @@ extension UIImageView {
         }
     }
 
-    private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request", attributes: DispatchQueueAttributes.serial)
+    private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request", attributes: .serial)
 
     // MARK: - functions
-    public func load(_ url: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler:CompletionHandler? = nil) {
+    public func load(_ url: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler: CompletionHandler? = nil) {
         let block: () -> Void = { [weak self] in
             guard let wSelf = self else { return }
 

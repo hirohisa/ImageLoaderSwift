@@ -104,7 +104,7 @@ class LoaderTests: ImageLoaderTests {
         let loader = manager.load(url)
 
         XCTAssert(loader.state == .running, loader.state.toString())
-        let _ = loader.completionHandler { _, image, error, cacheType in
+        let _ = loader.completionHandler { _, image, _, _ in
 
             XCTAssertNil(image)
             expectation.fulfill()

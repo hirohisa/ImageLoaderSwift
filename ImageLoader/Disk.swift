@@ -12,7 +12,7 @@ import UIKit
 extension String {
 
     public func escape() -> String? {
-        return addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics)
+        return addingPercentEncoding(withAllowedCharacters: .alphanumerics)
     }
 }
 
@@ -46,8 +46,8 @@ public class Disk {
     }
     let directory = Directory()
 
-    private let _subscriptQueue = DispatchQueue(label: "swift.imageloader.queues.disk.subscript", attributes: DispatchQueueAttributes.concurrent)
-    private let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.disk.set", attributes: DispatchQueueAttributes.serial)
+    private let _subscriptQueue = DispatchQueue(label: "swift.imageloader.queues.disk.subscript", attributes: .concurrent)
+    private let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.disk.set", attributes: .serial)
 }
 
 extension Disk {
@@ -83,9 +83,7 @@ extension Disk {
     }
 
     private func get(_ aKey: URL) -> Data? {
-        guard let key = aKey.absoluteString?.escape() else {
-            return nil
-        }
+        guard let key = aKey.absoluteString?.escape() else { return nil }
 
         return get(key)
     }
