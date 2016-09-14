@@ -48,13 +48,13 @@ extension UIImage {
         let frameFor1px = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContext(frameFor1px.size)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, frameFor1px)
+        CGContextSetFillColorWithColor(context!, color.CGColor)
+        CGContextFillRect(context!, frameFor1px)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        guard let CGImage = image.CGImage else {
+        guard let CGImage = image!.CGImage else {
             return nil
         }
 

@@ -19,16 +19,16 @@ class SuspendViewController: UITableViewController {
     }
 
     func play() {
-        toggle(loading: true)
+        toggle(true)
         startLoading()
     }
 
     func pause() {
-        toggle(loading: false)
+        toggle(false)
         pauseLoading()
     }
 
-    func toggle(loading loading: Bool) {
+    func toggle(loading: Bool) {
         var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(SuspendViewController.play))
 
         if loading {
@@ -68,7 +68,7 @@ class SuspendViewController: UITableViewController {
 
             let state = ImageLoader.state
             if state == .Ready {
-                self.toggle(loading: false)
+                self.toggle(false)
             }
         })
 
@@ -79,7 +79,7 @@ class SuspendViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell", forIndexPath: indexPath) as! TableViewCell
 
         let URL = self.URLs[indexPath.row]
-        if let data = Disk.get(URL.absoluteString.escape()) {
+        if let data = Disk.get(URL.absoluteString!.escape()) {
             cell.thumbnailView.image = UIImage(data: data)
         }
 
