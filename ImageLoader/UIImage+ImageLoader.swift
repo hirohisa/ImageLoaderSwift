@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-private let lock = RecursiveLock()
+private let lock = NSRecursiveLock()
 
 // MARK: Optimize image
 

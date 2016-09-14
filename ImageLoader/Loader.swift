@@ -29,12 +29,12 @@ public class Loader {
         return task.state
     }
 
-    public func completionHandler(_ completionHandler: CompletionHandler) -> Self {
+    public func completionHandler(_ completionHandler: @escaping CompletionHandler) -> Self {
         let identifier = (blocks.last?.identifier ?? 0) + 1
         return self.completionHandler(identifier, completionHandler: completionHandler)
     }
 
-    public func completionHandler(_ identifier: Int, completionHandler: CompletionHandler) -> Self {
+    public func completionHandler(_ identifier: Int, completionHandler: @escaping CompletionHandler) -> Self {
         let block = Block(identifier: identifier, completionHandler: completionHandler)
         return appendBlock(block)
     }
@@ -67,7 +67,7 @@ public class Loader {
         receivedData.append(data)
     }
 
-    func complete(_ error: NSError?, completionHandler: () -> Void) {
+    func complete(_ error: Error?, completionHandler: @escaping () -> Void) {
 
         if let url = task.originalRequest?.url {
             if let error = error {
@@ -94,7 +94,7 @@ public class Loader {
         completionHandler()
     }
 
-    private func failure(_ url: URL, error: NSError, completionHandler: () -> Void) {
+    private func failure(_ url: URL, error: Error, completionHandler: () -> Void) {
         for block in blocks {
             block.completionHandler(url, nil, error, .none)
         }

@@ -12,7 +12,7 @@ class LoaderTests: ImageLoaderTests {
 
     func testLoad() {
 
-        let expectation = self.expectation(withDescription: "wait until loader complete")
+        let expectation = self.expectation(description: "wait until loader complete")
 
         var url: URL!
         url = URL(string: "http://test/path")
@@ -28,14 +28,14 @@ class LoaderTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testRemoveAfterRunning() {
 
-        let expectation = self.expectation(withDescription: "wait until loader complete")
+        let expectation = self.expectation(description: "wait until loader complete")
 
         var url: URL!
         url = URL(string: "http://test/remove")
@@ -54,7 +54,7 @@ class LoaderTests: ImageLoaderTests {
             })
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
@@ -96,7 +96,7 @@ class LoaderTests: ImageLoaderTests {
 
     func testLoadResponseCode404() {
 
-        let expectation = self.expectation(withDescription: "wait until loader complete")
+        let expectation = self.expectation(description: "wait until loader complete")
 
         let url = URL(string: "http://test/404")!
 
@@ -110,7 +110,7 @@ class LoaderTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }

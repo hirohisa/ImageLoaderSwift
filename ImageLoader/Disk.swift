@@ -26,7 +26,7 @@ public class Disk {
         }
 
         private func createDirectory() {
-            let fileManager = FileManager.default()
+            let fileManager = FileManager.default
             if fileManager.fileExists(atPath: path) {
                 return
             }
@@ -46,8 +46,8 @@ public class Disk {
     }
     let directory = Directory()
 
-    private let _subscriptQueue = DispatchQueue(label: "swift.imageloader.queues.disk.subscript", attributes: .concurrent)
-    private let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.disk.set", attributes: .serial)
+    fileprivate let _subscriptQueue = DispatchQueue(label: "swift.imageloader.queues.disk.subscript", attributes: .concurrent)
+    fileprivate let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.disk.set")
 }
 
 extension Disk {
@@ -57,7 +57,7 @@ extension Disk {
     }
 
     func cleanUp() {
-        let manager = FileManager.default()
+        let manager = FileManager.default
         for subpath in manager.subpaths(atPath: directory.path) ?? [] {
             let path = directory.path + "/" + subpath
             do {
@@ -82,13 +82,13 @@ extension Disk {
         return (try? Data(contentsOf: URL(fileURLWithPath: _path(aKey))))
     }
 
-    private func get(_ aKey: URL) -> Data? {
-        guard let key = aKey.absoluteString?.escape() else { return nil }
+    fileprivate func get(_ aKey: URL) -> Data? {
+        guard let key = aKey.absoluteString.escape() else { return nil }
 
         return get(key)
     }
 
-    private func _path(_ name: String) -> String {
+    fileprivate func _path(_ name: String) -> String {
         return directory.path + "/" + name
     }
 
@@ -105,8 +105,8 @@ extension Disk {
         _ioQueue.async(execute: block)
     }
 
-    private func set(_ anObject: Data, forKey aKey: URL) {
-        guard let key = aKey.absoluteString?.escape() else { return }
+    fileprivate func set(_ anObject: Data, forKey aKey: URL) {
+        guard let key = aKey.absoluteString.escape() else { return }
         set(anObject, forKey: key)
     }
 }

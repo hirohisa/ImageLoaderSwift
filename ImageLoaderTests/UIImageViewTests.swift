@@ -14,7 +14,7 @@ extension UIImage {
 
     func isEqualTo(_ image: UIImage) -> Bool {
         if size == image.size {
-            if let lcfdt = cgImage?.dataProvider?.data, rcfdt = image.cgImage?.dataProvider?.data {
+            if let lcfdt = cgImage?.dataProvider?.data, let rcfdt = image.cgImage?.dataProvider?.data {
                 let ldt = NSData(data: lcfdt as Data)
                 let rdt = NSData(data: rcfdt as Data)
                 return ldt == rdt
@@ -29,12 +29,12 @@ extension UIImage {
 class UIImageViewTests: ImageLoaderTests {
 
     let whiteImage: UIImage = {
-        let imagePath = Bundle(for: UIImageViewTests.self).pathForResource("white", ofType: "png")!
+        let imagePath = Bundle(for: UIImageViewTests.self).path(forResource: "white", ofType: "png")!
         return UIImage(contentsOfFile: imagePath)!
     }()
 
     let blackImage: UIImage = {
-        let imagePath = Bundle(for: UIImageViewTests.self).pathForResource("black", ofType: "png")!
+        let imagePath = Bundle(for: UIImageViewTests.self).path(forResource: "black", ofType: "png")!
         return UIImage(contentsOfFile: imagePath)!
     }()
 
@@ -53,7 +53,7 @@ class UIImageViewTests: ImageLoaderTests {
     }
 
     func testLoadImage() {
-        let expectation = self.expectation(withDescription: "wait until loading")
+        let expectation = self.expectation(description: "wait until loading")
 
         let string = "http://test/load/white"
 
@@ -64,13 +64,13 @@ class UIImageViewTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testLoadImageWithPlaceholder() {
-        let expectation = self.expectation(withDescription: "wait until loading")
+        let expectation = self.expectation(description: "wait until loading")
 
         let string = "http://test/load_with_placeholder/white"
 
@@ -82,13 +82,13 @@ class UIImageViewTests: ImageLoaderTests {
         }
         XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testSetImageSoonAfterLoading() {
-        let expectation = self.expectation(withDescription: "wait until loading")
+        let expectation = self.expectation(description: "wait until loading")
 
         let string = "http://test/set_image_after_loading/white"
 
@@ -102,13 +102,13 @@ class UIImageViewTests: ImageLoaderTests {
         imageView.image = blackImage
         XCTAssertTrue(imageView.image!.isEqualTo(self.blackImage))
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testLastestLoadIsAliveWhenTwiceLoad() {
-        let expectation = self.expectation(withDescription: "wait until loading")
+        let expectation = self.expectation(description: "wait until loading")
 
         let string1 = "http://test/lastest_load_first/black"
         let string2 = "http://test/lastest_load_second/white"
@@ -124,13 +124,13 @@ class UIImageViewTests: ImageLoaderTests {
             expectation.fulfill()
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
 
     func testTwiceLoadsInLoadingCompletion() {
-        let expectation = self.expectation(withDescription: "wait until loading")
+        let expectation = self.expectation(description: "wait until loading")
 
         let string = "http://test/load_first_before_twice_load/white"
         let string1 = "http://test/load_first_in_block/black"
@@ -152,7 +152,7 @@ class UIImageViewTests: ImageLoaderTests {
             }
         }
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }

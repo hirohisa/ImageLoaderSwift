@@ -38,7 +38,7 @@ extension UIImageView {
         }
     }
 
-    private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request", attributes: .serial)
+    private static let _Queue = DispatchQueue(label: "swift.imageloader.queues.request")
 
     // MARK: - functions
     public func load(_ url: URLLiteralConvertible, placeholder: UIImage? = nil, completionHandler: CompletionHandler? = nil) {
@@ -64,7 +64,7 @@ extension UIImageView {
 
     private func imageLoader_load(_ url: URL, completionHandler: CompletionHandler?) {
         let handler: CompletionHandler = { [weak self] url, image, error, cacheType in
-            if let wSelf = self, selfUrl = wSelf.url, image = image where selfUrl == url {
+            if let wSelf = self, let selfUrl = wSelf.url, let image = image , selfUrl == url {
                 wSelf.imageLoader_setImage(image, cacheType)
             }
 
@@ -94,7 +94,7 @@ extension UIImageView {
         enqueue(block)
     }
 
-    private func enqueue(_ block: () -> Void) {
+    private func enqueue(_ block: @escaping () -> Void) {
         UIImageView._Queue.async(execute: block)
     }
 
@@ -113,7 +113,7 @@ extension UIImageView {
 
             // Set an image
             if UIImageView.imageLoader.automaticallyAdjustsSize {
-                wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.main().scale, contentMode: wSelf.contentMode)
+                wSelf.image = image.adjusts(wSelf.frame.size, scale: UIScreen.main.scale, contentMode: wSelf.contentMode)
             } else {
                 wSelf.image = image
             }

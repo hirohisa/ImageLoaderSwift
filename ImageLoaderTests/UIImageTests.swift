@@ -39,7 +39,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 100))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 50)
@@ -63,7 +63,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 50, height: 30))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 50, height: 30))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 50, height: 30)
@@ -87,7 +87,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 60))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 60))
 
         size = CGSize(width: 25, height: 25)
         adjustedSize = CGSize(width: 50, height: 30)
@@ -111,7 +111,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 80))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 80))
 
         size = CGSize(width: 40, height: 40)
         adjustedSize = CGSize(width: 50, height: 40)
@@ -135,7 +135,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 80))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 80))
 
         // Scale 1
 
@@ -167,7 +167,7 @@ class UIImageTests: XCTestCase {
         var adjustedSize: CGSize!
         var adjustedImage: UIImage!
 
-        image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))
+        image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 100))
 
         size = CGSize(width: 50, height: 50)
         adjustedSize = CGSize(width: 100, height: 100)
@@ -189,7 +189,7 @@ class UIImageTests: XCTestCase {
     }
 
     func testSizeIsZeroWhenRendering() {
-        let image = UIImage(color: UIColor.black(), size: CGSize(width: 100, height: 100))!
+        let image = UIImage(color: UIColor.black, size: CGSize(width: 100, height: 100))!
         let renderedImage = image.render(CGSize.zero)
 
         XCTAssertEqual(image, renderedImage)

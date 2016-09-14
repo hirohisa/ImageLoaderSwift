@@ -49,13 +49,13 @@ public protocol ImageLoaderCache: class {
 
 }
 
-public typealias CompletionHandler = (URL, UIImage?, NSError?, CacheType) -> Void
+public typealias CompletionHandler = (URL, UIImage?, Error?, CacheType) -> Void
 
 class Block {
 
     let identifier: Int
     let completionHandler: CompletionHandler
-    init(identifier: Int, completionHandler: CompletionHandler) {
+    init(identifier: Int, completionHandler: @escaping CompletionHandler) {
         self.identifier = identifier
         self.completionHandler = completionHandler
     }
@@ -116,8 +116,8 @@ public var state: State {
     return sharedInstance.state
 }
 
-func dispatch_main(_ block: (Void) -> Void) {
-    if Thread.isMainThread() {
+func dispatch_main(_ block: @escaping (Void) -> Void) {
+    if Thread.isMainThread {
         block()
     } else {
         DispatchQueue.main.async(execute: block)

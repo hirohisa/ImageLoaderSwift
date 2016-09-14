@@ -15,13 +15,13 @@ extension URLSessionTask.State {
 
     func toString() -> String {
         switch self {
-        case running:
+        case .running:
             return "Running"
-        case suspended:
+        case .suspended:
             return "Suspended"
-        case canceling:
+        case .canceling:
             return "Canceling"
-        case completed:
+        case .completed:
             return "Completed"
         }
     }
@@ -33,7 +33,7 @@ extension State {
         switch self {
         case .ready:
             return "Ready"
-        case running:
+        case .running:
             return "Running"
         }
     }
@@ -57,16 +57,16 @@ class ImageLoaderTests: XCTestCase {
         }, withStubResponse: { request in
             var data = Data()
             var statusCode = Int32(200)
-            if let path = request.url?.path where !path.isEmpty {
+            if let path = request.url?.path , !path.isEmpty {
                 switch path {
                 case _ where path.hasSuffix("white"):
-                    let imagePath = Bundle(for: self.dynamicType).pathForResource("white", ofType: "png")!
+                    let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
                     data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
                 case _ where path.hasSuffix("black"):
-                    let imagePath = Bundle(for: self.dynamicType).pathForResource("black", ofType: "png")!
+                    let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
                     data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
                 default:
-                    if let i = Int(path) where 400 <= i && i < 600 {
+                    if let i = Int(path) , 400 <= i && i < 600 {
                         statusCode = Int32(i)
                     }
                 }
@@ -83,6 +83,6 @@ class ImageLoaderTests: XCTestCase {
     }
 
     func waitForAsyncTask(_ duration: TimeInterval = 0.01) {
-        RunLoop.main().run(until: Date(timeIntervalSinceNow: duration))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: duration))
     }
 }

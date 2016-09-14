@@ -12,7 +12,7 @@ import XCTest
 class DiskTests: ImageLoaderTests {
 
     func generateData() -> Data {
-        let image = UIImage(color: UIColor.black(), size: CGSize(width: 1, height: 1))!
+        let image = UIImage(color: UIColor.black, size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)!
 
         return data
@@ -51,7 +51,7 @@ class DiskTests: ImageLoaderTests {
         let disk = Disk()
         disk[url] = data
 
-        RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
         XCTAssertNotNil(disk.get(encodedString))
         XCTAssertEqual(disk.get(encodedString)!, data)
@@ -64,11 +64,11 @@ class DiskTests: ImageLoaderTests {
         let disk = Disk()
         disk[url] = data
 
-        RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
         XCTAssertNotNil(disk[url])
         XCTAssertEqual(disk[url]!, data)
-        XCTAssertNil(disk.storedData[url.absoluteString!])
+        XCTAssertNil(disk.storedData[url.absoluteString])
     }
 
     func testCleanDisk() {
@@ -78,7 +78,7 @@ class DiskTests: ImageLoaderTests {
         let disk = Disk()
         disk[url] = data
 
-        RunLoop.main().run(until: Date(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
         Disk.cleanUp()
         XCTAssertNil(disk[url])

@@ -28,7 +28,7 @@ public class Manager {
 
     let decompressingQueue = DispatchQueue(label: "swift.imageloader.queues.decompress", attributes: .concurrent)
 
-    public init(configuration: URLSessionConfiguration = .default(),
+    public init(configuration: URLSessionConfiguration = .default,
         cache: ImageLoaderCache = Disk()
         ) {
             session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
@@ -115,22 +115,22 @@ public class Manager {
             return isEmpty
         }
 
-        private func remove(_ url: URL) {
+        fileprivate func remove(_ url: URL) {
             loaders[url] = nil
         }
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            if let url = dataTask.originalRequest?.url, loader = self[url] {
+            if let url = dataTask.originalRequest?.url, let loader = self[url] {
                 loader.receive(data)
             }
         }
 
-        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: (URLSession.ResponseDisposition) -> Void) {
+        private func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: (URLSession.ResponseDisposition) -> Void) {
             completionHandler(.allow)
         }
 
-        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {
-            if let url = task.originalRequest?.url, loader = loaders[url] {
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+            if let url = task.originalRequest?.url, let loader = loaders[url] {
                 loader.complete(error) { [unowned self] in
                     self.remove(url)
                 }

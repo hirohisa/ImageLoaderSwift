@@ -91,7 +91,7 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testCancelWhenHasTwoBlocks() {
-        let expectation = self.expectation(withDescription: "wait until loader complete")
+        let expectation = self.expectation(description: "wait until loader complete")
         let url = URL(string: "http://manager/test/cancel")!
 
         let block1 = Block(identifier: 1) { _ -> Void in
@@ -118,7 +118,7 @@ class ManagerTests: ImageLoaderTests {
         XCTAssert(manager.state == .ready, manager.state.toString())
         XCTAssert(loader.state == .completed, loader.state.toString())
 
-        waitForExpectations(withTimeout: 5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }
