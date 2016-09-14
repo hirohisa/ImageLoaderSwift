@@ -20,14 +20,14 @@ class MultipleViewController: UITableViewController {
     }
 
     func reportMemory() {
-        let delegate = UIApplication.shared().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.reportMemory()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MultipleViewController.reportMemory), userInfo: nil, repeats: true)
-        RunLoop.main().add(timer!, forMode: RunLoopMode.commonModes)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {

@@ -13,7 +13,7 @@ class ResizeViewController: CollectionViewController {
 
     var timer: Timer?
     func report() {
-        let delegate = UIApplication.shared().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
     }
 
@@ -21,7 +21,7 @@ class ResizeViewController: CollectionViewController {
         super.viewDidAppear(animated)
         ImageLoader.sharedInstance.automaticallyAdjustsSize = true
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.report), userInfo: nil, repeats: true)
-        RunLoop.main().add(timer!, forMode: RunLoopMode.commonModes)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {

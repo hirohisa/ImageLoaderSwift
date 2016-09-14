@@ -13,14 +13,14 @@ class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
     var timer: Timer?
     func report() {
         print(#function)
-        let delegate = UIApplication.shared().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(CPUAndMemoryPeformanceTestViewController.report), userInfo: nil, repeats: true)
-        RunLoop.main().add(timer!, forMode: RunLoopMode.commonModes)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
     }
 
     override func viewDidDisappear(_ animated: Bool) {

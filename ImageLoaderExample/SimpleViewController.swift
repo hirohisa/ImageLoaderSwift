@@ -20,7 +20,7 @@ class SimpleViewController: UIViewController {
         super.viewDidLoad()
         title = "Simple"
 
-        imageView.backgroundColor = UIColor.black()
+        imageView.backgroundColor = UIColor.black
     }
 
     // MARK: - try

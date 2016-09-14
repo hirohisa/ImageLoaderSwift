@@ -13,7 +13,7 @@ class BlockingMainThreadPerfomanceTestViewController: CollectionViewController {
     var watchdog: Watchdog?
     func report() {
         print(#function)
-        let delegate = UIApplication.shared().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
     }
 

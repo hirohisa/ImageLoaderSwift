@@ -79,7 +79,7 @@ class SuspendViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
         let url = self.urls[indexPath.row]
-        if let str = url.absoluteString!.escape(), data = Disk.get(str) {
+        if let str = url.absoluteString.escape(), let data = Disk.get(str) {
             cell.thumbnailView.image = UIImage(data: data)
         }
 
