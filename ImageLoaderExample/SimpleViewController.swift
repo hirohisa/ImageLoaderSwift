@@ -20,7 +20,7 @@ class SimpleViewController: UIViewController {
         super.viewDidLoad()
         title = "Simple"
 
-        imageView.backgroundColor = UIColor.blackColor()
+        imageView.backgroundColor = UIColor.black
     }
 
     // MARK: - try
@@ -35,15 +35,15 @@ class SimpleViewController: UIViewController {
         tryLoad(string)
     }
 
-    func tryLoad(URL: URLLiteralConvertible) {
+    func tryLoad(_ URL: URLLiteralConvertible) {
 
         testLoad(imageView, URL: URL)
 
     }
 
-    func testLoad(imageView: UIImageView, URL: URLLiteralConvertible) {
+    func testLoad(_ imageView: UIImageView, URL: URLLiteralConvertible) {
         imageView.load(URL, placeholder: nil) { URL, image, error, cacheType in
-            print("URL \(URL)")
+            print("url \(URL)")
             print("error \(error)")
             print("cacheType \(cacheType.hashValue)")
         }

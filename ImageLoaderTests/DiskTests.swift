@@ -11,22 +11,22 @@ import XCTest
 
 class DiskTests: ImageLoaderTests {
 
-    func generateData() -> NSData {
-        let image = UIImage(color: UIColor.blackColor(), size: CGSize(width: 1, height: 1))!
+    func generateData() -> Data {
+        let image = UIImage(color: UIColor.black, size: CGSize(width: 1, height: 1))!
         let data = UIImageJPEGRepresentation(image, 1)!
 
         return data
     }
 
     func testSetAndGet() {
-        let URL = NSURL(string: "http://test/sample")!
+        let url = URL(string: "http://test/sample")!
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
-        XCTAssertNotNil(disk[URL])
-        XCTAssertEqual(disk[URL]!, data)
+        XCTAssertNotNil(disk[url])
+        XCTAssertEqual(disk[url]!, data)
     }
 
     func testSetAndGetWithString() {
@@ -43,44 +43,44 @@ class DiskTests: ImageLoaderTests {
 
     func testSetFromURLAndGetWithString() {
         let string = "http://test.com"
-        let encodedString = "http%3A%2F%2Ftest.com"
+        let encodedString = "http%3A%2F%2Ftest%2Ecom"
 
-        let URL = NSURL(string: string)!
+        let url = URL(string: string)!
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
-        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
         XCTAssertNotNil(disk.get(encodedString))
         XCTAssertEqual(disk.get(encodedString)!, data)
     }
 
     func testSetAndWriteToDisk() {
-        let URL = NSURL(string: "http://test/save_to_file")!
+        let url = URL(string: "http://test/save_to_file")!
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
-        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
-        XCTAssertNotNil(disk[URL])
-        XCTAssertEqual(disk[URL]!, data)
-        XCTAssertNil(disk.storedData[URL.absoluteString])
+        XCTAssertNotNil(disk[url])
+        XCTAssertEqual(disk[url]!, data)
+        XCTAssertNil(disk.storedData[url.absoluteString])
     }
 
     func testCleanDisk() {
-        let URL = NSURL(string: "http://test/save_to_file_for_clean")!
+        let url = URL(string: "http://test/save_to_file_for_clean")!
         let data = generateData()
 
         let disk = Disk()
-        disk[URL] = data
+        disk[url] = data
 
-        NSRunLoop.mainRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 2))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
 
         Disk.cleanUp()
-        XCTAssertNil(disk[URL])
+        XCTAssertNil(disk[url])
     }
 }

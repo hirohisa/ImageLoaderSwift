@@ -10,41 +10,41 @@ import UIKit
 
 class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
 
-    var timer: NSTimer?
+    var timer: Timer?
     func report() {
         print(#function)
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(CPUAndMemoryPeformanceTestViewController.report), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(CPUAndMemoryPeformanceTestViewController.report), userInfo: nil, repeats: true)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         timer?.invalidate()
         timer = nil
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
         let imageURL = String.imageURL(indexPath.row % 100)
 
-        let startDate = NSDate()
+        let startDate = Date()
         cell.imageView.contentMode = contentMode
         cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, type) -> Void in
             switch type {
-            case .None:
-                let diff = NSDate().timeIntervalSinceDate(startDate)
+            case .none:
+                let diff = Date().timeIntervalSince(startDate)
                 print("loading time: \(diff)")
                 if let image = cell.imageView.image {
                     print("from network, image size: \(image.size)")
                 }
-            case .Cache:
+            case .cache:
                 if let image = cell.imageView.image {
                     print("from cache, image size: \(image.size)")
                 }
@@ -54,7 +54,7 @@ class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
         return cell
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 200
     }
 

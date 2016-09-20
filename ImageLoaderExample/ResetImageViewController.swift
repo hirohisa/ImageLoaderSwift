@@ -11,26 +11,26 @@ import ImageLoader
 
 class ResetImageViewController: CollectionViewController {
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIImageView.imageLoader.automaticallySetImage = false
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         UIImageView.imageLoader.automaticallySetImage = true
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
         let imageURL = String.imageURL(indexPath.row)
         cell.imageView.load(imageURL, placeholder: nil) { _, image, _, cacheType in
-            if cacheType == CacheType.None {
+            if cacheType == CacheType.none {
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.type = kCATransitionFade
-                cell.imageView.layer.addAnimation(transition, forKey: nil)
+                cell.imageView.layer.add(transition, forKey: nil)
             }
 
             cell.imageView.image = image

@@ -23,102 +23,102 @@ class ManagerTests: ImageLoaderTests {
     }
 
     func testLoad() {
-        let URL = NSURL(string: "http://manager/test/load")!
+        let url = URL(string: "http://manager/test/load")!
 
-        manager.load(URL)
-        XCTAssert(manager.state == .Running, manager.state.toString())
+        let _ = manager.load(url)
+        XCTAssert(manager.state == .running, manager.state.toString())
 
         waitForAsyncTask(1.1) // wait for loading
 
-        XCTAssert(manager.state == .Ready, manager.state.toString())
+        XCTAssert(manager.state == .ready, manager.state.toString())
     }
 
     func testSuspend() {
-        let URL = NSURL(string: "http://manager/test/suspend")!
+        let url = URL(string: "http://manager/test/suspend")!
 
-        manager.suspend(URL)
-        XCTAssert(manager.state == .Ready, manager.state.toString())
+        let _ = manager.suspend(url)
+        XCTAssert(manager.state == .ready, manager.state.toString())
 
-        let loader = manager.load(URL)
+        let loader = manager.load(url)
 
-        XCTAssert(manager.state == .Running, manager.state.toString())
-        XCTAssert(loader.state == .Running, loader.state.toString())
+        XCTAssert(manager.state == .running, manager.state.toString())
+        XCTAssert(loader.state == .running, loader.state.toString())
 
-        manager.suspend(URL)
+        let _ = manager.suspend(url)
 
-        XCTAssert(manager.state == .Running, manager.state.toString())
-        XCTAssert(loader.state == .Suspended, loader.state.toString())
+        XCTAssert(manager.state == .running, manager.state.toString())
+        XCTAssert(loader.state == .suspended, loader.state.toString())
     }
 
     func testCancel() {
-        let URL = NSURL(string: "http://manager/test/cancel")!
+        let url = URL(string: "http://manager/test/cancel")!
 
-        manager.cancel(URL)
-        XCTAssert(manager.state == .Ready, manager.state.toString())
+        manager.cancel(url)
+        XCTAssert(manager.state == .ready, manager.state.toString())
 
-        let loader = manager.load(URL)
-        XCTAssert(loader.state == .Running, loader.state.toString())
+        let loader = manager.load(url)
+        XCTAssert(loader.state == .running, loader.state.toString())
 
-        manager.cancel(URL)
+        manager.cancel(url)
         waitForAsyncTask()
 
-        XCTAssert(manager.state == .Ready, manager.state.toString())
-        XCTAssert(loader.state == .Completed, loader.state.toString())
+        XCTAssert(manager.state == .ready, manager.state.toString())
+        XCTAssert(loader.state == .completed, loader.state.toString())
     }
 
     func testCancelWhenHasBlock() {
-        let URL = NSURL(string: "http://manager/test_when_has_block/cancel")!
+        let url = URL(string: "http://manager/test_when_has_block/cancel")!
 
-        let block = Block(identifier: 1) { (URL, _, error, _) -> Void in
+        let block = Block(identifier: 1) { _ -> Void in
             XCTAssertTrue(false, "dont call this completion handler")
         }
 
-        manager.cancel(URL)
-        XCTAssert(manager.state == .Ready, manager.state.toString())
+        manager.cancel(url)
+        XCTAssert(manager.state == .ready, manager.state.toString())
 
-        let loader = manager.load(URL)
-        loader.appendBlock(block)
+        let loader = manager.load(url)
+        let _ = loader.appendBlock(block)
 
-        XCTAssert(manager.state == .Running, manager.state.toString())
-        XCTAssert(loader.state == .Running, loader.state.toString())
+        XCTAssert(manager.state == .running, manager.state.toString())
+        XCTAssert(loader.state == .running, loader.state.toString())
 
-        manager.cancel(URL, block: block)
-        XCTAssert(loader.state == .Canceling, loader.state.toString())
+        manager.cancel(url, block: block)
+        XCTAssert(loader.state == .canceling, loader.state.toString())
         XCTAssertTrue(loader.blocks.isEmpty)
         waitForAsyncTask()
 
-        XCTAssert(manager.state == .Ready, manager.state.toString())
+        XCTAssert(manager.state == .ready, manager.state.toString())
     }
 
     func testCancelWhenHasTwoBlocks() {
-        let expectation = expectationWithDescription("wait until loader complete")
-        let URL = NSURL(string: "http://manager/test/cancel")!
+        let expectation = self.expectation(description: "wait until loader complete")
+        let url = URL(string: "http://manager/test/cancel")!
 
-        let block1 = Block(identifier: 1) { (URL, _, error, _) -> Void in
+        let block1 = Block(identifier: 1) { _ -> Void in
             XCTAssertTrue(false, "dont call this completion handler")
         }
-        let block2 = Block(identifier: 2) { (URL, _, error, _) -> Void in
+        let block2 = Block(identifier: 2) { _ -> Void in
             expectation.fulfill()
         }
 
-        let loader = manager.load(URL)
-        loader.appendBlock(block1)
-        loader.appendBlock(block2)
+        let loader = manager.load(url)
+        let _ = loader.appendBlock(block1)
+        let _ = loader.appendBlock(block2)
 
-        XCTAssert(manager.state == .Running, manager.state.toString())
-        XCTAssert(loader.state == .Running, loader.state.toString())
+        XCTAssert(manager.state == .running, manager.state.toString())
+        XCTAssert(loader.state == .running, loader.state.toString())
         XCTAssertTrue(loader.blocks.count == 2)
 
-        manager.cancel(URL, block: block1)
-        XCTAssert(loader.state == .Running, loader.state.toString())
+        manager.cancel(url, block: block1)
+        XCTAssert(loader.state == .running, loader.state.toString())
         XCTAssertTrue(loader.blocks.count == 1)
         XCTAssertTrue(loader.blocks.first == block2)
         waitForAsyncTask()
 
-        XCTAssert(manager.state == .Ready, manager.state.toString())
-        XCTAssert(loader.state == .Completed, loader.state.toString())
+        XCTAssert(manager.state == .ready, manager.state.toString())
+        XCTAssert(loader.state == .completed, loader.state.toString())
 
-        waitForExpectationsWithTimeout(5) { error in
+        waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
     }

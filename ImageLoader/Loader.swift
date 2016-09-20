@@ -15,31 +15,31 @@ import Foundation
 public class Loader {
 
     unowned let delegate: Manager
-    let task: NSURLSessionDataTask
-    var receivedData = NSMutableData()
+    let task: URLSessionDataTask
+    var receivedData = Data()
     var blocks: [Block] = []
 
-    init (task: NSURLSessionDataTask, delegate: Manager) {
+    init (task: URLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
         resume()
     }
 
-    var state: NSURLSessionTaskState {
+    var state: URLSessionTask.State {
         return task.state
     }
 
-    public func completionHandler(completionHandler: CompletionHandler) -> Self {
+    public func completionHandler(_ completionHandler: @escaping CompletionHandler) -> Self {
         let identifier = (blocks.last?.identifier ?? 0) + 1
         return self.completionHandler(identifier, completionHandler: completionHandler)
     }
 
-    public func completionHandler(identifier: Int, completionHandler: CompletionHandler) -> Self {
+    public func completionHandler(_ identifier: Int, completionHandler: @escaping CompletionHandler) -> Self {
         let block = Block(identifier: identifier, completionHandler: completionHandler)
         return appendBlock(block)
     }
 
-    func appendBlock(block: Block) -> Self {
+    func appendBlock(_ block: Block) -> Self {
         blocks.append(block)
         return self
     }
@@ -58,55 +58,53 @@ public class Loader {
         task.cancel()
     }
 
-    func remove(identifier: Int) {
+    func remove(_ identifier: Int) {
         // needs to queue with sync
         blocks = blocks.filter{ $0.identifier != identifier }
     }
 
-    func receive(data: NSData) {
-        receivedData.appendData(data)
+    func receive(_ data: Data) {
+        receivedData.append(data)
     }
 
-    func complete(error: NSError?, completionHandler: () -> Void) {
+    func complete(_ error: Error?, completionHandler: @escaping () -> Void) {
 
-        if let URL = task.originalRequest?.URL {
+        if let url = task.originalRequest?.url {
             if let error = error {
-                failure(URL, error: error, completionHandler: completionHandler)
+                failure(url, error: error, completionHandler: completionHandler)
                 return
             }
 
-            dispatch_async(delegate.decompressingQueue) { [weak self] in
-                guard let wSelf = self else {
-                    return
-                }
+            delegate.decompressingQueue.async { [weak self] in
+                guard let wSelf = self else { return }
 
-                wSelf.success(URL, data: wSelf.receivedData, completionHandler: completionHandler)
+                wSelf.success(url, data: wSelf.receivedData as Data, completionHandler: completionHandler)
             }
         }
     }
 
-    private func success(URL: NSURL, data: NSData, completionHandler: () -> Void) {
+    private func success(_ url: URL, data: Data, completionHandler: () -> Void) {
         let image = UIImage.decode(data)
-        _toCache(URL, data: data)
+        _toCache(url, data: data)
 
         for block in blocks {
-            block.completionHandler(URL, image, nil, .None)
+            block.completionHandler(url, image, nil, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func failure(URL: NSURL, error: NSError, completionHandler: () -> Void) {
+    private func failure(_ url: URL, error: Error, completionHandler: () -> Void) {
         for block in blocks {
-            block.completionHandler(URL, nil, error, .None)
+            block.completionHandler(url, nil, error, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func _toCache(URL: NSURL, data: NSData?) {
+    private func _toCache(_ url: URL, data: Data?) {
         if let data = data {
-            delegate.cache[URL] = data
+            delegate.cache[url] = data
         }
     }
 }

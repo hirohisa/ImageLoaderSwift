@@ -32,8 +32,8 @@ import Foundation
     */
     private var threshold: Double
 
-    private var runLoop: CFRunLoopRef = CFRunLoopGetMain()
-    private var observer: CFRunLoopObserverRef!
+    private var runLoop: CFRunLoop = CFRunLoopGetMain()
+    private var observer: CFRunLoopObserver!
     private var startTime: UInt64 = 0
     private var handler: ((Double) -> ())? = nil
 
@@ -45,30 +45,28 @@ import Foundation
 
         var timebase: mach_timebase_info_data_t = mach_timebase_info(numer: 0, denom: 0)
         mach_timebase_info(&timebase)
-        let secondsPerMachine: NSTimeInterval = NSTimeInterval(Double(timebase.numer) / Double(timebase.denom) / Double(1e9))
+        let secondsPerMachine: TimeInterval = TimeInterval(Double(timebase.numer) / Double(timebase.denom) / Double(1e9))
 
         observer = CFRunLoopObserverCreateWithHandler(kCFAllocatorDefault,
-            CFRunLoopActivity.AllActivities.rawValue,
+            CFRunLoopActivity.allActivities.rawValue,
             true,
             0) { [weak self] (observer, activity) in
 
-                guard let weakSelf = self else {
-                    return
-                }
+                guard let weakSelf = self else { return }
 
                 switch(activity) {
 
-                case CFRunLoopActivity.Entry, CFRunLoopActivity.BeforeTimers,
-                CFRunLoopActivity.AfterWaiting, CFRunLoopActivity.BeforeSources:
+                case CFRunLoopActivity.entry, CFRunLoopActivity.beforeTimers,
+                CFRunLoopActivity.afterWaiting, CFRunLoopActivity.beforeSources:
 
                     if weakSelf.startTime == 0 {
                         weakSelf.startTime = mach_absolute_time()
                     }
 
-                case CFRunLoopActivity.BeforeWaiting, CFRunLoopActivity.Exit:
+                case CFRunLoopActivity.beforeWaiting, CFRunLoopActivity.exit:
 
                     let elapsed = mach_absolute_time() - weakSelf.startTime
-                    let duration: NSTimeInterval = NSTimeInterval(elapsed) * secondsPerMachine
+                    let duration: TimeInterval = TimeInterval(elapsed) * secondsPerMachine
 
                     if duration > weakSelf.threshold {
                         if let handler = weakSelf.handler {
@@ -85,7 +83,7 @@ import Foundation
                 }
         }
 
-        CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes)
+        CFRunLoopAddObserver(CFRunLoopGetMain(), observer, CFRunLoopMode.commonModes)
     }
 
     deinit {

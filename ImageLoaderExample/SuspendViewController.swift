@@ -11,11 +11,11 @@ import ImageLoader
 
 class SuspendViewController: UITableViewController {
 
-    var URLs = [NSURL]()
+    var urls = [URL]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(SuspendViewController.play))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(SuspendViewController.play))
     }
 
     func play() {
@@ -28,58 +28,58 @@ class SuspendViewController: UITableViewController {
         pauseLoading()
     }
 
-    func toggle(loading: Bool) {
-        var buttonItem = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(SuspendViewController.play))
+    func toggle(_ loading: Bool) {
+        var buttonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(SuspendViewController.play))
 
         if loading {
-            buttonItem = UIBarButtonItem(barButtonSystemItem: .Pause, target: self, action: #selector(SuspendViewController.pause))
+            buttonItem = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(SuspendViewController.pause))
         }
         navigationItem.rightBarButtonItem = buttonItem
     }
 
 
     func startLoading() {
-        let start = URLs.count
+        let start = urls.count
         for i in start...start+10 {
-            let URL = NSURL.imageURL(i)
-            ImageLoader.load(URL).completionHandler { completedURL, image, error, cacheType in
+            let url = URL.imageURL(i)
+            let _ = ImageLoader.load(url).completionHandler { completedURL, _, _, _ in
                 self.insertRow(completedURL)
             }
         }
     }
 
     func pauseLoading() {
-        let end = URLs.count
+        let end = urls.count
         for i in end-10...end {
-            let URL = NSURL.imageURL(i)
-            ImageLoader.suspend(URL)
+            let url = URL.imageURL(i)
+            let _ = ImageLoader.suspend(url)
         }
     }
 
-    func insertRow(URL: NSURL) {
+    func insertRow(_ url: URL) {
 
-        dispatch_async(dispatch_get_main_queue(), {
-            let indexPath = NSIndexPath(forRow: self.URLs.count, inSection: 0)
-            self.URLs.append(URL)
+        DispatchQueue.main.async(execute: {
+            let indexPath = IndexPath(row: self.urls.count, section: 0)
+            self.urls.append(url)
 
             self.tableView.beginUpdates()
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
             self.tableView.endUpdates()
 
             let state = ImageLoader.state
-            if state == .Ready {
+            if state == .ready {
                 self.toggle(false)
             }
         })
 
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("TableViewCell", forIndexPath: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
-        let URL = self.URLs[indexPath.row]
-        if let data = Disk.get(URL.absoluteString!.escape()) {
+        let url = self.urls[indexPath.row]
+        if let str = url.absoluteString.escape(), let data = Disk.get(str) {
             cell.thumbnailView.image = UIImage(data: data)
         }
 
@@ -87,12 +87,12 @@ class SuspendViewController: UITableViewController {
 
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return URLs.count
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return urls.count
     }
 
 }

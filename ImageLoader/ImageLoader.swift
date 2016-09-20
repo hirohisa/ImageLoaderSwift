@@ -10,27 +10,27 @@ import Foundation
 import UIKit
 
 public protocol URLLiteralConvertible {
-    var imageLoaderURL: NSURL { get }
+    var imageLoaderURL: URL { get }
 }
 
-extension NSURL: URLLiteralConvertible {
-    public var imageLoaderURL: NSURL {
+extension URL: URLLiteralConvertible {
+    public var imageLoaderURL: URL {
         return self
     }
 }
 
-extension NSURLComponents: URLLiteralConvertible {
-    public var imageLoaderURL: NSURL {
-        return URL!
+extension URLComponents: URLLiteralConvertible {
+    public var imageLoaderURL: URL {
+        return url!
     }
 }
 
 extension String: URLLiteralConvertible {
-    public var imageLoaderURL: NSURL {
-        if let string = stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet()) {
-            return NSURL(string: string)!
+    public var imageLoaderURL: URL {
+        if let string = addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            return URL(string: string)!
         }
-        return NSURL(string: self)!
+        return URL(string: self)!
     }
 }
 
@@ -42,20 +42,20 @@ extension String: URLLiteralConvertible {
 */
 public protocol ImageLoaderCache: class {
 
-    subscript (aKey: NSURL) -> NSData? {
+    subscript (aKey: URL) -> Data? {
         get
         set
     }
 
 }
 
-public typealias CompletionHandler = (NSURL, UIImage?, NSError?, CacheType) -> Void
+public typealias CompletionHandler = (URL, UIImage?, Error?, CacheType) -> Void
 
 class Block {
 
     let identifier: Int
     let completionHandler: CompletionHandler
-    init(identifier: Int, completionHandler: CompletionHandler) {
+    init(identifier: Int, completionHandler: @escaping CompletionHandler) {
         self.identifier = identifier
         self.completionHandler = completionHandler
     }
@@ -74,8 +74,8 @@ func ==(lhs: Block, rhs: Block) -> Bool {
     Running:    The manager has loaders
 */
 public enum State {
-    case Ready
-    case Running
+    case ready
+    case running
 }
 
 /**
@@ -84,8 +84,8 @@ public enum State {
     Cache:  getting from `ImageCache`
 */
 public enum CacheType {
-    case None
-    case Cache
+    case none
+    case cache
 }
 
 // MARK: singleton instance
@@ -94,32 +94,32 @@ public let sharedInstance = Manager()
 /**
     Creates `Loader` object using the shared manager instance for the specified URL.
 */
-public func load(URL: URLLiteralConvertible) -> Loader {
-    return sharedInstance.load(URL)
+public func load(_ url: URLLiteralConvertible) -> Loader {
+    return sharedInstance.load(url)
 }
 
 /**
     Suspends `Loader` object using the shared manager instance for the specified URL.
 */
-public func suspend(URL: URLLiteralConvertible) -> Loader? {
-    return sharedInstance.suspend(URL)
+public func suspend(_ url: URLLiteralConvertible) -> Loader? {
+    return sharedInstance.suspend(url)
 }
 
 /**
     Cancels `Loader` object using the shared manager instance for the specified URL.
 */
-public func cancel(URL: URLLiteralConvertible) -> Loader? {
-    return sharedInstance.cancel(URL)
+public func cancel(_ url: URLLiteralConvertible) {
+    sharedInstance.cancel(url)
 }
 
 public var state: State {
     return sharedInstance.state
 }
 
-func dispatch_main(block: dispatch_block_t) {
-    if NSThread.isMainThread() {
+func dispatch_main(_ block: @escaping (Void) -> Void) {
+    if Thread.isMainThread {
         block()
     } else {
-        dispatch_async(dispatch_get_main_queue(), block)
+        DispatchQueue.main.async(execute: block)
     }
 }

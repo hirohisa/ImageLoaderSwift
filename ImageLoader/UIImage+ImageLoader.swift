@@ -15,19 +15,19 @@ private let lock = NSRecursiveLock()
 
 extension UIImage {
 
-    func adjusts(size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
+    func adjusts(_ size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
         lock.lock()
         defer { lock.unlock() }
 
         switch contentMode {
-        case .ScaleToFill:
+        case .scaleToFill:
             if size.width * scale > self.size.width || size.height * scale > self.size.height {
                 return self
             }
 
             let fitSize = CGSize(width: size.width * scale, height: size.height * scale)
             return render(fitSize)
-        case .ScaleAspectFit:
+        case .scaleAspectFit:
             if size.width * scale > self.size.width || size.height * scale > self.size.height {
                 return self
             }
@@ -37,7 +37,7 @@ extension UIImage {
 
             let fitSize = CGSize(width: downscaleSize.width * ratio * scale, height: downscaleSize.height * ratio * scale)
             return render(fitSize)
-        case .ScaleAspectFill:
+        case .scaleAspectFill:
             if size.width * scale > self.size.width || size.height * scale > self.size.height {
                 return self
             }
@@ -52,7 +52,7 @@ extension UIImage {
         }
     }
 
-    func render(size: CGSize) -> UIImage {
+    func render(_ size: CGSize) -> UIImage {
         lock.lock()
         defer { lock.unlock() }
 
@@ -61,12 +61,12 @@ extension UIImage {
         }
 
         UIGraphicsBeginImageContext(size)
-        drawInRect(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
         return UIGraphicsGetImageFromCurrentImageContext()!
     }
 
-    static func decode(data: NSData) -> UIImage? {
+    static func decode(_ data: Data) -> UIImage? {
         lock.lock()
         defer { lock.unlock() }
 

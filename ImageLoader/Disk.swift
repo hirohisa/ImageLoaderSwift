@@ -11,22 +11,14 @@ import UIKit
 
 extension String {
 
-    public func escape() -> String {
-
-        let str = CFURLCreateStringByAddingPercentEscapes(
-            kCFAllocatorDefault,
-            self,
-            nil,
-            "!*'\"();:@&=+$,/?%#[]% ",
-            CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding))
-
-        return str as String
+    public func escape() -> String? {
+        return addingPercentEncoding(withAllowedCharacters: .alphanumerics)
     }
 }
 
 public class Disk {
 
-    var storedData = [String: NSData]()
+    var storedData = [String: Data]()
 
     class Directory {
         init() {
@@ -34,19 +26,19 @@ public class Disk {
         }
 
         private func createDirectory() {
-            let fileManager = NSFileManager.defaultManager()
-            if fileManager.fileExistsAtPath(path) {
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: path) {
                 return
             }
 
             do {
-                try fileManager.createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+                try fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
             } catch _ {
             }
         }
 
         var path: String {
-            let cacheDirectory = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
+            let cacheDirectory = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
             let directoryName = "swift.imageloader.disk"
 
             return cacheDirectory + "/" + directoryName
@@ -54,8 +46,8 @@ public class Disk {
     }
     let directory = Directory()
 
-    private let _subscriptQueue = dispatch_queue_create("swift.imageloader.queues.disk.subscript", DISPATCH_QUEUE_CONCURRENT)
-    private let _ioQueue = dispatch_queue_create("swift.imageloader.queues.disk.set", DISPATCH_QUEUE_SERIAL)
+    fileprivate let _subscriptQueue = DispatchQueue(label: "swift.imageloader.queues.disk.subscript", attributes: .concurrent)
+    fileprivate let _ioQueue = DispatchQueue(label: "swift.imageloader.queues.disk.set")
 }
 
 extension Disk {
@@ -65,68 +57,73 @@ extension Disk {
     }
 
     func cleanUp() {
-        let manager = NSFileManager.defaultManager()
-        for subpath in manager.subpathsAtPath(directory.path) ?? [] {
+        let manager = FileManager.default
+        for subpath in manager.subpaths(atPath: directory.path) ?? [] {
             let path = directory.path + "/" + subpath
             do {
-                try manager.removeItemAtPath(path)
+                try manager.removeItem(atPath: path)
             } catch _ {
             }
         }
     }
 
-    public class func get(aKey: String) -> NSData? {
+    public class func get(_ aKey: String) -> Data? {
         return Disk().get(aKey)
     }
 
-    public class func set(anObject: NSData, forKey aKey: String) {
+    public class func set(_ anObject: Data, forKey aKey: String) {
         Disk().set(anObject, forKey: aKey)
     }
 
-    public func get(aKey: String) -> NSData? {
+    public func get(_ aKey: String) -> Data? {
         if let data = storedData[aKey] {
             return data
         }
-        return NSData(contentsOfFile: _path(aKey))
+        return (try? Data(contentsOf: URL(fileURLWithPath: _path(aKey))))
     }
 
-    private func get(aKey: NSURL) -> NSData? {
-        return get(aKey.absoluteString!.escape())
+    fileprivate func get(_ aKey: URL) -> Data? {
+        guard let key = aKey.absoluteString.escape() else { return nil }
+
+        return get(key)
     }
 
-    private func _path(name: String) -> String {
+    fileprivate func _path(_ name: String) -> String {
         return directory.path + "/" + name
     }
 
-    public func set(anObject: NSData, forKey aKey: String) {
+    public func set(_ anObject: Data, forKey aKey: String) {
         storedData[aKey] = anObject
 
         let block: () -> Void = {
-            anObject.writeToFile(self._path(aKey), atomically: false)
-            self.storedData[aKey] = nil
+            do {
+                try anObject.write(to: URL(fileURLWithPath: self._path(aKey)), options: [])
+                self.storedData[aKey] = nil
+            } catch _ {}
         }
 
-        dispatch_async(_ioQueue, block)
+        _ioQueue.async(execute: block)
     }
 
-    private func set(anObject: NSData, forKey aKey: NSURL) {
-        set(anObject, forKey: aKey.absoluteString!.escape())
+    fileprivate func set(_ anObject: Data, forKey aKey: URL) {
+        guard let key = aKey.absoluteString.escape() else { return }
+        set(anObject, forKey: key)
     }
 }
 
 extension Disk: ImageLoaderCache {
 
-    public subscript (aKey: NSURL) -> NSData? {
+    public subscript (aKey: URL) -> Data? {
         get {
-            var data : NSData?
-            dispatch_sync(_subscriptQueue) {
+            var data : Data?
+            _subscriptQueue.sync {
                 data = self.get(aKey)
             }
             return data
         }
 
         set {
-            dispatch_barrier_async(_subscriptQueue) {
+            _subscriptQueue.async {
                 self.set(newValue!, forKey: aKey)
             }
         }
