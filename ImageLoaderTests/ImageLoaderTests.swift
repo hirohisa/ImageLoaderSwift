@@ -1,88 +1,98 @@
 //
 //  ImageLoaderTests.swift
-//  ImageLoaderTests
+//  ImageLoader
 //
-//  Created by Hirohisa Kawasaki on 10/16/14.
-//  Copyright © 2014 Hirohisa Kawasaki. All rights reserved.
+//  Created by Hirohisa Kawasaki on 12/1/15.
+//  Copyright © 2015 Hirohisa Kawasaki. All rights reserved.
 //
 
-import UIKit
 import XCTest
 @testable import ImageLoader
-import OHHTTPStubs
 
-extension URLSessionTask.State {
-
-    func toString() -> String {
-        switch self {
-        case .running:
-            return "Running"
-        case .suspended:
-            return "Suspended"
-        case .canceling:
-            return "Canceling"
-        case .completed:
-            return "Completed"
-        }
-    }
-}
-
-extension State {
-
-    func toString() -> String {
-        switch self {
-        case .ready:
-            return "Ready"
-        case .running:
-            return "Running"
-        }
-    }
-}
-
-class ImageLoaderTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        setUpOHHTTPStubs()
-    }
+class ImageLoaderTests: ImageLoaderTestCase {
 
     override func tearDown() {
-        removeOHHTTPStubs()
+        sleep(2)
         super.tearDown()
     }
 
-    func setUpOHHTTPStubs() {
-        OHHTTPStubs.stubRequests(passingTest: { request -> Bool in
-            return true
-        }, withStubResponse: { request in
-            var data = Data()
-            var statusCode = Int32(200)
-            if let path = request.url?.path , !path.isEmpty {
-                switch path {
-                case _ where path.hasSuffix("white"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                case _ where path.hasSuffix("black"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                default:
-                    if let i = Int(path) , 400 <= i && i < 600 {
-                        statusCode = Int32(i)
-                    }
-                }
-            }
+    func testLoad() {
+        let expectation = self.expectation(description: "wait until loader complete")
 
-            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
-            response.responseTime = 1
-            return response
+        let url = URL(string: "http://example/test/load")!
+        let onCompletion: (UIImage?, Error?, FetchOperation) -> Void = { _ -> Void in
+            expectation.fulfill()
+        }
+
+        let loader = ImageLoader.request(with: url, onCompletion: onCompletion)
+        XCTAssert(loader.state == .running)
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testCancel() {
+        let expectation = self.expectation(description: "wait until loader complete")
+
+        let url = URL(string: "http://example/test/cancel")!
+        let onCompletion: (UIImage?, Error?, FetchOperation) -> Void = { _, error, _ -> Void in
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+
+        let loader = ImageLoader.request(with: url, onCompletion: onCompletion)
+        XCTAssert(loader.state == .running)
+        loader.cancel()
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testLoadUrls() {
+        let url1 = URL(string: "http://example/test/load/urls1")!
+        let loader1 = ImageLoader.request(with: url1, onCompletion: { _ in })
+
+        let url2 = URL(string: "http://example/test/load/urls2")!
+        let loader2 = ImageLoader.request(with: url2, onCompletion: { _ in })
+
+        XCTAssert(loader1.state == .running)
+        XCTAssert(loader2.state == .running)
+        XCTAssert(loader1 != loader2)
+    }
+
+    func testLoadSameUrl() {
+        let url = URL(string: "http://example/test/load/same/url")!
+        let loader1 = ImageLoader.request(with: url, onCompletion: { _ in })
+        let loader2 = ImageLoader.request(with: url, onCompletion: { _ in })
+
+        XCTAssert(loader1.state == .running, loader1.state.toString())
+        XCTAssert(loader2.state == .running, loader2.state.toString())
+         XCTAssert(loader1 == loader2)
+    }
+
+    func testLoadResponseCode404() {
+        let expectation = self.expectation(description: "wait until loader complete")
+
+        let url = URL(string: "http://example/404")!
+        let _ = ImageLoader.request(with: url, onCompletion: { image, error, operation in
+            XCTAssertNil(image)
+            XCTAssertNotNil(error)
+            expectation.fulfill()
         })
+
+        waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error)
+        }
     }
 
-    func removeOHHTTPStubs() {
-        OHHTTPStubs.removeAllStubs()
+    func testCancelAfterLoading() {
+        let url = URL(string: "http://example/test/cancel/after/loading")!
+        let loader = ImageLoader.request(with: url, onCompletion: { _ in })
+        loader.cancel()
+
+        let actual = ImageLoader.loaderManager.storage[url]
+        XCTAssertNil(actual)
     }
 
-    func waitForAsyncTask(_ duration: TimeInterval = 0.01) {
-        RunLoop.main.run(until: Date(timeIntervalSinceNow: duration))
-    }
 }

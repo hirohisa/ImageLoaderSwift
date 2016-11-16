@@ -55,9 +55,9 @@ class CollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL(indexPath.row)
+        let url = String.imageURL(indexPath.row)
         cell.imageView.contentMode = contentMode
-        cell.imageView.load(imageURL)
+        cell.imageView.load.request(with: url)
 
         return cell
     }

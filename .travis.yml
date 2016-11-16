@@ -1,13 +1,12 @@
 language: objective-c
-osx_image: xcode7.3
+osx_image: xcode8.1
 
 before_install:
   - gem install xcpretty
-#  - brew update || brew update # temporary workaround
-#  - brew install carthage
 
 script:
   - rake test
 
 after_success:
+  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
   - bash <(curl -s https://codecov.io/bash)
