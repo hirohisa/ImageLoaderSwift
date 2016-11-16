@@ -27,27 +27,18 @@ class SimpleViewController: UIViewController {
 
     @IBAction func tryLoadSuccessURL() {
         let string = "https://www.google.co.jp/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-        tryLoad(string)
+        tryLoad(URL(string: string)!)
     }
 
     @IBAction func tryLoadFailureURL() {
         let string = "http://upload.wikimedia.org/wikipedia/commons/1/1b/Bachalpseeflowers.jpg"
-        tryLoad(string)
+        tryLoad(URL(string: string)!)
     }
 
-    func tryLoad(_ URL: URLLiteralConvertible) {
-
-        testLoad(imageView, URL: URL)
-
-    }
-
-    func testLoad(_ imageView: UIImageView, URL: URLLiteralConvertible) {
-        imageView.load(URL, placeholder: nil) { URL, image, error, cacheType in
-            print("url \(URL)")
+    func tryLoad(_ url: URL) {
+        imageView.load.request(with: url, onCompletion: { _, error, _ in
             print("error \(error)")
-            print("cacheType \(cacheType.hashValue)")
-        }
-
+        })
     }
 
 }

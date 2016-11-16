@@ -20,20 +20,17 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
 
         let url = String.imageURL(indexPath.row)
-        let placeholder = UIImage(named: "black.jpg")!
-        cell.thumbnailView.load(url, placeholder: placeholder) { url, image, error, cacheType in
-            print("url \(url)")
-            print("error \(error)")
+        cell.thumbnailView.image = UIImage(named: "black.jpg")
+        cell.thumbnailView.load.request(with: url, onCompletion: { image, error, operation in
             print("image \(image?.size), render-image \(cell.thumbnailView.image?.size)")
-            print("cacheType \(cacheType.hashValue)")
-            if cacheType == CacheType.none {
+            if operation == .network {
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.type = kCATransitionFade
                 cell.thumbnailView.layer.add(transition, forKey: nil)
                 cell.thumbnailView.image = image
             }
-        }
+        })
 
         return cell
 

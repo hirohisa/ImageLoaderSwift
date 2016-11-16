@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import ImageLoader
 
 class BlockingMainThreadPerfomanceTestViewController: CollectionViewController {
 
     var watchdog: Watchdog?
     func report() {
-        print(#function)
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Disk().cleanUp()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -32,24 +37,28 @@ class BlockingMainThreadPerfomanceTestViewController: CollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
 
-        let imageURL = String.imageURL(indexPath.row % 100)
+        let url = String.imageURL(indexPath.row % 100)
 
         let startDate = Date()
         cell.imageView.contentMode = contentMode
-        cell.imageView.load(imageURL, placeholder: nil) { (URL, _, _, type) -> Void in
-            switch type {
-            case .none:
+        cell.imageView.image = UIImage(color: UIColor.black)
+        cell.imageView.load.request(with: url, onCompletion: { _, _, operation in
+            switch operation {
+            case .network:
                 let diff = Date().timeIntervalSince(startDate)
                 print("loading time: \(diff)")
                 if let image = cell.imageView.image {
                     print("from network, image size: \(image.size)")
                 }
-            case .cache:
+            case .disk:
                 if let image = cell.imageView.image {
                     print("from cache, image size: \(image.size)")
                 }
+
+            case .error:
+                print("error")
             }
-        }
+        })
 
         return cell
     }

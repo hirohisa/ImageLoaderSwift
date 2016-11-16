@@ -9,24 +9,19 @@
 import XCTest
 @testable import ImageLoader
 
-class DiskTests: ImageLoaderTests {
-
-    func generateData() -> Data {
-        let image = UIImage(color: UIColor.black, size: CGSize(width: 1, height: 1))!
-        let data = UIImageJPEGRepresentation(image, 1)!
-
-        return data
-    }
+class DiskTests: ImageLoaderTestCase {
 
     func testSetAndGet() {
         let url = URL(string: "http://test/sample")!
         let data = generateData()
 
         let disk = Disk()
-        disk[url] = data
+        disk.set(data, forKey: url)
 
-        XCTAssertNotNil(disk[url])
-        XCTAssertEqual(disk[url]!, data)
+        let actual = disk.get(url)
+
+        XCTAssertNotNil(actual)
+        XCTAssertEqual(actual, data)
     }
 
     func testSetAndGetWithString() {
@@ -49,9 +44,9 @@ class DiskTests: ImageLoaderTests {
         let data = generateData()
 
         let disk = Disk()
-        disk[url] = data
+        disk.set(data, forKey: url)
 
-        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
+        sleep(1)
 
         XCTAssertNotNil(disk.get(encodedString))
         XCTAssertEqual(disk.get(encodedString)!, data)
@@ -59,16 +54,20 @@ class DiskTests: ImageLoaderTests {
 
     func testSetAndWriteToDisk() {
         let url = URL(string: "http://test/save_to_file")!
+        let key = url.absoluteString.escape()!
         let data = generateData()
 
         let disk = Disk()
-        disk[url] = data
+        disk.set(data, forKey: url)
+        XCTAssertNotNil(disk.storage[key])
 
-        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
+        sleep(1)
 
-        XCTAssertNotNil(disk[url])
-        XCTAssertEqual(disk[url]!, data)
-        XCTAssertNil(disk.storedData[url.absoluteString])
+        let actual = disk.get(url)
+
+        XCTAssertNotNil(actual)
+        XCTAssertEqual(actual, data)
+        XCTAssertNil(disk.storage[key])
     }
 
     func testCleanDisk() {
@@ -76,11 +75,20 @@ class DiskTests: ImageLoaderTests {
         let data = generateData()
 
         let disk = Disk()
-        disk[url] = data
+        disk.set(data, forKey: url)
 
-        RunLoop.main.run(until: Date(timeIntervalSinceNow: 2))
+        sleep(1)
+        disk.cleanUp()
+        sleep(1)
 
-        Disk.cleanUp()
-        XCTAssertNil(disk[url])
+        XCTAssertNil(disk.get(url))
     }
+
+    func generateData() -> Data {
+        let image = UIImage(color: UIColor.black, size: CGSize(width: 1, height: 1))!
+        let data = UIImageJPEGRepresentation(image, 1)!
+
+        return data
+    }
+
 }
