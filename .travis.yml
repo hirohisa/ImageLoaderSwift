@@ -8,4 +8,5 @@ script:
   - rake test
 
 after_success:
+  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
   - bash <(curl -s https://codecov.io/bash)

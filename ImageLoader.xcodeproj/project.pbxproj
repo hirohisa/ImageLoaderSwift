@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		650F99481C0EC45D00540E8D /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = 650F99471C0EC45D00540E8D /* black.png */; };
 		650F994A1C0EC46300540E8D /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 650F99491C0EC46300540E8D /* white.png */; };
-		6529075C1BA19BEE002B8D89 /* OHHTTPStubs.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6529075D1BA19D5F002B8D89 /* ImageLoader.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6529075E1BA19DB2002B8D89 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */; };
 		6535D0801DDC2E8100A197F0 /* UIImage+ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6535D07F1DDC2E8100A197F0 /* UIImage+ImageLoader.swift */; };
 		6535D0821DDC3B3400A197F0 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6535D0811DDC3B3400A197F0 /* Option.swift */; };
 		65B2CF1719EF9F6600DA3605 /* ImageLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 65B2CF1619EF9F6600DA3605 /* ImageLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -51,7 +49,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6529075D1BA19D5F002B8D89 /* ImageLoader.framework in Copy Files */,
-				6529075C1BA19BEE002B8D89 /* OHHTTPStubs.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6529075E1BA19DB2002B8D89 /* OHHTTPStubs.framework in Frameworks */,
 				65B2CF1D19EF9F6600DA3605 /* ImageLoader.framework in Frameworks */,
 				967406B9271120F7CAD2C221 /* Pods_ImageLoaderTests.framework in Frameworks */,
 			);
@@ -557,10 +553,7 @@
 			baseConfigurationReference = CF6827A1BBC856D0EE758D82 /* Pods-ImageLoaderTests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = ImageLoaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -576,10 +569,7 @@
 			baseConfigurationReference = 2BF1729832EAAE72BD7FF47B /* Pods-ImageLoaderTests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ImageLoaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.hirohisa.$(PRODUCT_NAME:rfc1034identifier)";
