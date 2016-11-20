@@ -32,6 +32,7 @@ ImageLoader | Xcode | Swift
 0.9.x       | 7.3.1 | 2.2
 0.10.0      | 8.0+  | 2.3
 0.11.+      | 8.0+  | 3.0
+0.12.+      | 8.1+  | 3.0.1
 
 If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
@@ -75,20 +76,6 @@ To integrate ImageLoader into your Xcode project using Carthage, specify it in y
 github "hirohisa/ImageLoaderSwift" ~> 0.6.0
 ```
 
-### Manually
-
-If you prefer not to use either of the aforementioned dependency managers, you can integrate ImageLoader into your project manually.
-
-#### Embedded Framework
-
-- Open up Terminal, `cd` into your top-level project directory, and run the following command "if" your project is not initialized as a git repository:
-
-- Add ImageLoader as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
-
-```bash
-$ git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
-```
-
 Usage
 ----------
 
@@ -96,33 +83,19 @@ Usage
 
 **load**
 ```swift
-import ImageLoader
-
-ImageLoader.load("http://image").completionHandler { _ in }
+ImageLoader.request(with: url, onCompletion: { _ in })
 ```
 
-**suspend**
-```swift
-import ImageLoader
-
-ImageLoader.suspend("http://image")
-```
-
-
-#### UIImageView Category
+#### UIImageView
 
 ```swift
-import ImageLoader
-
-imageView.load("http://image")
+imageView.load.request(with: url)
 ```
 
 or
 
 ```swift
-import ImageLoader
-
-imageView.load("http://image", placeholder: nil) { _ in ... }
+imageView.load.request(with: url, onCompletion: { _ in })
 ```
 
 
