@@ -33,11 +33,16 @@ extension Loadable where Base: UIImageView {
 
     @discardableResult
     public func request(with url: URLLiteralConvertible, options: [Option] = []) -> Loader? {
-        return request(with: url, options: options, onCompletion: { _ in })
+        return request(with: url, placeholder: nil, options: options, onCompletion: { _ in })
     }
 
     @discardableResult
     public func request(with url: URLLiteralConvertible, options: [Option] = [], onCompletion: @escaping (UIImage?, Error?, FetchOperation) -> Void) -> Loader? {
+        return request(with: url, placeholder: nil, options: options, onCompletion: onCompletion)
+    }
+
+    @discardableResult
+    public func request(with url: URLLiteralConvertible, placeholder: UIImage?, options: [Option] = [], onCompletion: @escaping (UIImage?, Error?, FetchOperation) -> Void) -> Loader? {
         let imageCompletion: (UIImage?, Error?, FetchOperation) -> Void = { image, error, operation in
             guard let image = image else { return onCompletion(nil, error, operation)  }
 
@@ -70,11 +75,14 @@ extension Loadable where Base: UIImageView {
             return nil
         }
 
+        if let placeholder = placeholder {
+            base.image = placeholder
+        }
+
         // request
         let loader = ImageLoader.loaderManager.getLoader(with: url.imageLoaderURL, task: task)
         loader.resume()
 
         return loader
     }
-
 }
