@@ -12,9 +12,11 @@ import UIKit
 public struct ImageLoader {
 
     @discardableResult
-    public static func request(with url: URLLiteralConvertible, onCompletion: @escaping (UIImage?, Error?, FetchOperation) -> Void) -> Loader {
+    public static func request(with url: URLLiteralConvertible, onCompletion: @escaping (UIImage?, Error?, FetchOperation) -> Void) -> Loader? {
+        guard let imageLoaderUrl = url.imageLoaderURL else { return nil }
+
         let task = Task(nil, onCompletion: onCompletion)
-        let loader = ImageLoader.loaderManager.getLoader(with: url.imageLoaderURL, task: task)
+        let loader = ImageLoader.loaderManager.getLoader(with: imageLoaderUrl, task: task)
         loader.resume()
 
         return loader
