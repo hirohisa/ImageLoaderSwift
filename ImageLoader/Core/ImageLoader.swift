@@ -33,15 +33,17 @@ extension ImageLoader {
             loader.operative.receiveData.append(data)
         }
 
+        func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+            completionHandler(.allow)
+        }
+
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
             guard let loader = getLoaderFromLoaderManager(with: task) else { return }
-
             loader.complete(with: error)
         }
 
         func getLoaderFromLoaderManager(with dataTask: URLSessionTask) -> Loader? {
-            guard let url = dataTask.currentRequest?.url else { return nil }
-
+            guard let url = dataTask.originalRequest?.url else { return nil }
             return loaderManager.storage[url]
         }
     }
