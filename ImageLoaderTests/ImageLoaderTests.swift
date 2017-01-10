@@ -25,7 +25,7 @@ class ImageLoaderTests: ImageLoaderTestCase {
         }
 
         let loader = ImageLoader.request(with: url, onCompletion: onCompletion)
-        XCTAssert(loader.state == .running)
+        XCTAssert(loader!.state == .running)
 
         waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
@@ -42,8 +42,8 @@ class ImageLoaderTests: ImageLoaderTestCase {
         }
 
         let loader = ImageLoader.request(with: url, onCompletion: onCompletion)
-        XCTAssert(loader.state == .running)
-        loader.cancel()
+        XCTAssert(loader!.state == .running)
+        loader!.cancel()
         waitForExpectations(timeout: 5) { error in
             XCTAssertNil(error)
         }
@@ -56,8 +56,8 @@ class ImageLoaderTests: ImageLoaderTestCase {
         let url2 = URL(string: "http://example/test/load/urls2")!
         let loader2 = ImageLoader.request(with: url2, onCompletion: { _ in })
 
-        XCTAssert(loader1.state == .running)
-        XCTAssert(loader2.state == .running)
+        XCTAssert(loader1!.state == .running)
+        XCTAssert(loader2!.state == .running)
         XCTAssert(loader1 != loader2)
     }
 
@@ -66,8 +66,8 @@ class ImageLoaderTests: ImageLoaderTestCase {
         let loader1 = ImageLoader.request(with: url, onCompletion: { _ in })
         let loader2 = ImageLoader.request(with: url, onCompletion: { _ in })
 
-        XCTAssert(loader1.state == .running, loader1.state.toString())
-        XCTAssert(loader2.state == .running, loader2.state.toString())
+        XCTAssert(loader1!.state == .running, loader1!.state.toString())
+        XCTAssert(loader2!.state == .running, loader2!.state.toString())
          XCTAssert(loader1 == loader2)
     }
 
@@ -89,7 +89,7 @@ class ImageLoaderTests: ImageLoaderTestCase {
     func testCancelAfterLoading() {
         let url = URL(string: "http://example/test/cancel/after/loading")!
         let loader = ImageLoader.request(with: url, onCompletion: { _ in })
-        loader.cancel()
+        loader!.cancel()
 
         let actual = ImageLoader.loaderManager.storage[url]
         XCTAssertNil(actual)

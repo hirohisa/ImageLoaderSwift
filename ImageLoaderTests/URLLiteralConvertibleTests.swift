@@ -35,13 +35,13 @@ class URLLiteralConvertibleTests: XCTestCase {
         let components = URLComponents(string: urlString)!
 
         XCTAssertEqual(string.imageLoaderURL, url)
-        XCTAssertEqual(string.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(string.imageLoaderURL!.absoluteString, urlString)
 
         XCTAssertEqual(url.imageLoaderURL, url)
-        XCTAssertEqual(url.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(url.imageLoaderURL!.absoluteString, urlString)
 
         XCTAssertEqual(components.imageLoaderURL, url)
-        XCTAssertEqual(components.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(components.imageLoaderURL!.absoluteString, urlString)
     }
 
     func testConvertImageLoaderURLIfNeededPercentEncoding() {
@@ -51,12 +51,12 @@ class URLLiteralConvertibleTests: XCTestCase {
         let components = URLComponents(string: urlString)!
 
         XCTAssertEqual(string.imageLoaderURL, url)
-        XCTAssertEqual(string.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(string.imageLoaderURL!.absoluteString, urlString)
 
         XCTAssertEqual(url.imageLoaderURL, url)
-        XCTAssertEqual(url.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(url.imageLoaderURL!.absoluteString, urlString)
 
         XCTAssertEqual(components.imageLoaderURL, url)
-        XCTAssertEqual(components.imageLoaderURL.absoluteString, urlString)
+        XCTAssertEqual(components.imageLoaderURL!.absoluteString, urlString)
     }
 }

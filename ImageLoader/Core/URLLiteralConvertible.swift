@@ -9,26 +9,26 @@
 import Foundation
 
 public protocol URLLiteralConvertible {
-    var imageLoaderURL: URL { get }
+    var imageLoaderURL: URL? { get }
 }
 
 extension URL: URLLiteralConvertible {
-    public var imageLoaderURL: URL {
+    public var imageLoaderURL: URL? {
         return self
     }
 }
 
 extension URLComponents: URLLiteralConvertible {
-    public var imageLoaderURL: URL {
-        return url!
+    public var imageLoaderURL: URL? {
+        return url
     }
 }
 
 extension String: URLLiteralConvertible {
-    public var imageLoaderURL: URL {
+    public var imageLoaderURL: URL? {
         if let string = addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            return URL(string: string)!
+            return URL(string: string)
         }
-        return URL(string: self)!
+        return URL(string: self)
     }
 }

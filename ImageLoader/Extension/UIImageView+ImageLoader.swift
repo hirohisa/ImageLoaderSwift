@@ -43,6 +43,8 @@ extension Loadable where Base: UIImageView {
 
     @discardableResult
     public func request(with url: URLLiteralConvertible, placeholder: UIImage?, options: [Option] = [], onCompletion: @escaping (UIImage?, Error?, FetchOperation) -> Void) -> Loader? {
+        guard let imageLoaderUrl = url.imageLoaderURL else { return nil }
+
         let imageCompletion: (UIImage?, Error?, FetchOperation) -> Void = { image, error, operation in
             guard let image = image else { return onCompletion(nil, error, operation)  }
 
@@ -61,16 +63,16 @@ extension Loadable where Base: UIImageView {
 
         // cancel
         if let requestUrl = base.requestUrl {
-            let loader = ImageLoader.loaderManager.getLoader(with: requestUrl.imageLoaderURL)
+            let loader = ImageLoader.loaderManager.getLoader(with: requestUrl)
             loader.operative.remove(task)
-            if requestUrl != url.imageLoaderURL, loader.operative.tasks.isEmpty {
+            if requestUrl != imageLoaderUrl, loader.operative.tasks.isEmpty {
                 loader.cancel()
             }
         }
         base.requestUrl = url.imageLoaderURL
 
         // disk
-        if let data = ImageLoader.loaderManager.disk.get(url.imageLoaderURL), let image = UIImage(data: data) {
+        if let data = ImageLoader.loaderManager.disk.get(imageLoaderUrl), let image = UIImage(data: data) {
             task.onCompletion(image, nil, .disk)
             return nil
         }
@@ -80,7 +82,7 @@ extension Loadable where Base: UIImageView {
         }
 
         // request
-        let loader = ImageLoader.loaderManager.getLoader(with: url.imageLoaderURL, task: task)
+        let loader = ImageLoader.loaderManager.getLoader(with: imageLoaderUrl, task: task)
         loader.resume()
 
         return loader
