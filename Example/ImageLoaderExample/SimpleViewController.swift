@@ -37,7 +37,7 @@ class SimpleViewController: UIViewController {
 
     func tryLoad(_ url: URL) {
         imageView.load.request(with: url, onCompletion: { _, error, _ in
-            print("error \(error)")
+            print("error \(String(describing: error))")
         })
     }
 

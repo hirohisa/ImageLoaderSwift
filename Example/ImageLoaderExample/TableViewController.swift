@@ -22,7 +22,7 @@ class TableViewController: UITableViewController {
         let url = String.imageURL(indexPath.row)
         cell.thumbnailView.image = UIImage(named: "black.jpg")
         cell.thumbnailView.load.request(with: url, onCompletion: { image, error, operation in
-            print("image \(image?.size), render-image \(cell.thumbnailView.image?.size)")
+            print("image \(String(describing: image?.size)), render-image \(String(describing: cell.thumbnailView.image?.size))")
             if operation == .network {
                 let transition = CATransition()
                 transition.duration = 0.5

@@ -33,7 +33,7 @@ extension Loadable where Base: UIImageView {
 
     @discardableResult
     public func request(with url: URLLiteralConvertible, options: [Option] = []) -> Loader? {
-        return request(with: url, placeholder: nil, options: options, onCompletion: { _ in })
+        return request(with: url, placeholder: nil, options: options, onCompletion: { _,_,_  in })
     }
 
     @discardableResult
