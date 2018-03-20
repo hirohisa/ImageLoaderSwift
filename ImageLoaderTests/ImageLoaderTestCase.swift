@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import OHHTTPStubs
+@testable import ImageLoader
 
 extension URLSessionTask.State {
 
@@ -33,40 +33,31 @@ class ImageLoaderTestCase: XCTestCase {
         setUpOHHTTPStubs()
     }
 
-    override func tearDown() {
-        removeOHHTTPStubs()
-        super.tearDown()
-    }
-
     func setUpOHHTTPStubs() {
-        OHHTTPStubs.stubRequests(passingTest: { request -> Bool in
-            return true
-        }, withStubResponse: { request in
-            var data = Data()
-            var statusCode = Int32(200)
-            if let path = request.url?.path , !path.isEmpty {
-                switch path {
-                case _ where path.hasSuffix("white"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                case _ where path.hasSuffix("black"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                default:
-                    if let i = Int(path) , 400 <= i && i < 600 {
-                        statusCode = Int32(i)
-                    }
-                }
-            }
-
-            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
-            response.responseTime = 2
-            return response
-        })
-    }
-
-    func removeOHHTTPStubs() {
-        OHHTTPStubs.removeAllStubs()
+//        OHHTTPStubs.stubRequests(passingTest: { request -> Bool in
+//            return true
+//        }, withStubResponse: { request in
+//            var data = Data()
+//            var statusCode = Int32(200)
+//            if let path = request.url?.path , !path.isEmpty {
+//                switch path {
+//                case _ where path.hasSuffix("white"):
+//                    let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
+//                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+//                case _ where path.hasSuffix("black"):
+//                    let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
+//                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+//                default:
+//                    if let i = Int(path) , 400 <= i && i < 600 {
+//                        statusCode = Int32(i)
+//                    }
+//                }
+//            }
+//
+//            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
+//            response.responseTime = 2
+//            return response
+//        })
     }
 
     func sleep(_ duration: TimeInterval = 0.01) {
