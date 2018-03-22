@@ -66,7 +66,7 @@ public class URLProtocolMock: URLProtocol {
     override public func startLoading() {
         self.client?.urlProtocol(self, didLoad: self.makeResponse())
         self.client?.urlProtocolDidFinishLoading(self)
-        //             self.client?.urlProtocol(self, didFailWithError: error)
+//        self.client?.urlProtocol(self, didFailWithError: error)
     }
 
     override public func stopLoading() {}

@@ -23,7 +23,7 @@ class HashStorage<K: Hashable, V: Equatable> {
             items[key] = value
         }
     }
-    
+
     func getKey(_ value: V) -> K? {
         var key: K?
         items.forEach { k, v in
@@ -31,8 +31,8 @@ class HashStorage<K: Hashable, V: Equatable> {
                 key = k
             }
         }
-        
+
         return key
     }
-    
+
 }
