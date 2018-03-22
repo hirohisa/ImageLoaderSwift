@@ -1,9 +1,6 @@
 NAME = "ImageLoader"
 WORKSPACE = "#{NAME}.xcworkspace"
 
-task :default do
-end
-
 def destination
   list = []
   `instruments -s devices`.each_line {|str|
@@ -21,5 +18,5 @@ def destination
 end
 
 task :test do
-  sh "xcodebuild test -workspace #{WORKSPACE} -scheme #{NAME} -destination \"#{destination()}\" -configuration Release ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test"
+  sh "xcodebuild test -workspace #{WORKSPACE} -scheme #{NAME} -destination \"#{destination()}\" -configuration Release ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty"
 end
