@@ -63,7 +63,7 @@ extension Loadable where Base: UIImageView {
 
         // cancel
         if let requestUrl = base.requestUrl {
-            let loader = ImageLoader.loaderManager.getLoader(with: requestUrl)
+            let loader = ImageLoader.manager.getLoader(with: requestUrl)
             loader.operative.remove(task)
             if requestUrl != imageLoaderUrl, loader.operative.tasks.isEmpty {
                 loader.cancel()
@@ -72,7 +72,7 @@ extension Loadable where Base: UIImageView {
         base.requestUrl = url.imageLoaderURL
 
         // disk
-        if let data = ImageLoader.loaderManager.disk.get(imageLoaderUrl), let image = UIImage(data: data) {
+        if let data = ImageLoader.manager.disk.get(imageLoaderUrl), let image = UIImage(data: data) {
             task.onCompletion(image, nil, .disk)
             return nil
         }
@@ -82,7 +82,7 @@ extension Loadable where Base: UIImageView {
         }
 
         // request
-        let loader = ImageLoader.loaderManager.getLoader(with: imageLoaderUrl, task: task)
+        let loader = ImageLoader.manager.getLoader(with: imageLoaderUrl, task: task)
         loader.resume()
 
         return loader

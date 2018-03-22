@@ -11,9 +11,9 @@ import XCTest
 
 class ImageLoaderTests: ImageLoaderTestCase {
 
-    override func tearDown() {
-        sleep(2)
-        super.tearDown()
+    override func setUp() {
+        super.setUp()
+        stub()
     }
 
     func testLoad() {
@@ -91,7 +91,7 @@ class ImageLoaderTests: ImageLoaderTestCase {
         let loader = ImageLoader.request(with: url, onCompletion: { _,_,_ in })
         loader!.cancel()
 
-        let actual = ImageLoader.loaderManager.storage[url]
+        let actual = ImageLoader.manager.storage[url]
         XCTAssertNil(actual)
     }
 
