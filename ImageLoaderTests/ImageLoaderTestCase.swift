@@ -64,9 +64,16 @@ public class URLProtocolMock: URLProtocol {
     }
 
     override public func startLoading() {
-        self.client?.urlProtocol(self, didLoad: self.makeResponse())
-        self.client?.urlProtocolDidFinishLoading(self)
-//        self.client?.urlProtocol(self, didFailWithError: error)
+        let delay: Double = 1.0
+        DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+            if let error = self.makeError() {
+                self.client?.urlProtocol(self, didFailWithError: error)
+                return
+            }
+
+            self.client?.urlProtocol(self, didLoad: self.makeResponse())
+            self.client?.urlProtocolDidFinishLoading(self)
+        }
     }
 
     override public func stopLoading() {}
@@ -88,4 +95,14 @@ public class URLProtocolMock: URLProtocol {
 
         return data
     }
+
+    private func makeError() -> Error? {
+        if let path = request.url?.path , !path.isEmpty {
+            if let statusCode = Int(path) , 400 <= statusCode && statusCode < 600 {
+                return NSError(domain: "Imageloader", code: statusCode, userInfo: [NSLocalizedFailureReasonErrorKey: "internet error with stub"])
+            }
+        }
+        return nil
+    }
+
 }

@@ -58,7 +58,6 @@
 		0D1A241FE45F6F50C4254DF0 /* Pods_ImageLoaderTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageLoaderTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		650F99471C0EC45D00540E8D /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
 		650F99491C0EC46300540E8D /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
-		6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = ../Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		6535D07F1DDC2E8100A197F0 /* UIImage+ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+ImageLoader.swift"; sourceTree = "<group>"; };
 		6535D0811DDC3B3400A197F0 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		65B2CF1119EF9F6600DA3605 /* ImageLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ImageLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,7 +165,6 @@
 			children = (
 				650F99471C0EC45D00540E8D /* black.png */,
 				650F99491C0EC46300540E8D /* white.png */,
-				6529075B1BA19BEE002B8D89 /* OHHTTPStubs.framework */,
 				65B2CF2219EF9F6600DA3605 /* Info.plist */,
 			);
 			name = "Supporting Files";
