@@ -16,22 +16,27 @@ public struct ImageLoader {
         guard let imageLoaderUrl = url.imageLoaderURL else { return nil }
 
         let task = Task(nil, onCompletion: onCompletion)
-        let loader = ImageLoader.loaderManager.getLoader(with: imageLoaderUrl, task: task)
+        let loader = ImageLoader.session.getLoader(with: imageLoaderUrl, task: task)
         loader.resume()
 
         return loader
     }
-}
 
-extension ImageLoader {
+    static var session: ImageLoader.Session {
+        return Session.shared
+    }
 
-    static let loaderManager = LoaderManager()
-    static let sessionManager = SessionManager()
+    static var manager: ImageLoader.LoaderManager {
+        return Session.manager
+    }
 
-    class SessionManager: NSObject, URLSessionDataDelegate {
+    class Session: NSObject, URLSessionDataDelegate {
+
+        static let shared = Session()
+        static let manager = LoaderManager()
 
         func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-            guard let loader = getLoaderFromLoaderManager(with: dataTask) else { return }
+            guard let loader = getLoader(with: dataTask) else { return }
             loader.operative.receiveData.append(data)
         }
 
@@ -40,13 +45,19 @@ extension ImageLoader {
         }
 
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-            guard let loader = getLoaderFromLoaderManager(with: task) else { return }
+            guard let loader = getLoader(with: task) else { return }
             loader.complete(with: error)
         }
 
-        func getLoaderFromLoaderManager(with dataTask: URLSessionTask) -> Loader? {
+        func getLoader(with dataTask: URLSessionTask) -> Loader? {
             guard let url = dataTask.originalRequest?.url else { return nil }
-            return loaderManager.storage[url]
+            return ImageLoader.manager.storage[url]
+        }
+
+        func getLoader(with url: URL, task: Task) -> Loader {
+            let loader = ImageLoader.manager.getLoader(with: url)
+            loader.operative.update(task)
+            return loader
         }
     }
 
@@ -57,7 +68,7 @@ extension ImageLoader {
         var disk = Disk()
 
         init(configuration: URLSessionConfiguration = .default) {
-            self.session = URLSession(configuration: configuration, delegate: sessionManager, delegateQueue: nil)
+            self.session = URLSession(configuration: .default, delegate: ImageLoader.session, delegateQueue: nil)
         }
 
         func getLoader(with url: URL) -> Loader {

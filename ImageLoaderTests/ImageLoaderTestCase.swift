@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import OHHTTPStubs
+@testable import ImageLoader
 
 extension URLSessionTask.State {
 
@@ -28,48 +28,81 @@ extension URLSessionTask.State {
 
 class ImageLoaderTestCase: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        setUpOHHTTPStubs()
-    }
-
-    override func tearDown() {
-        removeOHHTTPStubs()
-        super.tearDown()
-    }
-
-    func setUpOHHTTPStubs() {
-        OHHTTPStubs.stubRequests(passingTest: { request -> Bool in
-            return true
-        }, withStubResponse: { request in
-            var data = Data()
-            var statusCode = Int32(200)
-            if let path = request.url?.path , !path.isEmpty {
-                switch path {
-                case _ where path.hasSuffix("white"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                case _ where path.hasSuffix("black"):
-                    let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
-                    data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
-                default:
-                    if let i = Int(path) , 400 <= i && i < 600 {
-                        statusCode = Int32(i)
-                    }
-                }
-            }
-
-            let response = OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: nil)
-            response.responseTime = 2
-            return response
-        })
-    }
-
-    func removeOHHTTPStubs() {
-        OHHTTPStubs.removeAllStubs()
+    func stub() {
+        URLSessionConfiguration.swizzleDefaultToMock()
     }
 
     func sleep(_ duration: TimeInterval = 0.01) {
         RunLoop.main.run(until: Date(timeIntervalSinceNow: duration))
     }
+}
+
+public extension URLSessionConfiguration {
+
+    public class func swizzleDefaultToMock() {
+        let defaultSessionConfiguration = class_getClassMethod(URLSessionConfiguration.self, #selector(getter: URLSessionConfiguration.default))
+        let swizzledDefaultSessionConfiguration = class_getClassMethod(URLSessionConfiguration.self, #selector(getter: URLSessionConfiguration.mock))
+        method_exchangeImplementations(defaultSessionConfiguration!, swizzledDefaultSessionConfiguration!)
+    }
+
+    @objc private dynamic class var mock: URLSessionConfiguration {
+        let configuration = self.mock
+        configuration.protocolClasses?.insert(URLProtocolMock.self, at: 0)
+        URLProtocol.registerClass(URLProtocolMock.self)
+        return configuration
+    }
+}
+
+public class URLProtocolMock: URLProtocol {
+
+    override public class func canInit(with request:URLRequest) -> Bool {
+        return true
+    }
+
+    override public class func canonicalRequest(for request: URLRequest) -> URLRequest {
+        return request
+    }
+
+    override public func startLoading() {
+        let delay: Double = 1.0
+        DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+            if let error = self.makeError() {
+                self.client?.urlProtocol(self, didFailWithError: error)
+                return
+            }
+
+            self.client?.urlProtocol(self, didLoad: self.makeResponse())
+            self.client?.urlProtocolDidFinishLoading(self)
+        }
+    }
+
+    override public func stopLoading() {}
+
+    private func makeResponse() -> Data {
+        var data = Data()
+        if let path = request.url?.path , !path.isEmpty {
+            switch path {
+            case _ where path.hasSuffix("white"):
+                let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
+                data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+            case _ where path.hasSuffix("black"):
+                let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
+                data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+            default:
+                break
+            }
+        }
+
+        return data
+    }
+
+    private func makeError() -> Error? {
+        if let path = request.url?.path , !path.isEmpty {
+            if let statusCode = Int(path) , 400 <= statusCode && statusCode < 600 {
+                return NSError(domain: "Imageloader", code: statusCode, userInfo: [NSLocalizedFailureReasonErrorKey: "internet error with stub"])
+            }
+        }
+        return nil
+    }
+
 }

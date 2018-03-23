@@ -13,9 +13,13 @@ class HashStorage<K: Hashable, V: Equatable> {
     public init() {}
     public subscript(key: K) -> V? {
         get {
+            objc_sync_enter(HashStorage.self)
+            defer { objc_sync_exit(HashStorage.self) }
             return items[key]
         }
         set(value) {
+            objc_sync_enter(HashStorage.self)
+            defer { objc_sync_exit(HashStorage.self) }
             items[key] = value
         }
     }
@@ -30,6 +34,5 @@ class HashStorage<K: Hashable, V: Equatable> {
 
         return key
     }
-
 
 }
