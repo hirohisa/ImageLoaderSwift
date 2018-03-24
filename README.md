@@ -33,6 +33,7 @@ ImageLoader | Xcode | Swift
 0.10.0      | 8.0+  | 2.3
 0.11.+      | 8.0+  | 3.0
 0.12.+      | 8.1+  | 3.0.1
+0.13.+      | 9.0+  | 4.0.0
 
 If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
