@@ -3,7 +3,7 @@
 //  ImageLoader
 //
 //  Created by Hirohisa Kawasaki on 2016/10/30.
-//  Copyright © 2016年 Hirohisa Kawasaki. All rights reserved.
+//  Copyright © 2016 Hirohisa Kawasaki. All rights reserved.
 //
 
 import Foundation
