@@ -1,12 +1,8 @@
 language: objective-c
-osx_image: xcode9.2
+osx_image: xcode9.3beta
 
 before_install:
   - gem install xcpretty
 
 script:
   - rake test
-
-after_success:
-  - sleep 5 # workaround https://github.com/travis-ci/travis-ci/issues/4725
-  - bash <(curl -s https://codecov.io/bash)

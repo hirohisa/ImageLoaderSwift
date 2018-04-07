@@ -12,7 +12,7 @@ import ImageLoader
 class CPUAndMemoryPeformanceTestViewController: CollectionViewController {
 
     var timer: Timer?
-    func report() {
+    @objc func report() {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.report()
     }
