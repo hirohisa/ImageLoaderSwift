@@ -14,7 +14,7 @@ extension String {
     static func imageURL(_ index: Int) -> String {
 
         var number = index.description
-        while (number.characters.count < 3) {
+        while (number.count < 3) {
             number = "0\(number)"
         }
         return "https://s3.amazonaws.com/fast-image-cache/demo-images/FICDDemoImage\(number).jpg"
@@ -27,7 +27,7 @@ extension URL {
     static func imageURL(_ index: Int) -> URL {
 
         var number = index.description
-        while (number.characters.count < 3) {
+        while (number.count < 3) {
             number = "0\(number)"
         }
         let string = "https://s3.amazonaws.com/fast-image-cache/demo-images/FICDDemoImage\(number).jpg"
