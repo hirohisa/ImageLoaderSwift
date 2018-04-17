@@ -23,7 +23,6 @@ extension CGImageSource {
         for i in 0 ..< count {
             if let cgImage = getCGImage(index: i) {
                 images.append(UIImage(cgImage: cgImage))
-                
             }
         }
 
