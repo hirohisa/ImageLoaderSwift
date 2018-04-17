@@ -73,13 +73,10 @@ extension Loadable where Base: UIImageView {
         base.requestUrl = url.imageLoaderURL
 
         // disk
+        base.image = placeholder ?? nil
         if let data = ImageLoader.manager.disk.get(imageLoaderUrl), let image = UIImage.process(data: data) {
             task.onCompletion(image, nil, .disk)
             return nil
-        }
-
-        if let placeholder = placeholder {
-            base.image = placeholder
         }
 
         // request
