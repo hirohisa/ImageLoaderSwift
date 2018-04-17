@@ -46,15 +46,16 @@ extension Loadable where Base: UIImageView {
         guard let imageLoaderUrl = url.imageLoaderURL else { return nil }
 
         let imageCompletion: (UIImage?, Error?, FetchOperation) -> Void = { image, error, operation in
-            guard let image = image else { return onCompletion(nil, error, operation)  }
+            guard var image = image else { return onCompletion(nil, error, operation)  }
 
             DispatchQueue.main.async {
                 if options.contains(.adjustSize) {
-                    self.base.image = image.adjust(self.base.frame.size, scale: UIScreen.main.scale, contentMode: self.base.contentMode)
-                } else {
-                    self.base.image = image
-
+                    image = image.adjust(self.base.frame.size, scale: UIScreen.main.scale, contentMode: self.base.contentMode)
                 }
+                if let images = image.images, images.count > 0, let gif = UIImage.animatedImage(with: images, duration: 1) {
+                    image = gif
+                }
+                self.base.image = image
                 onCompletion(image, error, operation)
             }
         }
@@ -72,7 +73,7 @@ extension Loadable where Base: UIImageView {
         base.requestUrl = url.imageLoaderURL
 
         // disk
-        if let data = ImageLoader.manager.disk.get(imageLoaderUrl), let image = UIImage(data: data) {
+        if let data = ImageLoader.manager.disk.get(imageLoaderUrl), let image = UIImage.process(data: data) {
             task.onCompletion(image, nil, .disk)
             return nil
         }
