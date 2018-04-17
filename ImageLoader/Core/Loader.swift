@@ -34,7 +34,7 @@ public struct Loader {
         task.cancel()
 
         let reason = "Cancel to request: \(url)"
-        onFailure(with: NSError(domain: "Imageloader", code: -999, userInfo: [NSLocalizedFailureReasonErrorKey: reason]))
+        onFailure(with: NSError(domain: "Imageloader", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey: reason]))
     }
 
     func complete(with error: Error?) {
@@ -46,6 +46,12 @@ public struct Loader {
         if let image = UIImage.process(data: operative.receiveData) {
             onSuccess(with: image)
             delegate.disk.set(operative.receiveData, forKey: url)
+            return
+        }
+
+        if let statusCode = (task.response as? HTTPURLResponse)?.statusCode, statusCode >= 200, statusCode < 400 {
+            let reason = "Disconnect on downloading caused by HTTPStatusCode: \(statusCode)"
+            onFailure(with: NSError(domain: "Imageloader", code: statusCode, userInfo: [NSLocalizedFailureReasonErrorKey: reason]))
             return
         }
 
