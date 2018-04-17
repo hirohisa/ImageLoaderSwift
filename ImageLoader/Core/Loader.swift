@@ -43,7 +43,7 @@ public struct Loader {
             return
         }
 
-        if let image = UIImage(data: operative.receiveData) {
+        if let image = UIImage.process(data: operative.receiveData) {
             onSuccess(with: image)
             delegate.disk.set(operative.receiveData, forKey: url)
             return

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ImageIO
 
 private let lock = NSRecursiveLock()
 
@@ -18,6 +19,10 @@ extension UIImage {
     func adjust(_ size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
         lock.lock()
         defer { lock.unlock() }
+
+        if images?.count ?? 0 > 1 {
+            return self
+        }
 
         switch contentMode {
         case .scaleToFill:
@@ -64,6 +69,17 @@ extension UIImage {
         draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
 
         return UIGraphicsGetImageFromCurrentImageContext()!
+    }
+
+    internal static func process(data: Data) -> UIImage? {
+        switch data.fileType {
+        case .gif:
+            guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
+            let result = source.process()
+            return UIImage.animatedImage(with: result.images, duration: result.duration)
+        case .png, .jpeg, .tiff, .webp, .Unknown:
+            return UIImage(data: data)
+        }
     }
 
     static func decode(_ data: Data) -> UIImage? {
