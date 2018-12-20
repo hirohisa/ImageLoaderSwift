@@ -86,7 +86,7 @@ class DiskTests: ImageLoaderTestCase {
 
     func generateData() -> Data {
         let image = UIImage(color: UIColor.black, size: CGSize(width: 1, height: 1))!
-        let data = UIImageJPEGRepresentation(image, 1)!
+        let data = image.jpegData(compressionQuality: 1)!
 
         return data
     }
