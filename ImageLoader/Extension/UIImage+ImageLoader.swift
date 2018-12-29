@@ -16,7 +16,7 @@ private let lock = NSRecursiveLock()
 
 extension UIImage {
 
-    func adjust(_ size: CGSize, scale: CGFloat, contentMode: UIViewContentMode) -> UIImage {
+    func adjust(_ size: CGSize, scale: CGFloat, contentMode: UIView.ContentMode) -> UIImage {
         lock.lock()
         defer { lock.unlock() }
 

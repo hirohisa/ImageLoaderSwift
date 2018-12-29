@@ -84,10 +84,10 @@ public class URLProtocolMock: URLProtocol {
             switch path {
             case _ where path.hasSuffix("white"):
                 let imagePath = Bundle(for: type(of: self)).path(forResource: "white", ofType: "png")!
-                data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                data = UIImage(contentsOfFile: imagePath)!.pngData()!
             case _ where path.hasSuffix("black"):
                 let imagePath = Bundle(for: type(of: self)).path(forResource: "black", ofType: "png")!
-                data = UIImagePNGRepresentation(UIImage(contentsOfFile: imagePath)!)!
+                data = UIImage(contentsOfFile: imagePath)!.pngData()!
             default:
                 break
             }
