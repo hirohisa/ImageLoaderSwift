@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ImageLoader"
-  s.version      = "0.14.1"
+  s.version      = "0.15.0"
   s.summary      = "A lightweight and fast image loader for iOS written in Swift."
   s.description  = <<-DESC
                    ImageLoader is an instrument for asynchronous image loading written in Swift. It is a lightweight and fast image loader for iOS.
@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
 
   s.source_files = "ImageLoader/**/*.swift"
   s.requires_arc = true
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
 end
