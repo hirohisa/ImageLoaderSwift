@@ -22,6 +22,8 @@ extension URLSessionTask.State {
             return "Canceling"
         case .completed:
             return "Completed"
+        @unknown default:
+            return "Unknown"
         }
     }
 }
@@ -37,9 +39,9 @@ class ImageLoaderTestCase: XCTestCase {
     }
 }
 
-public extension URLSessionConfiguration {
+extension URLSessionConfiguration {
 
-    public class func swizzleDefaultToMock() {
+    class func swizzleDefaultToMock() {
         let defaultSessionConfiguration = class_getClassMethod(URLSessionConfiguration.self, #selector(getter: URLSessionConfiguration.default))
         let swizzledDefaultSessionConfiguration = class_getClassMethod(URLSessionConfiguration.self, #selector(getter: URLSessionConfiguration.mock))
         method_exchangeImplementations(defaultSessionConfiguration!, swizzledDefaultSessionConfiguration!)

@@ -14,13 +14,13 @@ class CollectionViewCell: UICollectionViewCell {
 
 class CollectionViewController: UICollectionViewController {
 
-    var contentMode: UIViewContentMode = UIViewContentMode.scaleToFill {
+    var contentMode: UIView.ContentMode = UIView.ContentMode.scaleToFill {
         didSet {
             reloadData()
         }
     }
 
-    let modeMap: [UIViewContentMode: UIViewContentMode] = [
+    let modeMap: [UIView.ContentMode: UIView.ContentMode] = [
         .scaleToFill: .scaleAspectFit,
         .scaleAspectFit: .scaleAspectFill,
         .scaleAspectFill: .scaleToFill,
