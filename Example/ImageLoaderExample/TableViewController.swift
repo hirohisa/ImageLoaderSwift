@@ -26,7 +26,7 @@ class TableViewController: UITableViewController {
             if operation == .network {
                 let transition = CATransition()
                 transition.duration = 0.5
-                transition.type = kCATransitionFade
+                transition.type = CATransitionType.fade
                 cell.thumbnailView.layer.add(transition, forKey: nil)
                 cell.thumbnailView.image = image
             }

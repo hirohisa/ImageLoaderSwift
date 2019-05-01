@@ -24,14 +24,14 @@ class Operative {
     var receiveData = Data()
 
     func remove(_ task: Task) {
-        guard let index = tasks.index(of: task) else {
+        guard let index = tasks.firstIndex(of: task) else {
             return
         }
         tasks.remove(at: index)
     }
 
     func update(_ task: Task) {
-        guard let index = tasks.index(of: task) else {
+        guard let index = tasks.firstIndex(of: task) else {
             tasks.append(task)
             return
         }
